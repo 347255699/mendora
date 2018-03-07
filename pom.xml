@@ -15,7 +15,6 @@
     <properties>
         <vertx.version>3.4.2</vertx.version>
         <lang3.version>3.5</lang3.version>
-        <base.version>1.0-SNAPSHOT</base.version>
         <slf4j.version>1.7.12</slf4j.version>
         <log4j.version>1.2.16</log4j.version>
         <hazelcast.version>3.8</hazelcast.version>
@@ -40,11 +39,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${lang3.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mendora</groupId>
-            <artifactId>mendora-base</artifactId>
-            <version>${base.version}</version>
         </dependency>
         <!-- logging -->
         <dependency>

@@ -7,5 +7,5 @@
 
 mendora-aaa/.vertx/
 mendora-base/.vertx/
-log.txt
+/log/
 mendora-base/src/main/resources

@@ -10,6 +10,28 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>mendora-aaa</artifactId>
+    <properties>
+        <base.version>1.0-SNAPSHOT</base.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.mendora</groupId>
+            <artifactId>mendora-base</artifactId>
+            <version>${base.version}</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 
 </project>

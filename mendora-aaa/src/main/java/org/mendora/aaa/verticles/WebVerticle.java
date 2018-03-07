@@ -1,12 +1,14 @@
 package org.mendora.aaa.verticles;
 
 import io.vertx.core.DeploymentOptions;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
 import org.mendora.aaa.constant.AAAConst;
+import org.mendora.aaa.launcher.AAALauncher;
 import org.mendora.aaa.route.Route;
 import org.mendora.base.properties.ConfigHolder;
 import org.mendora.base.scanner.PackageSimpleScanner;
-import org.mendora.base.utils.BaseLogger;
 import org.mendora.base.verticles.SimpleVerticle;
 import rx.Observable;
 
@@ -19,7 +21,7 @@ import java.util.Set;
  */
 public class WebVerticle extends SimpleVerticle {
     private static final String MODULE_NAME = "WEB-VERTICLE:";
-
+    private static Logger logger = LoggerFactory.getLogger(AAALauncher.class);
     @Override
     public DeploymentOptions options() {
         return super.options();
@@ -32,14 +34,14 @@ public class WebVerticle extends SimpleVerticle {
         Set<Route> routes = new PackageSimpleScanner<Route>().scan(ConfigHolder.property(AAAConst.AAA_WEB_ROUTE_PACKAGE), Route.class);
         Observable.from(routes)
                 .subscribe(r -> r.route(router),
-                        err -> BaseLogger.error(MODULE_NAME + err.getMessage()),
+                        err -> logger.error(MODULE_NAME + err.getMessage()),
                         () -> {
                             String webServerPort = ConfigHolder.property(AAAConst.AAA_WEB_LISTENNING_PORT);
-                            BaseLogger.info(MODULE_NAME + "all the \"routes\" deployed");
-                            router.getRoutes().forEach(r -> BaseLogger.info(r.getPath()));
+                            logger.info(MODULE_NAME + "all the \"routes\" deployed");
+                            router.getRoutes().forEach(r -> logger.info(r.getPath()));
                             vertx.createHttpServer().requestHandler(router::accept)
                                     .listen(Integer.parseInt(webServerPort));
-                            BaseLogger.info(MODULE_NAME + "web server listenning at port:{}", webServerPort);
+                            logger.info(MODULE_NAME + "web server listenning at port:" + webServerPort);
                         });
     }
 }
