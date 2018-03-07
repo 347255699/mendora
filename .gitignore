@@ -1,0 +1,11 @@
+*.iml
+/.idea/
+
+*/target/
+*/test
+/.vertx/
+
+mendora-aaa/.vertx/
+mendora-base/.vertx/
+log.txt
+mendora-base/src/main/resources
