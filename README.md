@@ -23,10 +23,10 @@
 base模块提供模块初始化服务，内置配置文件加载、日志功能初始化和类包扫描器。作为其他业务模块的基础依赖包。
 
 ### aaa
-目标为提供3a服务，现以内置web服务器和HTTP请求路由以及集群服务。
+目标为提供3a服务，现已内置web服务器和HTTP请求路由以及集群服务。
 
 ### 实例
-`Route`需要实现`org.mendora.aaa.Route`接口，实现`route`方法，才能被包扫描器扫描到且需要置放在配置文件指定的类包下。
+`Route`需要实现`org.mendora.aaa.Route`接口，实现`route`方法，才能被包扫描器扫描到且需要置放在配置文件指定的类包下。  
 同样的，`Verticle`需要继承`SimpleVerticle`，覆盖`options`方法返回一个`DeploymentOptions`即可定制部署参数。且需要置放在配置文件指定的类包下。
 
 
