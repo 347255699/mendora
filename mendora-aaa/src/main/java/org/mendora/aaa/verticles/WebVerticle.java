@@ -22,9 +22,11 @@ import java.util.Set;
 public class WebVerticle extends SimpleVerticle {
     private static final String MODULE_NAME = "WEB-VERTICLE:";
     private static Logger logger = LoggerFactory.getLogger(AAALauncher.class);
+
     @Override
     public DeploymentOptions options() {
-        return super.options();
+        // 设置高可用
+        return new DeploymentOptions().setHa(true);
     }
 
     @Override
