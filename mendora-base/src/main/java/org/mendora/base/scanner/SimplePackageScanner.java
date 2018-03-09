@@ -65,9 +65,6 @@ public class SimplePackageScanner<T> implements PackageScanner<T> {
     @Override
     public List<T> scan(Class<T> except) throws Exception {
         List<String> classNames = classNames(this.packagePath, except.getName());
-        classNames.forEach(name -> {
-            logger.info("---------------->" + name);
-        });
         return instantiation(classNames, except);
     }
 
@@ -82,9 +79,6 @@ public class SimplePackageScanner<T> implements PackageScanner<T> {
     @Override
     public List scan(Class<T> except, Class<?> except2) throws Exception {
         List<String> classNames = classNames(this.packagePath, except.getName());
-        classNames.forEach(name -> {
-            logger.info("---------------->" + name);
-        });
         return instantiation(classNames, except);
     }
 
@@ -119,7 +113,6 @@ public class SimplePackageScanner<T> implements PackageScanner<T> {
         String splashPath = dotToSplash(packagePath);
         URL url = cl.getResource(splashPath);
         String filePath = getRootPath(url);
-        logger.info(MODULE_NAME + filePath);
         /**
          * get classes in that package.
          * normal file in the directory.
@@ -137,7 +130,6 @@ public class SimplePackageScanner<T> implements PackageScanner<T> {
             names = readFromDirectory(filePath);
         }
         names.forEach(name -> {
-            logger.info(MODULE_NAME + name);
             if (isClassFile(name)) {
                 String fullyQualifiedName = toFullyQualifiedName(name, packagePath);
                 fullyQualifiedName = filter.filte(fullyQualifiedName);
@@ -170,14 +162,11 @@ public class SimplePackageScanner<T> implements PackageScanner<T> {
         logger.info("从JAR包中读取类:" + jarPath);
         JarInputStream jarIn = new JarInputStream(new FileInputStream(jarPath));
         JarEntry entry = jarIn.getNextJarEntry();
-        logger.info(MODULE_NAME + entry.getName());
         List<String> classNames = new ArrayList<>();
         while (null != entry) {
             String name = entry.getName();
-            if (name.startsWith(splashedPackageName) && isClassFile(name)) {
+            if (name.startsWith(splashedPackageName) && isClassFile(name))
                 classNames.add(name.substring(name.lastIndexOf("/") + 1));
-                logger.info(MODULE_NAME + name);
-            }
             entry = jarIn.getNextJarEntry();
         }
         return classNames;
