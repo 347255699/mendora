@@ -7,11 +7,11 @@ import io.vertx.ext.web.Router;
  * date:2018/3/7
  * description:
  */
-public class DemoRoute implements Route {
+public class AiderRoute implements Route {
     @Override
     public void route(Router router) {
-        router.get("/demo").handler(rc -> {
-           rc.response().end("Hello,boy!");
+        router.get("/mendora/demo").handler(rc -> {
+            rc.response().end("<h1>Just a test demo.</h1>");
         });
     }
 }

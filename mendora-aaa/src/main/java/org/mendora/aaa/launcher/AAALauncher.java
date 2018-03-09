@@ -9,13 +9,14 @@ import io.vertx.spi.cluster.hazelcast.HazelcastClusterManager;
 import org.mendora.aaa.constant.AAAConst;
 import org.mendora.base.BaseLauncher;
 import org.mendora.base.properties.ConfigHolder;
-import org.mendora.base.scanner.PackageSimpleScanner;
+import org.mendora.base.scanner.SimplePackageScanner;
 import org.mendora.base.utils.VertxHolder;
 import org.mendora.base.verticles.SimpleVerticle;
 import rx.Observable;
 
 import java.net.URL;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -74,8 +75,11 @@ public class AAALauncher {
     // 扫描Verticle
     private static void scanningVerticle(Vertx vertx) {
         try {
-            Set<SimpleVerticle> verticles = new PackageSimpleScanner<SimpleVerticle>()
-                    .scan(ConfigHolder.property(AAAConst.AAA_VERTICLE_INTO_PACKAGE), SimpleVerticle.class);
+            ClassLoader currClassLoader = AAALauncher.class.getClassLoader();
+            String packageName = ConfigHolder.property(AAAConst.AAA_VERTICLE_INTO_PACKAGE);
+            List<SimpleVerticle> verticles = new SimplePackageScanner<SimpleVerticle>(packageName, currClassLoader)
+                    .scan(SimpleVerticle.class);
+            logger.info(MODULE_NAME + verticles.size());
             Observable.from(verticles)
                     .subscribe(v -> vertx.getDelegate().deployVerticle(v, v.options()),
                             err -> logger.error(MODULE_NAME + err.getMessage()),

@@ -8,10 +8,11 @@ import org.mendora.aaa.constant.AAAConst;
 import org.mendora.aaa.launcher.AAALauncher;
 import org.mendora.aaa.route.Route;
 import org.mendora.base.properties.ConfigHolder;
-import org.mendora.base.scanner.PackageSimpleScanner;
+import org.mendora.base.scanner.SimplePackageScanner;
 import org.mendora.base.verticles.SimpleVerticle;
 import rx.Observable;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -26,16 +27,23 @@ public class WebVerticle extends SimpleVerticle {
     @Override
     public DeploymentOptions options() {
         // 设置高可用
-        return new DeploymentOptions().setHa(true);
+        return super.options();
     }
 
     @Override
     public void start() throws Exception {
+        logger.info(MODULE_NAME + "into WebVerticle");
         Router router = Router.router(vertx);
+        ClassLoader currClassLoader = WebVerticle.class.getClassLoader();
         // scanning route
-        Set<Route> routes = new PackageSimpleScanner<Route>().scan(ConfigHolder.property(AAAConst.AAA_WEB_ROUTE_PACKAGE), Route.class);
+        List<Route> routes = new SimplePackageScanner<Route>(ConfigHolder.property(AAAConst.AAA_WEB_ROUTE_PACKAGE), currClassLoader)
+                .scan(Route.class);
+        logger.info(MODULE_NAME + routes.size());
         Observable.from(routes)
-                .subscribe(r -> r.route(router),
+                .subscribe(r -> {
+                            r.route(router);
+                            logger.info(MODULE_NAME + r.getClass().getName());
+                        },
                         err -> logger.error(MODULE_NAME + err.getMessage()),
                         () -> {
                             String webServerPort = ConfigHolder.property(AAAConst.AAA_WEB_LISTENNING_PORT);
