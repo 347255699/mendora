@@ -2,8 +2,6 @@ package org.mendora.aaa.launcher;
 
 import com.hazelcast.config.*;
 import io.vertx.core.VertxOptions;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
 import io.vertx.rxjava.core.Vertx;
 import io.vertx.spi.cluster.hazelcast.HazelcastClusterManager;
 import org.mendora.aaa.constant.AAAConst;
@@ -12,12 +10,13 @@ import org.mendora.base.properties.ConfigHolder;
 import org.mendora.base.scanner.SimplePackageScanner;
 import org.mendora.base.utils.VertxHolder;
 import org.mendora.base.verticles.SimpleVerticle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rx.Observable;
 
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 /**
  * created by:xmf
@@ -47,7 +46,7 @@ public class AAALauncher {
         String intervalSeconds = ConfigHolder.property(AAAConst.AAA_HAZELCAST_HEARBEAT_INTERVAL_SECONDS);
         /** hazelcast配置 **/
         Config config = new Config();
-        config.setProperty("hazelcast.logging.type", AAAConst.AAA_HAZELCAST_LOGGER_TYPE);
+        config.setProperty("hazelcast.logging.type", ConfigHolder.property(AAAConst.AAA_HAZELCAST_LOGGER_TYPE));
         config.setProperty("hazelcast.heartbeat.interval.seconds", intervalSeconds);
         TcpIpConfig tcpIpConfig = new TcpIpConfig()
                 .setEnabled(true)

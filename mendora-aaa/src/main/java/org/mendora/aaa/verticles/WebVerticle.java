@@ -1,8 +1,6 @@
 package org.mendora.aaa.verticles;
 
 import io.vertx.core.DeploymentOptions;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
 import org.mendora.aaa.constant.AAAConst;
 import org.mendora.aaa.launcher.AAALauncher;
@@ -10,10 +8,11 @@ import org.mendora.aaa.route.Route;
 import org.mendora.base.properties.ConfigHolder;
 import org.mendora.base.scanner.SimplePackageScanner;
 import org.mendora.base.verticles.SimpleVerticle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rx.Observable;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * created by:xmf
