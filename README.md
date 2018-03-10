@@ -7,18 +7,28 @@
 
     -mendora
         -mendora-base
-            -properties 配置文件、日志功能初始化
-            -scanner 包扫描器
-            -utils 基础工具类
-            -verticles Verticle基类
-            BaseLauncher 模块启动器
+            -java 
+                -properties 配置文件、日志功能初始化
+                -scanner 包扫描器
+                -utils 基础工具类
+                -verticles Verticle基类
+                BaseLauncher 模块启动器
+  
         -mendora-aaa
-            -constant 常量
-            -launcher 模块启动器
-            -route Route类包
-            -verticles Verticle类包
-                -WebVerticle web服务器
-            -ApplicationMain 入口
+            -java
+                -constant 常量
+                -launcher 模块启动器
+                -route Route类包
+                -verticles Verticle类包
+                    -WebVerticle web服务器
+                -ApplicationMain 入口
+            -resources
+                -config
+                    config.properties 核心配置文件
+                    log4j.properties 日志配置
+                -script
+                    -launch.sh linux下jar启动脚本
+                    
 ### base
 base模块提供模块初始化服务，内置配置文件加载、日志功能初始化和类包扫描器。作为其他业务模块的基础依赖包。
 
