@@ -17,15 +17,7 @@ public class ConfigHolder {
     private static Map<String, Object> PROPERTIES;
 
     public static void init(String propPath) throws IOException {
-        if (StringUtils.isNoneEmpty(propPath)) {
-            PROPERTIES = new PropertiesLoader(propPath).asMap();
-        } else {
-            PROPERTIES = new PropertiesLoader().asMap();
-        }
-    }
-
-    public static void init() throws IOException {
-        PROPERTIES = new PropertiesLoader().asMap();
+        PROPERTIES = new PropertiesLoader(propPath).asMap();
     }
 
     /**

@@ -26,6 +26,7 @@ import java.util.List;
 public class AAALauncher {
     private static final String MODULE_NAME = "INIT:";
     private static Logger logger = LoggerFactory.getLogger(AAALauncher.class);
+
     // 入口
     public static void launch(URL rootUrl) {
         try {
