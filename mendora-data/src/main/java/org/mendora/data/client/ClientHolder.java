@@ -23,13 +23,13 @@ public class ClientHolder {
         // loading postgreSql db config.
         JsonObject postgreSQLClientConfig = new JsonObject()
                 .put("host", ConfigHolder.property(DataConst.DATA_DB_POSTGRE_HOST))
-                .put("port", ConfigHolder.property(DataConst.DATA_DB_POSTGRE_PORT))
-                .put("maxPoolSize", ConfigHolder.property(DataConst.DATA_DB_POSTGRE_MAX_POOL_SIZE))
+                .put("port", Integer.parseInt(ConfigHolder.property(DataConst.DATA_DB_POSTGRE_PORT)))
+                .put("maxPoolSize", Integer.parseInt(ConfigHolder.property(DataConst.DATA_DB_POSTGRE_MAX_POOL_SIZE)))
                 .put("username", ConfigHolder.property(DataConst.DATA_DB_POSTGRE_USERNAME))
                 .put("password", ConfigHolder.property(DataConst.DATA_DB_POSTGRE_PASSWORD))
                 .put("database", ConfigHolder.property(DataConst.DATA_DB_POSTGRE_DATABASE))
                 .put("charset", ConfigHolder.property(DataConst.DATA_DB_POSTGRE_CHARSET))
-                .put("queryTimeout", ConfigHolder.property(DataConst.DATA_DB_POSTGRE_QUERY_TIMEOUT));
+                .put("queryTimeout", Integer.parseInt(ConfigHolder.property(DataConst.DATA_DB_POSTGRE_QUERY_TIMEOUT)));
         postgreSQLClient = PostgreSQLClient.createShared(vertx, postgreSQLClientConfig);
     }
 
