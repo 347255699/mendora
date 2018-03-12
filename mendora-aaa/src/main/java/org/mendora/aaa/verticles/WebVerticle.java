@@ -2,6 +2,8 @@ package org.mendora.aaa.verticles;
 
 import io.vertx.core.DeploymentOptions;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.handler.LoggerFormat;
+import io.vertx.ext.web.handler.LoggerHandler;
 import org.mendora.aaa.constant.AAAConst;
 import org.mendora.aaa.launcher.AAALauncher;
 import org.mendora.aaa.route.Route;
@@ -32,8 +34,12 @@ public class WebVerticle extends SimpleVerticle {
     @Override
     public void start() throws Exception {
         logger.info(MODULE_NAME + "into WebVerticle");
-        Router router = Router.router(vertx);
         ClassLoader currClassLoader = WebVerticle.class.getClassLoader();
+        Router router = Router.router(vertx);
+        /** before routing request **/
+        // use http request logging.
+        router.route().handler(LoggerHandler.create(LoggerFormat.TINY));
+
         // scanning route
         List<Route> routes = new SimplePackageScanner<Route>(ConfigHolder.property(AAAConst.AAA_WEB_ROUTE_PACKAGE), currClassLoader)
                 .scan(Route.class);
