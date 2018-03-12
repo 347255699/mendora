@@ -10,7 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>mendora-base</module>
-        <module>mendora-aaa</module>
+        <module>mendora-web</module>
     </modules>
     <properties>
         <vertx.version>3.4.2</vertx.version>
