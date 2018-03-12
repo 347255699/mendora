@@ -11,6 +11,8 @@
     <modules>
         <module>mendora-base</module>
         <module>mendora-web</module>
+        <module>mendora-data</module>
+        <module>mendora-util</module>
     </modules>
     <properties>
         <vertx.version>3.4.2</vertx.version>
@@ -59,6 +61,11 @@
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-rx-java</artifactId>
+            <version>${vertx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-mysql-postgresql-client</artifactId>
             <version>${vertx.version}</version>
         </dependency>
     </dependencies>

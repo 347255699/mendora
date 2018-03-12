@@ -1,4 +1,6 @@
 import io.vertx.core.json.JsonObject;
+import io.vertx.rxjava.core.Vertx;
+import org.mendora.base.cluster.ClusterHandler;
 import org.mendora.base.properties.ConfigHolder;
 import org.mendora.base.BaseLauncher;
 import org.slf4j.Logger;
@@ -12,7 +14,14 @@ import org.slf4j.LoggerFactory;
 public class ApplicationMain {
     public static void main(String[] args) {
         try {
-            BaseLauncher.launch(ApplicationMain.class.getProtectionDomain().getCodeSource().getLocation());
+            ClassLoader cl = ApplicationMain.class.getClassLoader();
+            ClusterHandler clusterHandler = new ClusterHandler() {
+                @Override
+                public void handle(Vertx vertx) {
+                    // we should do something.
+                }
+            };
+            BaseLauncher.launch(ApplicationMain.class.getProtectionDomain().getCodeSource().getLocation(), cl, clusterHandler);
             JsonObject doc = ConfigHolder.asJson();
             doc.forEach(e -> System.out.println(e.getKey() + ":" + e.getValue()));
             Logger logger = LoggerFactory.getLogger(ApplicationMain.class);

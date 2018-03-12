@@ -1,6 +1,8 @@
 package org.mendora.base;
 
 import org.apache.log4j.PropertyConfigurator;
+import org.mendora.base.cluster.ClusterHandler;
+import org.mendora.base.cluster.ClusterUtil;
 import org.mendora.base.properties.BaseConst;
 import org.mendora.base.properties.ConfigHolder;
 import org.slf4j.Logger;
@@ -14,7 +16,7 @@ import java.net.URL;
  * description:
  */
 public class BaseLauncher {
-    public static void launch(URL rootUrl) throws Exception {
+    public static void launch(URL rootUrl, ClassLoader cl, ClusterHandler handler) throws Exception {
         String rootPath = rootUrl.getPath().substring(0, rootUrl.getPath().lastIndexOf("/"));
         // initialization config properties
         String configPath = rootPath + "/config/config.properties";
@@ -30,5 +32,7 @@ public class BaseLauncher {
         ConfigHolder.asJson().forEach(e -> {
             logger.info("System options: {}", e.getKey() + " : " + e.getValue());
         });
+        // 启动集群并扫描verticle
+        ClusterUtil.clusterVertx(cl, handler);
     }
 }

@@ -122,11 +122,11 @@ public class SimplePackageScanner<T> implements PackageScanner<T> {
         List<String> names = null;
         // contains the name of the class file. e.g., Demo.class will be stored as "Demo"
         if (isJarFile(filePath)) {
-            logger.info(MODULE_NAME + filePath + "is a jar.");
+            logger.info(MODULE_NAME + filePath + " is a jar.");
             // jar file
             names = readFromJarFile(filePath, splashPath);
         } else {
-            logger.info(MODULE_NAME + filePath + "is a directory.");
+            logger.info(MODULE_NAME + filePath + " is a directory.");
             // directory
             names = readFromDirectory(filePath);
         }

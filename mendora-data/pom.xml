@@ -9,23 +9,19 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mendora-aaa</artifactId>
+    <artifactId>mendora-data</artifactId>
     <properties>
-        <common.version>1.0-SNAPSHOT</common.version>
-        <main.class>org.mendora.web.ApplicationMain</main.class>
+        <base.version>1.0-SNAPSHOT</base.version>
+        <main.class>org.mendora.data.ApplicationMain</main.class>
     </properties>
     <dependencies>
         <dependency>
             <groupId>org.mendora</groupId>
             <artifactId>mendora-base</artifactId>
-            <version>${common.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mendora</groupId>
-            <artifactId>mendora-util</artifactId>
-            <version>${common.version}</version>
+            <version>${base.version}</version>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -49,20 +45,20 @@
                         </goals>
                         <configuration>
                             <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
                                         <Main-Class>${main.class}</Main-Class>
                                     </manifestEntries>
                                 </transformer>
                             </transformers>
-                            <artifactSet />
-                            <outputFile>${project.build.directory}/${project.artifactId}-${project.version}-prod.jar</outputFile>
+                            <artifactSet/>
+                            <outputFile>${project.build.directory}/${project.artifactId}-${project.version}-prod.jar
+                            </outputFile>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
-
-
 </project>
