@@ -28,7 +28,6 @@ public class WebVerticle extends SimpleVerticle {
 
     @Override
     public DeploymentOptions options() {
-        // 设置高可用
         return super.options();
     }
 

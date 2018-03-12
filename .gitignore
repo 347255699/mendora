@@ -2,7 +2,7 @@
 /.idea/
 
 */target/
-*/test
+*/test/
 /.vertx/
 
 mendora-aaa/.vertx/
