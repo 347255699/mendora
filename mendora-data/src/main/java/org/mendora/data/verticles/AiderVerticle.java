@@ -3,6 +3,7 @@ package org.mendora.data.verticles;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.json.JsonObject;
 import org.mendora.base.verticles.SimpleVerticle;
+import org.mendora.data.client.ClientHolder;
 import org.mendora.util.constant.DataAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,8 @@ public class AiderVerticle extends SimpleVerticle {
         vertx.eventBus().<JsonObject>consumer(DataAddress.DATA_EB_COMMON_SONAR).handler(msg -> {
             JsonObject doc = msg.body();
             logger.info(doc.toString());
+            String table = doc.getString("table");
+            //ClientHolder.postgre()
             msg.reply(doc);
         });
     }
