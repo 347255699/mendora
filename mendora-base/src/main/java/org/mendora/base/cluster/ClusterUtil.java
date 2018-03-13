@@ -18,12 +18,12 @@ import java.util.Arrays;
  */
 public class ClusterUtil {
     /**
-     * 启动Vertx 微内核 部署Vertx Verticle
+     * launching Vertx micro kernel and deploy verticle.
      */
     public static void clusterVertx(ClassLoader cl, ClusterHandler handler) {
-        // 感应间隔时间，单位秒
+        // seconds
         String intervalSeconds = ConfigHolder.property(BaseConst.BASE_HAZELCAST_HEARBEAT_INTERVAL_SECONDS);
-        /** hazelcast配置 **/
+        /** hazelcast configuration **/
         Config config = new Config();
         config.setProperty("hazelcast.logging.type", ConfigHolder.property(BaseConst.BASE_HAZELCAST_LOGGER_TYPE));
         config.setProperty("hazelcast.heartbeat.interval.seconds", intervalSeconds);
@@ -38,13 +38,13 @@ public class ClusterUtil {
                 .setJoin(joinConfig);
         config.setNetworkConfig(networkConfig);
 
-        // 设置启动参数，启动Vertx集群
+        // configuration and launching Vertx cluster.
         VertxOptions options = new VertxOptions().setClusterManager(new HazelcastClusterManager(config));
         Vertx.clusteredVertx(options, res -> {
             if (res.succeeded()) {
                 Vertx vertx = res.result();
                 VertxHolder.setVertx(vertx);
-                // 扫描Verticle
+                // scanning Verticle
                 VerticleUtil.scanningVerticle(vertx, cl, BaseConst.BASE_VERTICLE_INTO_PACKAGE);
                 handler.handle(vertx);
             }

@@ -15,7 +15,7 @@ public class WebLauncher {
     private static final String MODULE_NAME = "INIT:";
     private static Logger logger = LoggerFactory.getLogger(WebLauncher.class);
 
-    // 入口
+    // entrance
     public static void launch(URL rootUrl, ClassLoader cl) {
         try {
             BaseLauncher.launch(rootUrl, cl, vertx -> {

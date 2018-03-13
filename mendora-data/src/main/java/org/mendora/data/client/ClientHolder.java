@@ -13,6 +13,7 @@ import org.mendora.data.constant.DataConst;
  * description:
  */
 public class ClientHolder {
+    // holding postger client
     private static AsyncSQLClient postgreSQLClient;
 
     public static AsyncSQLClient postgre() {

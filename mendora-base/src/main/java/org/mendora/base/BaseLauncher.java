@@ -32,7 +32,7 @@ public class BaseLauncher {
         ConfigHolder.asJson().forEach(e -> {
             logger.info("System options: {}", e.getKey() + " : " + e.getValue());
         });
-        // 启动集群并扫描verticle
+        // launching cluster and scanning Verticles
         ClusterUtil.clusterVertx(cl, handler);
     }
 }

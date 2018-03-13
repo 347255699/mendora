@@ -16,13 +16,10 @@ public class DataLauncher {
     private static final String MODULE_NAME = "INIT:";
     private static Logger logger = LoggerFactory.getLogger(DataLauncher.class);
 
-    // 入口
+    // entrance
     public static void launch(URL rootUrl, ClassLoader cl) {
         try {
-            BaseLauncher.launch(rootUrl, cl, vertx -> {
-                // init all client
-                ClientHolder.init(vertx);
-            });
+            BaseLauncher.launch(rootUrl, cl, ClientHolder::init);
             logger.info(MODULE_NAME + "initialization logger and config properties");
         } catch (Exception e) {
             logger.error(MODULE_NAME + e.getMessage());

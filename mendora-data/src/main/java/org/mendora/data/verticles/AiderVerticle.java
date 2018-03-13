@@ -1,10 +1,11 @@
 package org.mendora.data.verticles;
 
 import io.vertx.core.DeploymentOptions;
-import io.vertx.core.json.JsonObject;
+import io.vertx.core.json.JsonArray;
 import org.mendora.base.verticles.SimpleVerticle;
-import org.mendora.data.client.ClientHolder;
-import org.mendora.util.constant.DataAddress;
+import org.mendora.data.accesser.DataAccesser;
+import org.mendora.util.constant.EBAddress;
+import org.mendora.util.result.JsonResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +15,8 @@ import org.slf4j.LoggerFactory;
  * description:
  */
 public class AiderVerticle extends SimpleVerticle {
-    private Logger logger = LoggerFactory.getLogger(SimpleVerticle.class);
+    private static final String MODULE_NAME = "AIDER_VERTICLE:";
+    private Logger logger = LoggerFactory.getLogger(AiderVerticle.class);
 
     @Override
     public DeploymentOptions options() {
@@ -23,13 +25,12 @@ public class AiderVerticle extends SimpleVerticle {
 
     @Override
     public void start() throws Exception {
-        // 声呐检测
-        vertx.eventBus().<JsonObject>consumer(DataAddress.DATA_EB_COMMON_SONAR).handler(msg -> {
-            JsonObject doc = msg.body();
-            logger.info(doc.toString());
-            String table = doc.getString("table");
-            //ClientHolder.postgre()
-            msg.reply(doc);
+        // checking data module working status.
+        vertx.eventBus().<String>consumer(EBAddress.DATA_EB_COMMON_SONAR).handler(msg -> {
+            String sql = msg.body();
+            DataAccesser.rxQuery(sql)
+                    .subscribe(rows -> msg.reply(JsonResult.succWithRows(new JsonArray(rows)))
+                            , err -> msg.reply(JsonResult.fail(err)));
         });
     }
 }

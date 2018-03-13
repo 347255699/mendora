@@ -18,7 +18,7 @@ public class VerticleUtil {
     private static final String MODULE_NAME = "VERTICLE:";
     private static Logger logger = LoggerFactory.getLogger(VerticleUtil.class);
 
-    // 扫描Verticle
+    // scanning Verticle
     public static void scanningVerticle(Vertx vertx, ClassLoader currClassLoader, String packagePath) {
         try {
             String packageName = ConfigHolder.property(packagePath);

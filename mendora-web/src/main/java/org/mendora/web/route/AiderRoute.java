@@ -1,11 +1,11 @@
 package org.mendora.web.route;
 
-import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.rxjava.core.eventbus.Message;
 import org.mendora.base.utils.VertxHolder;
-import org.mendora.util.constant.DataAddress;
+import org.mendora.util.constant.EBAddress;
+import org.mendora.web.util.WebResult;
 
 /**
  * created by:xmf
@@ -20,9 +20,9 @@ public class AiderRoute implements Route {
         });
         router.post("/mendora/aider/data/sonar").handler(rc -> {
             JsonObject doc = rc.getBodyAsJson();
-            VertxHolder.eventBus().<JsonObject>rxSend(DataAddress.DATA_EB_COMMON_SONAR, doc)
+            VertxHolder.eventBus().<JsonObject>rxSend(EBAddress.DATA_EB_COMMON_SONAR, doc.getString("statement"))
                     .map(Message::body)
-                    .subscribe(replyJson -> rc.response().end(Json.encode(replyJson)));
+                    .subscribe(replyJson -> WebResult.customize(replyJson, rc));
         });
     }
 }

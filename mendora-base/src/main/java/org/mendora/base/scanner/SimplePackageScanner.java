@@ -160,7 +160,7 @@ public class SimplePackageScanner<T> implements PackageScanner<T> {
      * @throws IOException
      */
     private List<String> readFromJarFile(String jarPath, String splashedPackageName) throws IOException {
-        logger.info("从JAR包中读取类:" + jarPath);
+        logger.info("loading from jar:" + jarPath);
         JarInputStream jarIn = new JarInputStream(new FileInputStream(jarPath));
         JarEntry entry = jarIn.getNextJarEntry();
         List<String> classNames = new ArrayList<>();
