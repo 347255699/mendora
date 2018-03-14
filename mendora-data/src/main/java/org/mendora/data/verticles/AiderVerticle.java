@@ -37,8 +37,6 @@ public class AiderVerticle extends SimpleVerticle {
 
         vertx.eventBus().<JsonObject>consumer(EBAddress.DATA_EB_UPDATE_WITH_PARAMS).handler(DataAccesser::updateWithParams);
 
-        vertx.eventBus().<JsonObject>consumer(EBAddress.DATA_EB_BATCH_WITH_PARAMS).handler(DataAccesser::batchWithParams);
-
         vertx.eventBus().<String>consumer(EBAddress.DATA_EB_EXECUTE).handler(DataAccesser::execute);
     }
 }
