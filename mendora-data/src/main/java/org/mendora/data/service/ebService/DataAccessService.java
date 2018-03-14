@@ -1,4 +1,4 @@
-package org.mendora.data.accesser;
+package org.mendora.data.service.ebService;
 
 import io.vertx.codegen.annotations.ProxyGen;
 import io.vertx.core.AsyncResult;

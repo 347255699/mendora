@@ -1,14 +1,10 @@
 package org.mendora.data.verticles;
 
 import io.vertx.core.DeploymentOptions;
-import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.ext.sql.ResultSet;
 import org.mendora.base.verticles.SimpleVerticle;
-import org.mendora.data.accesser.DataAccesser;
+import org.mendora.data.service.rpcService.DataAccesser;
 import org.mendora.util.constant.EBAddress;
-import org.mendora.util.constant.SqlReferences;
-import org.mendora.util.result.JsonResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

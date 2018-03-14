@@ -1,4 +1,4 @@
-package org.mendora.data.accesser;
+package org.mendora.data.service.ebService;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
@@ -11,6 +11,7 @@ import io.vertx.rxjava.ext.asyncsql.AsyncSQLClient;
 import io.vertx.rxjava.ext.sql.SQLConnection;
 import io.vertx.serviceproxy.ServiceException;
 import org.mendora.data.client.ClientHolder;
+import org.mendora.data.service.rpcService.DataAccesser;
 import org.mendora.util.constant.RetCode;
 import org.mendora.util.constant.SqlReferences;
 import org.mendora.util.result.JsonResult;
