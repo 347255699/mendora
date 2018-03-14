@@ -1,6 +1,5 @@
 package org.mendora.data.accesser;
 
-import io.vertx.rxjava.core.eventbus.Message;
 import io.vertx.rxjava.ext.sql.SQLConnection;
 
 /**
