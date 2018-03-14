@@ -16,11 +16,11 @@ import java.util.Arrays;
  * date:2018/3/12
  * description:
  */
-public class ClusterUtil {
+public class Cluster {
     /**
      * launching Vertx micro kernel and deploy verticle.
      */
-    public static void clusterVertx(ClassLoader cl, ClusterHandler handler) {
+    public static void launch(ClassLoader cl, ClusterHandler handler) {
         // seconds
         String intervalSeconds = ConfigHolder.property(BaseConst.BASE_HAZELCAST_HEARBEAT_INTERVAL_SECONDS);
         /** hazelcast configuration **/

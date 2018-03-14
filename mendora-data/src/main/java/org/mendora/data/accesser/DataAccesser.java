@@ -12,9 +12,6 @@ import org.mendora.util.constant.SqlReferences;
 import org.mendora.util.result.JsonResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Observable;
-
-import java.util.ArrayList;
 
 /**
  * Created by kam on 2018/3/12.
@@ -138,33 +135,6 @@ public class DataAccesser {
                         conn.close();
                         msg.reply(JsonResult.succ(result));
                     }, err -> msg.reply(JsonResult.fail(err)));
-        });
-    }
-
-    /**
-     * execute a statement more time with a batches params.
-     *
-     * @param msg
-     */
-    public static void batchWithParams(Message<JsonObject> msg) {
-        JsonObject doc = msg.body();
-        String sqlStatement = doc.getString(SqlReferences.STATEMENT.val());
-        JsonArray batch = doc.getJsonArray(SqlReferences.BATCH.val());
-        JsonArray resultSet = new JsonArray(new ArrayList(batch.size()));
-        connecting(msg, conn -> {
-            conn.rxSetAutoCommit(true)
-                    .flatMapObservable(v -> Observable.from(batch))
-                    .map(row -> (JsonArray) row)
-                    .flatMapSingle(params ->
-                            conn.rxUpdateWithParams(sqlStatement, params)
-                                    .map(UpdateResult::toJson)
-                    )
-                    .subscribe(resultSet::add,
-                            err -> msg.reply(JsonResult.fail(err)),
-                            () -> {
-                                conn.close();
-                                msg.reply(JsonResult.succWithRows(resultSet));
-                            });
         });
     }
 

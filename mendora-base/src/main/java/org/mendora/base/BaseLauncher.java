@@ -1,8 +1,8 @@
 package org.mendora.base;
 
 import org.apache.log4j.PropertyConfigurator;
+import org.mendora.base.cluster.Cluster;
 import org.mendora.base.cluster.ClusterHandler;
-import org.mendora.base.cluster.ClusterUtil;
 import org.mendora.base.properties.BaseConst;
 import org.mendora.base.properties.ConfigHolder;
 import org.slf4j.Logger;
@@ -33,6 +33,6 @@ public class BaseLauncher {
             logger.info("System options: {}", e.getKey() + " : " + e.getValue());
         });
         // launching cluster and scanning Verticles
-        ClusterUtil.clusterVertx(cl, handler);
+        Cluster.launch(cl, handler);
     }
 }
