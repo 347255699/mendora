@@ -1,65 +1,201 @@
 package org.mendora.data.accesser;
 
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.ResultSet;
+import io.vertx.ext.sql.UpdateResult;
 import io.vertx.rxjava.ext.asyncsql.AsyncSQLClient;
 import io.vertx.rxjava.ext.sql.SQLConnection;
 import org.mendora.data.client.ClientHolder;
-import org.mendora.util.result.MapResult;
+import org.mendora.util.constant.SqlReferences;
+import org.mendora.util.result.JsonResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Single;
+import rx.Observable;
 
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
 
 /**
  * Created by kam on 2018/3/12.
  */
 public class DataAccesser {
     private static final String MODULE_NAME = "DATA_ACCESSER:";
-    private static final String CONN_TEMP_KEY = "connTemp";
     private static Logger logger = LoggerFactory.getLogger(DataAccesser.class);
 
+    private static AsyncSQLClient postgreClient() {
+        if (ClientHolder.postgre() == null)
+            throw new RuntimeException("the postgre client not ready, please wait a moment and try again.");
+        return ClientHolder.postgre();
+    }
+
     /**
-     * release sql connection come home(connection pool).
-     * @param single
-     * @param temp
-     * @param <T>
-     * @return
+     * execute find sql statement without params
+     *
+     * @param msg
      */
-    private static <T> Single<T> close(Single<T> single, Map<String, SQLConnection> temp) {
-        return single.doOnError(err -> {
-            if (temp.get(CONN_TEMP_KEY) != null) {
-                temp.get(CONN_TEMP_KEY).close();
-                logger.info(MODULE_NAME + "connection closed.");
-            }
-        }).doOnSuccess(t -> {
-            if (temp.get(CONN_TEMP_KEY) != null) {
-                temp.get(CONN_TEMP_KEY).close();
-                logger.info(MODULE_NAME + "connection closed.");
-            }
+    public static void query(Message<String> msg) {
+        String findStatement = msg.body();
+        connecting(msg, conn -> {
+            conn.rxQuery(findStatement)
+                    .map(ResultSet::getRows)
+                    .map(JsonArray::new)
+                    .subscribe(rows -> {
+                        conn.close();
+                        msg.reply(JsonResult.succWithRows(rows));
+                    }, err -> msg.reply(JsonResult.fail(err)));
         });
     }
 
     /**
-     * query find sql statement without params.
+     * execute find sql statement with params
      *
-     * @param sql
-     * @return
+     * @param msg
      */
-    public static Single<List<JsonObject>> rxQuery(String sql) {
-        logger.info(MODULE_NAME + sql);
-        Map<String, SQLConnection> temp = MapResult.allocate(1);
-        AsyncSQLClient postgre = ClientHolder.postgre();
-        if (postgre == null)
-            return Single.error(new RuntimeException("the postgre Client not ready,please wait a moment and try again."));
-        Single<List<JsonObject>> single = postgre.rxGetConnection()
-                .flatMap(conn -> {
-                    temp.put(CONN_TEMP_KEY, conn);
-                    return conn.rxQuery(sql);
-                })
-                .map(ResultSet::getRows);
-        return close(single, temp);
+    public static void queryWithParams(Message<JsonObject> msg) {
+        JsonObject doc = msg.body();
+        String findStatement = doc.getString(SqlReferences.STATEMENT.val());
+        JsonArray params = doc.getJsonArray(SqlReferences.PARAMS.val());
+        connecting(msg, conn -> {
+            conn.rxQueryWithParams(findStatement, params)
+                    .map(ResultSet::getRows)
+                    .map(JsonArray::new)
+                    .subscribe(rows -> {
+                        conn.close();
+                        msg.reply(JsonResult.succWithRows(rows));
+                    }, err -> msg.reply(JsonResult.fail(err)));
+        });
     }
+
+    /**
+     * find one record without params.
+     *
+     * @param msg
+     */
+    public static void querySingle(Message<String> msg) {
+        String findStatement = msg.body();
+        connecting(msg, conn -> {
+            conn.rxQuery(findStatement)
+                    .map(ResultSet::getRows)
+                    .map(JsonArray::new)
+                    .subscribe(rows -> {
+                        conn.close();
+                        msg.reply(JsonResult.succ(rows.getJsonObject(0)));
+                    }, err -> msg.reply(JsonResult.fail(err)));
+        });
+    }
+
+    /**
+     * find one record with params.
+     *
+     * @param msg
+     */
+    public static void querySingleWithParams(Message<JsonObject> msg) {
+        JsonObject doc = msg.body();
+        String findStatement = doc.getString(SqlReferences.STATEMENT.val());
+        JsonArray params = doc.getJsonArray(SqlReferences.PARAMS.val());
+        connecting(msg, conn -> {
+            conn.rxQueryWithParams(findStatement, params)
+                    .map(ResultSet::getRows)
+                    .map(JsonArray::new)
+                    .subscribe(rows -> {
+                        conn.close();
+                        msg.reply(JsonResult.succ(rows.getJsonObject(0)));
+                    }, err -> msg.reply(JsonResult.fail(err)));
+        });
+    }
+
+    /**
+     * executing update/insert/delete sql statement without params
+     *
+     * @param msg
+     */
+    public static void update(Message<String> msg) {
+        String updateSstatement = msg.body();
+        connecting(msg, conn -> {
+            conn.rxUpdate(updateSstatement)
+                    .map(UpdateResult::toJson)
+                    .subscribe(result -> {
+                        conn.close();
+                        msg.reply(JsonResult.succ(result));
+                    }, err -> msg.reply(JsonResult.fail(err)));
+        });
+    }
+
+    /**
+     * execute update/insert/delete statement with params
+     *
+     * @param msg
+     */
+    public static void updateWithParams(Message<JsonObject> msg) {
+        JsonObject doc = msg.body();
+        String updateStatement = doc.getString(SqlReferences.STATEMENT.val());
+        JsonArray params = doc.getJsonArray(SqlReferences.PARAMS.val());
+        connecting(msg, conn -> {
+            conn.rxUpdateWithParams(updateStatement, params)
+                    .map(UpdateResult::toJson)
+                    .subscribe(result -> {
+                        conn.close();
+                        msg.reply(JsonResult.succ(result));
+                    }, err -> msg.reply(JsonResult.fail(err)));
+        });
+    }
+
+    /**
+     * execute a statement more time with a batches params.
+     *
+     * @param msg
+     */
+    public static void batchWithParams(Message<JsonObject> msg) {
+        JsonObject doc = msg.body();
+        String sqlStatement = doc.getString(SqlReferences.STATEMENT.val());
+        JsonArray batch = doc.getJsonArray(SqlReferences.BATCH.val());
+        JsonArray resultSet = new JsonArray(new ArrayList(batch.size()));
+        connecting(msg, conn -> {
+            conn.rxSetAutoCommit(true)
+                    .flatMapObservable(v -> Observable.from(batch))
+                    .map(row -> (JsonArray) row)
+                    .flatMapSingle(params ->
+                            conn.rxUpdateWithParams(sqlStatement, params)
+                                    .map(UpdateResult::toJson)
+                    )
+                    .subscribe(resultSet::add,
+                            err -> msg.reply(JsonResult.fail(err)),
+                            () -> {
+                                conn.close();
+                                msg.reply(JsonResult.succWithRows(resultSet));
+                            });
+        });
+    }
+
+    /**
+     * execute other operations like create table statement.
+     *
+     * @param msg
+     */
+    public static void execute(Message<String> msg) {
+        String sqlStatement = msg.body();
+        connecting(msg, conn -> {
+            conn.rxExecute(sqlStatement)
+                    .subscribe(v -> msg.reply(JsonResult.succ()), err -> msg.reply(JsonResult.fail(err)));
+        });
+    }
+
+    /**
+     * connecting postgreSQL Server
+     *
+     * @param msg
+     * @param handler
+     */
+    private static void connecting(Message<?> msg, SQLConnectionHandler handler) {
+        postgreClient().getConnection(res -> {
+            if (res.succeeded()) {
+                SQLConnection conn = res.result();
+                handler.handle(conn);
+            } else {
+                msg.reply(JsonResult.fail(res.cause()));
+            }
+        });
+    }
+
 }

@@ -116,7 +116,7 @@ public class WebResult {
      * @param payload
      * @param rc
      */
-    public static void customize(JsonObject payload, RoutingContext rc) {
+    public static void consume(JsonObject payload, RoutingContext rc) {
         common(payload, rc);
     }
 
@@ -126,7 +126,7 @@ public class WebResult {
      * @param payload
      * @param rc
      */
-    public static void customize(JsonObject payload, int defaultRetCode, RoutingContext rc) {
+    public static void consume(JsonObject payload, int defaultRetCode, RoutingContext rc) {
         if (!payload.containsKey(SysConst.SYS_RET_CODE))
             payload.put(SysConst.SYS_RET_CODE, defaultRetCode);
         common(payload, rc);
