@@ -16,6 +16,7 @@ public class BaseConst {
     // base
     public static final String BASE_VERTICLE_INTO_PACKAGE = "base.verticle.into.package";
     public static final String BASE_VERTICLE_STORAGE_KEY = "base.verticle.storage.key";
+    public static final String BASE_SYSTEM_ROOT_PATH = "base.system.rootPath";
 
     // hazelcast
     public static final String BASE_HAZELCAST_LOGGER_TYPE = "base.hazelcast.logger.type";
