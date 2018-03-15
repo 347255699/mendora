@@ -13,7 +13,9 @@
         <module>mendora-web</module>
         <module>mendora-data</module>
         <module>mendora-util</module>
-        <module>mendora-service</module>
+        <module>mendora-service-facade</module>
+        <module>mendora-aider</module>
+        <module>mendora-service-rear</module>
     </modules>
     <properties>
         <vertx.version>3.4.2</vertx.version>

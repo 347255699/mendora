@@ -7,7 +7,7 @@ package org.mendora.web.constant;
  */
 public class WebConst {
     // web
-    public static final String AAA_WEB_LISTENNING_PORT = "aaa.web.listenning.port";
-    public static final String AAA_WEB_ROUTE_PACKAGE = "aaa.web.route.package";
-    public static final String AAA_WEB_REQUEST_BODY_SIZE = "aaa.web.request.body.size";
+    public static final String AAA_WEB_LISTENNING_PORT = "web.listenning.port";
+    public static final String AAA_WEB_ROUTE_PACKAGE = "web.route.package";
+    public static final String AAA_WEB_REQUEST_BODY_SIZE = "web.request.body.size";
 }

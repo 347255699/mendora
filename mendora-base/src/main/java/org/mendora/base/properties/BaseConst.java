@@ -15,9 +15,12 @@ public class BaseConst {
 
     // base
     public static final String BASE_VERTICLE_INTO_PACKAGE = "base.verticle.into.package";
+    public static final String BASE_VERTICLE_STORAGE_KEY = "base.verticle.storage.key";
+
     // hazelcast
     public static final String BASE_HAZELCAST_LOGGER_TYPE = "base.hazelcast.logger.type";
     public static final String BASE_HAZELCAST_HEARBEAT_INTERVAL_SECONDS = "base.hazelcast.heartbeat.interval.seconds";
     public static final String BASE_CLUSTER_PORT = "base.cluster.port";
     public static final String BASE_CLUSTER_SERVER_IPS = "base.cluster.server.ips";
+
 }

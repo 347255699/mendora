@@ -3,6 +3,7 @@ package org.mendora.web.route;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.rxjava.core.eventbus.Message;
+import org.mendora.base.properties.ConfigHolder;
 import org.mendora.base.utils.VertxHolder;
 import org.mendora.service.dataAccesser.rxjava.DataAccessService;
 import org.mendora.util.constant.EBAddress;
@@ -21,13 +22,16 @@ public class AiderRoute implements Route {
 
     @Override
     public void route(Router router) {
+        // route demo
         router.get(MODULE + "/demo").handler(rc -> {
             rc.response().end("<h1>Just a test demo.</h1>");
         });
+        // rpc service demo
         router.post(SQL_STATIEMENT + "/query").handler(rc -> {
             dataAccessService.rxQuery(rc.getBodyAsJson().getString(SqlReferences.STATEMENT.val()))
                     .subscribe(replyJson -> WebResult.consume(replyJson, rc));
         });
+        /** eventbus demo **/
         router.post(SQL_STATIEMENT + "/queryWithParams").handler(rc -> {
             JsonObject doc = rc.getBodyAsJson();
             VertxHolder.eventBus().<JsonObject>rxSend(EBAddress.DATA_EB_QUERY_WITH_PARAMS, doc)
@@ -69,6 +73,10 @@ public class AiderRoute implements Route {
             VertxHolder.eventBus().<JsonObject>rxSend(EBAddress.DATA_EB_EXECUTE, sqlStatement)
                     .map(Message::body)
                     .subscribe(replyJson -> WebResult.consume(replyJson, rc));
+        });
+        // get configuration properties list.
+        router.get(MODULE + "/config").handler(rc -> {
+            WebResult.succ(ConfigHolder.asJson(), rc);
         });
     }
 }

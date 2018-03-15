@@ -41,16 +41,22 @@ public interface DataAccessService {
 
     @Fluent
     DataAccessService query(String sql, Handler<AsyncResult<JsonObject>> handler);
+
     @Fluent
     DataAccessService queryWithParams(JsonObject doc, Handler<AsyncResult<JsonObject>> handler);
+
     @Fluent
     DataAccessService querySingle(String sql, Handler<AsyncResult<JsonObject>> handler);
+
     @Fluent
     DataAccessService querySingleWithParams(JsonObject doc, Handler<AsyncResult<JsonObject>> handler);
+
     @Fluent
     DataAccessService update(String sql, Handler<AsyncResult<JsonObject>> handler);
+
     @Fluent
     DataAccessService updateWithParams(JsonObject doc, Handler<AsyncResult<JsonObject>> handler);
+
     @Fluent
     DataAccessService execute(String sql, Handler<AsyncResult<JsonObject>> handler);
 }

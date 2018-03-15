@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mendora-service</artifactId>
+    <artifactId>mendora-service-facade</artifactId>
     <build>
         <plugins>
             <plugin>
