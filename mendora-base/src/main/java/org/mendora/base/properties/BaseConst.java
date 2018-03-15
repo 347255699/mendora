@@ -9,11 +9,9 @@ public class BaseConst {
     /**
      * parameter from properties
      */
-    public static final String BASE_ROOT_PATH = "base.root.path";
+    // base
     public static final String BASE_LOGGER_FACTORY_CLASS_NAME = "base.logger.factory.class.name";
     public static final String BASE_LOGGER_CONFIG_PATH = "base.logger.config.path";
-
-    // base
     public static final String BASE_VERTICLE_INTO_PACKAGE = "base.verticle.into.package";
     public static final String BASE_VERTICLE_STORAGE_KEY = "base.verticle.storage.key";
     public static final String BASE_SYSTEM_ROOT_PATH = "base.system.rootPath";

@@ -22,7 +22,7 @@ public class BaseLauncher {
         String configPath = rootPath + "/config/config.properties";
         ConfigHolder.init(configPath);
         // loading app root path
-        ConfigHolder.setProperty(BaseConst.BASE_ROOT_PATH, rootPath);
+        ConfigHolder.setProperty(BaseConst.BASE_SYSTEM_ROOT_PATH, rootPath);
         System.setProperty(BaseConst.BASE_SYSTEM_ROOT_PATH, rootPath);
         // initialization logger
         System.setProperty("vertx.logger-delegate-factory-class-name", ConfigHolder.property(BaseConst.BASE_LOGGER_FACTORY_CLASS_NAME));
