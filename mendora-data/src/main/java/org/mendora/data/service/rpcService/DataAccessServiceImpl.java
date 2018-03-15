@@ -1,4 +1,4 @@
-package org.mendora.data.service.ebService;
+package org.mendora.data.service.rpcService;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
@@ -11,7 +11,8 @@ import io.vertx.rxjava.ext.asyncsql.AsyncSQLClient;
 import io.vertx.rxjava.ext.sql.SQLConnection;
 import io.vertx.serviceproxy.ServiceException;
 import org.mendora.data.client.ClientHolder;
-import org.mendora.data.service.rpcService.DataAccesser;
+import org.mendora.data.service.ebService.DataAccesser;
+import org.mendora.service.dataAccesser.DataAccessService;
 import org.mendora.util.constant.RetCode;
 import org.mendora.util.constant.SqlReferences;
 import org.mendora.util.result.JsonResult;
@@ -23,7 +24,7 @@ import org.slf4j.LoggerFactory;
  * date:2018/3/14
  * description:
  */
-public class DataAccessImpl {
+public class DataAccessServiceImpl implements DataAccessService {
     private static Logger logger = LoggerFactory.getLogger(DataAccesser.class);
     private static final int CLIENT_NO_READY = -2;
     private static final int POSTGRE_CONNECT_FAIL = -3;
@@ -66,7 +67,8 @@ public class DataAccessImpl {
      * @param sql
      * @param handler
      */
-    public void query(String sql, Handler<AsyncResult<JsonObject>> handler) {
+    @Override
+    public DataAccessService query(String sql, Handler<AsyncResult<JsonObject>> handler) {
         postgreClient(handler).getConnection(res -> {
             if (res.succeeded()) {
                 SQLConnection conn = res.result();
@@ -81,6 +83,7 @@ public class DataAccessImpl {
                 connectFailure(handler);
             }
         });
+        return this;
     }
 
     /**
@@ -89,7 +92,8 @@ public class DataAccessImpl {
      * @param doc
      * @param handler
      */
-    public void queryWithParams(JsonObject doc, Handler<AsyncResult<JsonObject>> handler) {
+    @Override
+    public DataAccessService queryWithParams(JsonObject doc, Handler<AsyncResult<JsonObject>> handler) {
         String sql = doc.getString(SqlReferences.STATEMENT.val());
         JsonArray params = doc.getJsonArray(SqlReferences.PARAMS.val());
         postgreClient(handler).getConnection(res -> {
@@ -106,6 +110,7 @@ public class DataAccessImpl {
                 connectFailure(handler);
             }
         });
+        return this;
     }
 
     /**
@@ -114,7 +119,8 @@ public class DataAccessImpl {
      * @param sql
      * @param handler
      */
-    public void querySingle(String sql, Handler<AsyncResult<JsonObject>> handler) {
+    @Override
+    public DataAccessService querySingle(String sql, Handler<AsyncResult<JsonObject>> handler) {
         postgreClient(handler).getConnection(res -> {
             if (res.succeeded()) {
                 SQLConnection conn = res.result();
@@ -129,6 +135,7 @@ public class DataAccessImpl {
                 connectFailure(handler);
             }
         });
+        return this;
     }
 
     /**
@@ -137,7 +144,8 @@ public class DataAccessImpl {
      * @param doc
      * @param handler
      */
-    public void querySingleWithParams(JsonObject doc, Handler<AsyncResult<JsonObject>> handler) {
+    @Override
+    public DataAccessService querySingleWithParams(JsonObject doc, Handler<AsyncResult<JsonObject>> handler) {
         String sql = doc.getString(SqlReferences.STATEMENT.val());
         JsonArray params = doc.getJsonArray(SqlReferences.PARAMS.val());
         postgreClient(handler).getConnection(res -> {
@@ -154,6 +162,7 @@ public class DataAccessImpl {
                 connectFailure(handler);
             }
         });
+        return this;
     }
 
     /**
@@ -162,7 +171,8 @@ public class DataAccessImpl {
      * @param sql
      * @param handler
      */
-    public void update(String sql, Handler<AsyncResult<JsonObject>> handler) {
+    @Override
+    public DataAccessService update(String sql, Handler<AsyncResult<JsonObject>> handler) {
         postgreClient(handler).getConnection(res -> {
             if (res.succeeded()) {
                 SQLConnection conn = res.result();
@@ -176,6 +186,7 @@ public class DataAccessImpl {
                 connectFailure(handler);
             }
         });
+        return this;
     }
 
     /**
@@ -184,7 +195,8 @@ public class DataAccessImpl {
      * @param doc
      * @param handler
      */
-    public void updateWithParams(JsonObject doc, Handler<AsyncResult<JsonObject>> handler) {
+    @Override
+    public DataAccessService updateWithParams(JsonObject doc, Handler<AsyncResult<JsonObject>> handler) {
         String sql = doc.getString(SqlReferences.STATEMENT.val());
         JsonArray params = doc.getJsonArray(SqlReferences.PARAMS.val());
         postgreClient(handler).getConnection(res -> {
@@ -200,6 +212,7 @@ public class DataAccessImpl {
                 connectFailure(handler);
             }
         });
+        return this;
     }
 
     /**
@@ -208,7 +221,8 @@ public class DataAccessImpl {
      * @param sql
      * @param handler
      */
-    public void execute(String sql, Handler<AsyncResult<JsonObject>> handler) {
+    @Override
+    public DataAccessService execute(String sql, Handler<AsyncResult<JsonObject>> handler) {
         postgreClient(handler).getConnection(res -> {
             if (res.succeeded()) {
                 SQLConnection conn = res.result();
@@ -221,5 +235,6 @@ public class DataAccessImpl {
                 connectFailure(handler);
             }
         });
+        return this;
     }
 }

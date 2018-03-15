@@ -13,6 +13,7 @@
         <module>mendora-web</module>
         <module>mendora-data</module>
         <module>mendora-util</module>
+        <module>mendora-service</module>
     </modules>
     <properties>
         <vertx.version>3.4.2</vertx.version>
@@ -70,11 +71,6 @@
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
-            <artifactId>vertx-service-proxy</artifactId>
-            <version>${vertx.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.vertx</groupId>
             <artifactId>vertx-codegen</artifactId>
             <version>${vertx.version}</version>
             <scope>provided</scope>
@@ -86,16 +82,4 @@
             <classifier>processor</classifier>
         </dependency>
     </dependencies>
-    <build>
-    <plugins>
-        <plugin>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-                <annotationProcessors>
-                    <annotationProcessor>io.vertx.serviceproxy.ServiceProxyProcessor</annotationProcessor>
-                </annotationProcessors>
-            </configuration>
-        </plugin>
-    </plugins>
-    </build>
 </project>

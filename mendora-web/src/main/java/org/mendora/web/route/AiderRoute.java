@@ -4,6 +4,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.rxjava.core.eventbus.Message;
 import org.mendora.base.utils.VertxHolder;
+import org.mendora.service.dataAccesser.rxjava.DataAccessService;
 import org.mendora.util.constant.EBAddress;
 import org.mendora.util.constant.SqlReferences;
 import org.mendora.web.util.WebResult;
@@ -16,6 +17,7 @@ import org.mendora.web.util.WebResult;
 public class AiderRoute implements Route {
     private static final String MODULE = "/mendora/aider";
     private static final String SQL_STATIEMENT = MODULE + "/sqlStatement";
+    private DataAccessService dataAccessService = DataAccessService.createProxy(VertxHolder.vertx());
 
     @Override
     public void route(Router router) {
@@ -23,9 +25,7 @@ public class AiderRoute implements Route {
             rc.response().end("<h1>Just a test demo.</h1>");
         });
         router.post(SQL_STATIEMENT + "/query").handler(rc -> {
-            String sqlStatement = rc.getBodyAsJson().getString(SqlReferences.STATEMENT.val());
-            VertxHolder.eventBus().<JsonObject>rxSend(EBAddress.DATA_EB_QUERY, sqlStatement)
-                    .map(Message::body)
+            dataAccessService.rxQuery(rc.getBodyAsJson().getString(SqlReferences.STATEMENT.val()))
                     .subscribe(replyJson -> WebResult.consume(replyJson, rc));
         });
         router.post(SQL_STATIEMENT + "/queryWithParams").handler(rc -> {

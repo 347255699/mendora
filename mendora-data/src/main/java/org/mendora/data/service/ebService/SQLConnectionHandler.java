@@ -1,4 +1,4 @@
-package org.mendora.data.service.rpcService;
+package org.mendora.data.service.ebService;
 
 import io.vertx.rxjava.ext.sql.SQLConnection;
 

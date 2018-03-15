@@ -3,7 +3,7 @@ package org.mendora.data.verticles;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.json.JsonObject;
 import org.mendora.base.verticles.SimpleVerticle;
-import org.mendora.data.service.rpcService.DataAccesser;
+import org.mendora.data.service.ebService.DataAccesser;
 import org.mendora.util.constant.EBAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

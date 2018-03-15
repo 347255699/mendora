@@ -19,6 +19,11 @@
             <artifactId>mendora-util</artifactId>
             <version>${common.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.mendora</groupId>
+            <artifactId>mendora-service</artifactId>
+            <version>${common.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
