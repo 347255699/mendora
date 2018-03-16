@@ -10,6 +10,7 @@ import io.vertx.ext.sql.UpdateResult;
 import io.vertx.rxjava.ext.asyncsql.AsyncSQLClient;
 import io.vertx.rxjava.ext.sql.SQLConnection;
 import io.vertx.serviceproxy.ServiceException;
+import lombok.extern.slf4j.Slf4j;
 import org.mendora.data.client.ClientHolder;
 import org.mendora.data.service.ebService.DataAccesser;
 import org.mendora.service.dataAccesser.DataAccessService;
@@ -24,8 +25,8 @@ import org.slf4j.LoggerFactory;
  * date:2018/3/14
  * description:
  */
+@Slf4j
 public class DataAccessServiceImpl implements DataAccessService {
-    private static Logger logger = LoggerFactory.getLogger(DataAccesser.class);
     private static final int CLIENT_NO_READY = -2;
     private static final int POSTGRE_CONNECT_FAIL = -3;
 

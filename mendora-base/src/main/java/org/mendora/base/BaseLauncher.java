@@ -1,5 +1,6 @@
 package org.mendora.base;
 
+import lombok.SneakyThrows;
 import org.apache.log4j.PropertyConfigurator;
 import org.mendora.base.cluster.Cluster;
 import org.mendora.base.cluster.ClusterHandler;
@@ -16,7 +17,8 @@ import java.net.URL;
  * description:
  */
 public class BaseLauncher {
-    public static void launch(URL rootUrl, ClassLoader cl, ClusterHandler handler) throws Exception {
+    @SneakyThrows
+    public static void launch(URL rootUrl, ClassLoader cl, ClusterHandler handler) {
         String rootPath = rootUrl.getPath().substring(0, rootUrl.getPath().lastIndexOf("/"));
         // initialization config properties
         String configPath = rootPath + "/config/config.properties";

@@ -1,6 +1,7 @@
 package org.mendora.base.scanner;
 
-import java.io.IOException;
+import lombok.SneakyThrows;
+
 import java.util.List;
 
 /**
@@ -18,9 +19,9 @@ public interface PackageScanner<T> {
      * @param except
      * @param except2
      * @return
-     * @throws IOException
      */
-    List<String> classNames(String packageName, String except, String except2) throws Exception;
+    @SneakyThrows
+    List<String> classNames(String packageName, String except, String except2);
 
     /**
      * Find target element blow package except single class name.
@@ -28,9 +29,9 @@ public interface PackageScanner<T> {
      * @param packageName
      * @param except
      * @return
-     * @throws IOException
      */
-    List<String> classNames(String packageName, String except) throws Exception;
+    @SneakyThrows
+    List<String> classNames(String packageName, String except);
 
     /**
      * Scanning target class blow package except @param except and @param except2 class.
@@ -39,7 +40,8 @@ public interface PackageScanner<T> {
      * @param except2
      * @return
      */
-    List<T> scan(Class<T> except, Class<?> except2) throws Exception;
+    @SneakyThrows
+    List<T> scan(Class<T> except, Class<?> except2);
 
     /**
      * Scanning target class blow package except @param except class.
@@ -47,7 +49,8 @@ public interface PackageScanner<T> {
      * @param except
      * @return
      */
-    List<T> scan(Class<T> except) throws Exception;
+    @SneakyThrows
+    List<T> scan(Class<T> except);
 
     /**
      * Instantiation a class set.
@@ -55,5 +58,6 @@ public interface PackageScanner<T> {
      * @param classNames
      * @return
      */
-    List<T> instantiation(List<String> classNames, Class<T> tClass) throws Exception;
+    @SneakyThrows
+    List<T> instantiation(List<String> classNames, Class<T> tClass);
 }

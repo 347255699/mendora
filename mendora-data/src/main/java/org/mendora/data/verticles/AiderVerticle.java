@@ -2,6 +2,7 @@ package org.mendora.data.verticles;
 
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.json.JsonObject;
+import lombok.extern.slf4j.Slf4j;
 import org.mendora.base.verticles.SimpleVerticle;
 import org.mendora.data.service.ebService.DataAccesser;
 import org.mendora.util.constant.EBAddress;
@@ -13,9 +14,9 @@ import org.slf4j.LoggerFactory;
  * date:2018/3/12
  * description:
  */
+@Slf4j
 public class AiderVerticle extends SimpleVerticle {
     private static final String MODULE_NAME = "AIDER_VERTICLE:";
-    private Logger logger = LoggerFactory.getLogger(AiderVerticle.class);
 
     @Override
     public DeploymentOptions options() {

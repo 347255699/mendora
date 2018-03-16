@@ -5,6 +5,8 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.LoggerFormat;
 import io.vertx.ext.web.handler.LoggerHandler;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.mendora.web.constant.WebConst;
 import org.mendora.web.launcher.WebLauncher;
 import org.mendora.web.route.Route;
@@ -22,9 +24,9 @@ import java.util.List;
  * date:2018/3/7
  * description:
  */
+@Slf4j
 public class WebVerticle extends SimpleVerticle {
     private static final String MODULE_NAME = "WEB-VERTICLE:";
-    private static Logger logger = LoggerFactory.getLogger(WebLauncher.class);
 
     @Override
     public DeploymentOptions options() {
@@ -32,8 +34,9 @@ public class WebVerticle extends SimpleVerticle {
     }
 
     @Override
-    public void start() throws Exception {
-        logger.info(MODULE_NAME + "into WebVerticle");
+    @SneakyThrows
+    public void start(){
+        log.info(MODULE_NAME + "into WebVerticle");
         ClassLoader currClassLoader = WebVerticle.class.getClassLoader();
         Router router = Router.router(vertx);
 
@@ -47,20 +50,20 @@ public class WebVerticle extends SimpleVerticle {
         // scanning route
         List<Route> routes = new SimplePackageScanner<Route>(ConfigHolder.property(WebConst.AAA_WEB_ROUTE_PACKAGE), currClassLoader)
                 .scan(Route.class);
-        logger.info(MODULE_NAME + routes.size());
+        log.info(MODULE_NAME + routes.size());
         Observable.from(routes)
                 .subscribe(r -> {
                             r.route(router);
-                            logger.info(MODULE_NAME + r.getClass().getName());
+                            log.info(MODULE_NAME + r.getClass().getName());
                         },
-                        err -> logger.error(MODULE_NAME + err.getMessage()),
+                        err -> log.error(MODULE_NAME + err.getMessage()),
                         () -> {
                             String webServerPort = ConfigHolder.property(WebConst.AAA_WEB_LISTENNING_PORT);
-                            logger.info(MODULE_NAME + "all the \"routes\" deployed");
-                            router.getRoutes().forEach(r -> logger.info(r.getPath()));
+                            log.info(MODULE_NAME + "all the \"routes\" deployed");
+                            router.getRoutes().forEach(r -> log.info(r.getPath()));
                             vertx.createHttpServer().requestHandler(router::accept)
                                     .listen(Integer.parseInt(webServerPort));
-                            logger.info(MODULE_NAME + "web server listenning at port:" + webServerPort);
+                            log.info(MODULE_NAME + "web server listenning at port:" + webServerPort);
                         });
     }
 }

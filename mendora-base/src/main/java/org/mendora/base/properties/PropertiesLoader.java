@@ -1,8 +1,9 @@
 package org.mendora.base.properties;
 
-import java.io.*;
-import java.net.URL;
-import java.nio.channels.FileChannel;
+import lombok.SneakyThrows;
+
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -12,13 +13,13 @@ import java.util.Properties;
  * Created by kam on 2017/12/3.
  */
 public class PropertiesLoader {
-    // private final static String DEFAULT_PATH = "config/config.properties";
     // Hold the properties body.
     private Properties prop;
     // Hold the properties path blow classpath.
     private String propPath;
 
-    public PropertiesLoader(String propPath) throws IOException {
+    @SneakyThrows
+    public PropertiesLoader(String propPath) {
         this.prop = new Properties();
         this.propPath = propPath;
         prop.load(new FileInputStream(new File(propPath)));

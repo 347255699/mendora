@@ -3,6 +3,7 @@ package org.mendora.web.route;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.rxjava.core.eventbus.Message;
+import lombok.extern.slf4j.Slf4j;
 import org.mendora.base.properties.ConfigHolder;
 import org.mendora.base.utils.VertxHolder;
 import org.mendora.service.dataAccesser.rxjava.DataAccessService;
@@ -15,6 +16,7 @@ import org.mendora.web.util.WebResult;
  * date:2018/3/7
  * description:
  */
+@Slf4j
 public class AiderRoute implements Route {
     private static final String MODULE = "/mendora/aider";
     private static final String SQL_STATIEMENT = MODULE + "/sqlStatement";

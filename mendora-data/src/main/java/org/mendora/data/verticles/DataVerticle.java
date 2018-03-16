@@ -1,6 +1,7 @@
 package org.mendora.data.verticles;
 
 import io.vertx.core.DeploymentOptions;
+import lombok.extern.slf4j.Slf4j;
 import org.mendora.base.verticles.SimpleVerticle;
 
 /**
@@ -8,6 +9,7 @@ import org.mendora.base.verticles.SimpleVerticle;
  * date:2018/3/12
  * description:
  */
+@Slf4j
 public class DataVerticle extends SimpleVerticle {
     @Override
     public DeploymentOptions options() {

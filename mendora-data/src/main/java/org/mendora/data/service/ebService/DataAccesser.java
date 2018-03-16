@@ -7,6 +7,7 @@ import io.vertx.ext.sql.ResultSet;
 import io.vertx.ext.sql.UpdateResult;
 import io.vertx.rxjava.ext.asyncsql.AsyncSQLClient;
 import io.vertx.rxjava.ext.sql.SQLConnection;
+import lombok.extern.slf4j.Slf4j;
 import org.mendora.data.client.ClientHolder;
 import org.mendora.util.constant.SqlReferences;
 import org.mendora.util.result.JsonResult;
@@ -16,9 +17,9 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by kam on 2018/3/12.
  */
+@Slf4j
 public class DataAccesser {
     private static final String MODULE_NAME = "DATA_ACCESSER:";
-    private static Logger logger = LoggerFactory.getLogger(DataAccesser.class);
 
     private static AsyncSQLClient postgreClient() {
         if (ClientHolder.postgre() == null)
