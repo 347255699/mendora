@@ -7,8 +7,6 @@ import org.mendora.base.properties.BaseConst;
 import org.mendora.base.properties.ConfigHolder;
 import org.mendora.base.scanner.SimplePackageScanner;
 import org.mendora.util.result.JsonResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import rx.Observable;
 
 import java.util.ArrayList;

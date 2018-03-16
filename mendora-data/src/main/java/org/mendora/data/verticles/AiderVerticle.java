@@ -6,8 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.mendora.base.verticles.SimpleVerticle;
 import org.mendora.data.service.ebService.DataAccesser;
 import org.mendora.util.constant.EBAddress;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * created by:xmf

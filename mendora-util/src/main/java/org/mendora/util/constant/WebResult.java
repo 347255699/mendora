@@ -1,9 +1,8 @@
-package org.mendora.web.util;
+package org.mendora.util.constant;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
-import org.mendora.util.constant.SysConst;
 import org.mendora.util.result.JsonResult;
 
 /**

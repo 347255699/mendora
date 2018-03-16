@@ -12,13 +12,10 @@ import io.vertx.rxjava.ext.sql.SQLConnection;
 import io.vertx.serviceproxy.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.mendora.data.client.ClientHolder;
-import org.mendora.data.service.ebService.DataAccesser;
 import org.mendora.service.dataAccesser.DataAccessService;
 import org.mendora.util.constant.RetCode;
 import org.mendora.util.constant.SqlReferences;
 import org.mendora.util.result.JsonResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * created by:xmf

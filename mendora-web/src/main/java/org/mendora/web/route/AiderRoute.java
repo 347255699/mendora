@@ -9,7 +9,7 @@ import org.mendora.base.utils.VertxHolder;
 import org.mendora.service.dataAccesser.rxjava.DataAccessService;
 import org.mendora.util.constant.EBAddress;
 import org.mendora.util.constant.SqlReferences;
-import org.mendora.web.util.WebResult;
+import org.mendora.util.constant.WebResult;
 
 /**
  * created by:xmf

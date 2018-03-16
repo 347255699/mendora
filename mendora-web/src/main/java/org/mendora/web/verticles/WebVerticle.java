@@ -7,14 +7,11 @@ import io.vertx.ext.web.handler.LoggerFormat;
 import io.vertx.ext.web.handler.LoggerHandler;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.mendora.web.constant.WebConst;
-import org.mendora.web.launcher.WebLauncher;
-import org.mendora.web.route.Route;
 import org.mendora.base.properties.ConfigHolder;
 import org.mendora.base.scanner.SimplePackageScanner;
 import org.mendora.base.verticles.SimpleVerticle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.mendora.web.constant.WebConst;
+import org.mendora.web.route.Route;
 import rx.Observable;
 
 import java.util.List;

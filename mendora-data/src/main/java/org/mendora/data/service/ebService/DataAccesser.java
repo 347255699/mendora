@@ -11,8 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.mendora.data.client.ClientHolder;
 import org.mendora.util.constant.SqlReferences;
 import org.mendora.util.result.JsonResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Created by kam on 2018/3/12.
