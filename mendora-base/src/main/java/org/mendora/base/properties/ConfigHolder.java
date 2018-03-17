@@ -2,10 +2,8 @@ package org.mendora.base.properties;
 
 
 import io.vertx.core.json.JsonObject;
-import org.apache.commons.lang3.StringUtils;
+import lombok.SneakyThrows;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.Map;
 
 /**
@@ -16,7 +14,8 @@ public class ConfigHolder {
     // Hold properties body as map format.
     private static Map<String, Object> PROPERTIES;
 
-    public static void init(String propPath) throws IOException {
+    @SneakyThrows
+    public static void init(String propPath) {
         PROPERTIES = new PropertiesLoader(propPath).asMap();
     }
 

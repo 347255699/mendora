@@ -14,6 +14,9 @@
         <module>mendora-data</module>
         <module>mendora-util</module>
         <module>mendora-guice</module>
+        <module>mendora-service-facade</module>
+        <module>mendora-aider</module>
+        <module>mendora-service-rear</module>
     </modules>
     <properties>
         <vertx.version>3.4.2</vertx.version>
@@ -21,6 +24,8 @@
         <slf4j.version>1.7.12</slf4j.version>
         <log4j.version>1.2.16</log4j.version>
         <hazelcast.version>3.8</hazelcast.version>
+        <lombook.version>1.16.20</lombook.version>
+        <guice.version>4.2.0</guice.version>
     </properties>
     <dependencies>
         <dependency>
@@ -69,6 +74,29 @@
             <artifactId>vertx-mysql-postgresql-client</artifactId>
             <version>${vertx.version}</version>
         </dependency>
-    </dependencies>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-codegen</artifactId>
+            <version>${vertx.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-service-proxy</artifactId>
+            <version>${vertx.version}</version>
+            <classifier>processor</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombook.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>${guice.version}</version>
+        </dependency>
 
+    </dependencies>
 </project>

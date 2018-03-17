@@ -12,14 +12,10 @@ import java.util.Map;
  */
 public class ConfigHolder {
     // Hold properties body as map format.
-    private Map<String, Object> properties;
+    private static Map<String, Object> PROPERTIES;
 
-    @SneakyThrows
-    public ConfigHolder(String propPath){
-        properties = new PropertiesLoader(propPath).asMap();
-    }
     public static void init(String propPath) throws IOException {
-
+        PROPERTIES = new PropertiesLoader(propPath).asMap();
     }
 
     /**

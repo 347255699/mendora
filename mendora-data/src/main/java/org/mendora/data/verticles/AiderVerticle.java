@@ -1,22 +1,20 @@
 package org.mendora.data.verticles;
 
 import io.vertx.core.DeploymentOptions;
-import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
+import lombok.extern.slf4j.Slf4j;
 import org.mendora.base.verticles.SimpleVerticle;
-import org.mendora.data.accesser.DataAccesser;
+import org.mendora.data.service.ebService.DataAccesser;
 import org.mendora.util.constant.EBAddress;
-import org.mendora.util.result.JsonResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * created by:xmf
  * date:2018/3/12
  * description:
  */
+@Slf4j
 public class AiderVerticle extends SimpleVerticle {
     private static final String MODULE_NAME = "AIDER_VERTICLE:";
-    private Logger logger = LoggerFactory.getLogger(AiderVerticle.class);
 
     @Override
     public DeploymentOptions options() {
@@ -25,12 +23,19 @@ public class AiderVerticle extends SimpleVerticle {
 
     @Override
     public void start() throws Exception {
-        // checking data module working status.
-        vertx.eventBus().<String>consumer(EBAddress.DATA_EB_COMMON_SONAR).handler(msg -> {
-            String sql = msg.body();
-            DataAccesser.rxQuery(sql)
-                    .subscribe(rows -> msg.reply(JsonResult.succWithRows(new JsonArray(rows)))
-                            , err -> msg.reply(JsonResult.fail(err)));
-        });
+        /** testing **/
+        vertx.eventBus().<String>consumer(EBAddress.DATA_EB_QUERY).handler(DataAccesser::query);
+
+        vertx.eventBus().<JsonObject>consumer(EBAddress.DATA_EB_QUERY_WITH_PARAMS).handler(DataAccesser::queryWithParams);
+
+        vertx.eventBus().<String>consumer(EBAddress.DATA_EB_QUERY_SINGLE).handler(DataAccesser::querySingle);
+
+        vertx.eventBus().<JsonObject>consumer(EBAddress.DATA_EB_QUERY_SINGLE_WITH_PARAMS).handler(DataAccesser::querySingleWithParams);
+
+        vertx.eventBus().<String>consumer(EBAddress.DATA_EB_UPDATE).handler(DataAccesser::update);
+
+        vertx.eventBus().<JsonObject>consumer(EBAddress.DATA_EB_UPDATE_WITH_PARAMS).handler(DataAccesser::updateWithParams);
+
+        vertx.eventBus().<String>consumer(EBAddress.DATA_EB_EXECUTE).handler(DataAccesser::execute);
     }
 }

@@ -11,17 +11,21 @@
 
     <artifactId>mendora-data</artifactId>
     <properties>
-        <base.version>1.0-SNAPSHOT</base.version>
+        <common.version>1.0-SNAPSHOT</common.version>
         <main.class>org.mendora.data.ApplicationMain</main.class>
     </properties>
     <dependencies>
         <dependency>
             <groupId>org.mendora</groupId>
             <artifactId>mendora-base</artifactId>
-            <version>${base.version}</version>
+            <version>${common.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mendora</groupId>
+            <artifactId>mendora-service-facade</artifactId>
+            <version>${common.version}</version>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>

@@ -1,8 +1,7 @@
 package org.mendora.base.scanner;
 
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,9 +18,9 @@ import java.util.jar.JarInputStream;
  * date:2018/3/9
  * description:
  */
+@Slf4j
 public class SimplePackageScanner<T> implements PackageScanner<T> {
     private static final String MODULE_NAME = "PSCANNER:";
-    private Logger logger = LoggerFactory.getLogger(SimplePackageScanner.class);
     private String packagePath;
     private ClassLoader cl;
 
@@ -39,7 +38,8 @@ public class SimplePackageScanner<T> implements PackageScanner<T> {
      * @throws Exception
      */
     @Override
-    public List<T> instantiation(List<String> classNames, Class<T> tClass) throws Exception {
+    @SneakyThrows
+    public List<T> instantiation(List<String> classNames, Class<T> tClass) {
         List<T> objs = new ArrayList<>(classNames.size());
         classNames.forEach(className -> {
             try {
@@ -50,7 +50,7 @@ public class SimplePackageScanner<T> implements PackageScanner<T> {
                         objs.add(t);
                 }
             } catch (Exception e) {
-                logger.error(MODULE_NAME + e.getMessage());
+                log.error(MODULE_NAME + e.getMessage());
             }
         });
         return objs;
@@ -64,7 +64,8 @@ public class SimplePackageScanner<T> implements PackageScanner<T> {
      * @throws Exception
      */
     @Override
-    public List<T> scan(Class<T> except) throws Exception {
+    @SneakyThrows
+    public List<T> scan(Class<T> except) {
         List<String> classNames = classNames(this.packagePath, except.getName());
         return instantiation(classNames, except);
     }
@@ -78,13 +79,15 @@ public class SimplePackageScanner<T> implements PackageScanner<T> {
      * @throws Exception
      */
     @Override
-    public List scan(Class<T> except, Class<?> except2) throws Exception {
+    @SneakyThrows
+    public List scan(Class<T> except, Class<?> except2) {
         List<String> classNames = classNames(this.packagePath, except.getName());
         return instantiation(classNames, except);
     }
 
     @Override
-    public List<String> classNames(String packageName, String except, String except2) throws Exception {
+    @SneakyThrows
+    public List<String> classNames(String packageName, String except, String except2) {
         return classNames(packageName, new ArrayList<>(), name -> {
             if (!except.equals(name) && !except2.equals(name))
                 return name;
@@ -93,7 +96,8 @@ public class SimplePackageScanner<T> implements PackageScanner<T> {
     }
 
     @Override
-    public List<String> classNames(String packageName, String except) throws Exception {
+    @SneakyThrows
+    public List<String> classNames(String packageName, String except) {
         return classNames(packageName, new ArrayList<>(), name -> {
             if (!except.equals(name))
                 return name;
@@ -107,9 +111,9 @@ public class SimplePackageScanner<T> implements PackageScanner<T> {
      * @param packagePath
      * @param nameList
      * @return
-     * @throws Exception
      */
-    private List<String> classNames(String packagePath, List<String> nameList, ScannerFilter filter) throws Exception {
+    @SneakyThrows
+    private List<String> classNames(String packagePath, List<String> nameList, ScannerFilter filter) {
         // "." -> "/"
         String splashPath = dotToSplash(packagePath);
         URL url = cl.getResource(splashPath);
@@ -122,11 +126,11 @@ public class SimplePackageScanner<T> implements PackageScanner<T> {
         List<String> names = null;
         // contains the name of the class file. e.g., Demo.class will be stored as "Demo"
         if (isJarFile(filePath)) {
-            logger.info(MODULE_NAME + filePath + " is a jar.");
+            log.info(MODULE_NAME + filePath + " is a jar.");
             // jar file
             names = readFromJarFile(filePath, splashPath);
         } else {
-            logger.info(MODULE_NAME + filePath + " is a directory.");
+            log.info(MODULE_NAME + filePath + " is a directory.");
             // directory
             names = readFromDirectory(filePath);
         }
@@ -144,7 +148,7 @@ public class SimplePackageScanner<T> implements PackageScanner<T> {
                 try {
                     classNames(packagePath + "." + name, nameList, filter);
                 } catch (Exception e) {
-                    logger.error(MODULE_NAME + e.getMessage());
+                    log.error(MODULE_NAME + e.getMessage());
                 }
             }
         });
@@ -159,8 +163,9 @@ public class SimplePackageScanner<T> implements PackageScanner<T> {
      * @return
      * @throws IOException
      */
-    private List<String> readFromJarFile(String jarPath, String splashedPackageName) throws IOException {
-        logger.info("loading from jar:" + jarPath);
+    @SneakyThrows
+    private List<String> readFromJarFile(String jarPath, String splashedPackageName) {
+        log.info("loading from jar:" + jarPath);
         JarInputStream jarIn = new JarInputStream(new FileInputStream(jarPath));
         JarEntry entry = jarIn.getNextJarEntry();
         List<String> classNames = new ArrayList<>();

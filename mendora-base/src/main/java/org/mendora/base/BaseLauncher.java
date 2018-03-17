@@ -1,8 +1,9 @@
 package org.mendora.base;
 
+import lombok.SneakyThrows;
 import org.apache.log4j.PropertyConfigurator;
+import org.mendora.base.cluster.Cluster;
 import org.mendora.base.cluster.ClusterHandler;
-import org.mendora.base.cluster.ClusterUtil;
 import org.mendora.base.properties.BaseConst;
 import org.mendora.base.properties.ConfigHolder;
 import org.slf4j.Logger;
@@ -16,14 +17,15 @@ import java.net.URL;
  * description:
  */
 public class BaseLauncher {
-    public static void launch(URL rootUrl, ClassLoader cl, ClusterHandler handler) throws Exception {
+    @SneakyThrows
+    public static void launch(URL rootUrl, ClassLoader cl, ClusterHandler handler) {
         String rootPath = rootUrl.getPath().substring(0, rootUrl.getPath().lastIndexOf("/"));
         // initialization config properties
         String configPath = rootPath + "/config/config.properties";
         ConfigHolder.init(configPath);
         // loading app root path
-        ConfigHolder.setProperty(BaseConst.BASE_ROOT_PATH, rootPath);
-        System.setProperty("rootPath", rootPath);
+        ConfigHolder.setProperty(BaseConst.BASE_SYSTEM_ROOT_PATH, rootPath);
+        System.setProperty(BaseConst.BASE_SYSTEM_ROOT_PATH, rootPath);
         // initialization logger
         System.setProperty("vertx.logger-delegate-factory-class-name", ConfigHolder.property(BaseConst.BASE_LOGGER_FACTORY_CLASS_NAME));
         String log4jConfigPath = rootPath + ConfigHolder.property(BaseConst.BASE_LOGGER_CONFIG_PATH);
@@ -33,6 +35,6 @@ public class BaseLauncher {
             logger.info("System options: {}", e.getKey() + " : " + e.getValue());
         });
         // launching cluster and scanning Verticles
-        ClusterUtil.clusterVertx(cl, handler);
+        Cluster.launch(cl, handler);
     }
 }
