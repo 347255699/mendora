@@ -13,6 +13,7 @@
         <module>mendora-web</module>
         <module>mendora-data</module>
         <module>mendora-util</module>
+        <module>mendora-guice</module>
     </modules>
     <properties>
         <vertx.version>3.4.2</vertx.version>
