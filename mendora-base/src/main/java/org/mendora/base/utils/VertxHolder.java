@@ -1,6 +1,5 @@
 package org.mendora.base.utils;
 
-
 import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.core.eventbus.EventBus;
 

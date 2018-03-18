@@ -2,7 +2,7 @@ package org.mendora.web.launcher;
 
 import com.google.inject.Injector;
 import lombok.extern.slf4j.Slf4j;
-import org.mendora.guice.launcher.GuiceLauncher;
+import org.mendora.guice.GuiceLauncher;
 
 import java.net.URL;
 

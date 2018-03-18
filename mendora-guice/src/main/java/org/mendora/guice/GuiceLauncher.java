@@ -1,4 +1,4 @@
-package org.mendora.guice.launcher;
+package org.mendora.guice;
 
 import org.apache.log4j.PropertyConfigurator;
 import org.mendora.guice.cluster.Cluster;

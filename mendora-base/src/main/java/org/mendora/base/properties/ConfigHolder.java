@@ -1,6 +1,5 @@
 package org.mendora.base.properties;
 
-
 import io.vertx.core.json.JsonObject;
 import lombok.SneakyThrows;
 
