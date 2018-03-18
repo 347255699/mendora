@@ -1,8 +1,10 @@
 package org.mendora.guice.properties;
 
+import lombok.NonNull;
+import lombok.SneakyThrows;
+
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -18,7 +20,8 @@ public class PropertiesLoader {
     // Hold the properties path blow classpath.
     private String propPath;
 
-    public PropertiesLoader(String propPath) throws IOException {
+    @SneakyThrows
+    public PropertiesLoader(@NonNull String propPath){
         this.prop = new Properties();
         this.propPath = propPath;
         prop.load(new FileInputStream(new File(propPath)));

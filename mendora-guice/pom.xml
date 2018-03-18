@@ -10,6 +10,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>mendora-guice</artifactId>
+    <properties>
+        <common.version>1.0-SNAPSHOT</common.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.mendora</groupId>
+            <artifactId>mendora-util</artifactId>
+            <version>${common.version}</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -22,6 +33,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>

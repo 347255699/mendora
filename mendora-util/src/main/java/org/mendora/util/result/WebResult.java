@@ -2,9 +2,8 @@ package org.mendora.util.result;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.ext.web.RoutingContext;
+import io.vertx.rxjava.ext.web.RoutingContext;
 import org.mendora.util.constant.SysConst;
-import org.mendora.util.result.JsonResult;
 
 /**
  * created by:xmf

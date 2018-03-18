@@ -1,9 +1,7 @@
 package org.mendora.guice.properties;
 
-
 import io.vertx.core.json.JsonObject;
 
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -11,50 +9,61 @@ import java.util.Map;
  * Created by kam on 2017/12/3.
  */
 public class ConfigHolder {
-    // Hold properties body as map format.
-    private static Map<String, Object> PROPERTIES;
 
-    public static void init(String propPath) throws IOException {
-        PROPERTIES = new PropertiesLoader(propPath).asMap();
+    private Map<String, Object> prop;
+    private String propPath;
+
+    public ConfigHolder(PropertiesLoader popLoader) {
+        this.prop = popLoader.asMap();
+        this.propPath = popLoader.path();
     }
 
     /**
-     * Get properties body.
+     * Get prop path
      *
      * @return
      */
-    public static Map<String, Object> properties() {
-        return PROPERTIES;
+    public String path() {
+        return this.propPath;
     }
 
     /**
-     * Get properties body as json.
+     * Get prop body.
      *
      * @return
      */
-    public static JsonObject asJson() {
-        return new JsonObject(PROPERTIES);
+    public Map<String, Object> properties() {
+        return this.prop;
     }
 
     /**
-     * Get single property from properties body.
+     * Get prop body as json.
+     *
+     * @return
+     */
+    public JsonObject asJson() {
+        return new JsonObject(this.prop);
+    }
+
+    /**
+     * Get single property from prop body.
      *
      * @param k
      * @return
      */
-    public static String property(String k) {
-        if (PROPERTIES != null && PROPERTIES.size() > 0)
-            return asJson().getString(k);
-        else throw new RuntimeException("The properties body have not any element.");
+    public String property(String k) {
+        if (prop != null && prop.size() > 0)
+            return (String) this.prop.get(k);
+        else throw new RuntimeException("The prop body have not any element.");
     }
 
     /**
-     * Push single property into properties body.
+     * Push single property into prop body.
      *
      * @param k
      * @return
      */
-    public static void setProperty(String k, Object v) {
-        PROPERTIES.put(k, v);
+    public void setProperty(String k, Object v) {
+        this.prop.put(k, v);
     }
 }

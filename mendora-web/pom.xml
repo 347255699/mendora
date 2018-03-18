@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>org.mendora</groupId>
-            <artifactId>mendora-base</artifactId>
+            <artifactId>mendora-guice</artifactId>
             <version>${common.version}</version>
         </dependency>
         <dependency>
