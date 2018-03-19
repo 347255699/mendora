@@ -8,8 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.mendora.guice.properties.BaseConst;
 import org.mendora.guice.properties.ConfigHolder;
-import org.mendora.guice.scanner.PackageScannerImpl;
 import org.mendora.util.result.JsonResult;
+import org.mendora.util.scanner.PackageScannerImpl;
 import rx.Observable;
 
 import java.util.ArrayList;

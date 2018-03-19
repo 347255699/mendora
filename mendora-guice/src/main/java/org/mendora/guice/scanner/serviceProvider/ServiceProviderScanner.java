@@ -3,7 +3,7 @@ package org.mendora.guice.scanner.serviceProvider;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import lombok.extern.slf4j.Slf4j;
-import org.mendora.guice.scanner.PackageScannerImpl;
+import org.mendora.util.scanner.PackageScannerImpl;
 import rx.Observable;
 
 import java.util.List;

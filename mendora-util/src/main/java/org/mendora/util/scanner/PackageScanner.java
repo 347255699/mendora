@@ -1,4 +1,4 @@
-package org.mendora.guice.scanner;
+package org.mendora.util.scanner;
 
 import lombok.SneakyThrows;
 

@@ -8,7 +8,16 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
+    <properties>
+        <common.version>1.0-SNAPSHOT</common.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.mendora</groupId>
+            <artifactId>mendora-util</artifactId>
+            <version>${common.version}</version>
+        </dependency>
+    </dependencies>
     <artifactId>mendora-service-facade</artifactId>
     <build>
         <plugins>

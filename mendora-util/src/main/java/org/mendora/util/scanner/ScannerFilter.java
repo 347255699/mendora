@@ -1,4 +1,4 @@
-package org.mendora.guice.scanner;
+package org.mendora.util.scanner;
 
 /**
  * Created by kam on 2018/2/4.

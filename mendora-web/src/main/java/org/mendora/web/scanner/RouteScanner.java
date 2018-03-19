@@ -7,7 +7,7 @@ import io.vertx.rxjava.ext.web.Router;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.mendora.guice.properties.ConfigHolder;
-import org.mendora.guice.scanner.PackageScannerImpl;
+import org.mendora.util.scanner.PackageScannerImpl;
 import org.mendora.web.constant.WebConst;
 import rx.Observable;
 
