@@ -9,6 +9,8 @@ import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.serviceproxy.ProxyHelper;
 
+import javax.xml.crypto.Data;
+
 /**
  * created by:xmf
  * date:2017/10/31
@@ -16,18 +18,9 @@ import io.vertx.serviceproxy.ProxyHelper;
  */
 @ProxyGen
 @VertxGen
-public interface DataAccessService{
+public interface DataAccessService {
 
     String EB_ADDRESS = "data.eb.dataAccess";
-
-//    /**
-//     * register service.
-//     *
-//     * @param vertx
-//     */
-//    static void register(Vertx vertx, DataAccessService dataAccessService) {
-//        ProxyHelper.registerService(DataAccessService.class, vertx, dataAccessService, EB_ADDRESS);
-//    }
 
     /**
      * create service proxy.
@@ -38,6 +31,8 @@ public interface DataAccessService{
     static DataAccessService createProxy(Vertx vertx) {
         return ProxyHelper.createProxy(DataAccessService.class, vertx, EB_ADDRESS);
     }
+
+    void register();
 
     @Fluent
     DataAccessService query(String sql, Handler<AsyncResult<JsonObject>> handler);

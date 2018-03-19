@@ -2,14 +2,11 @@ package org.mendora.web.route.aider;
 
 import com.google.inject.Inject;
 import io.vertx.core.http.HttpMethod;
-import io.vertx.core.json.JsonObject;
 import io.vertx.rxjava.core.Vertx;
-import io.vertx.rxjava.core.eventbus.Message;
 import io.vertx.rxjava.ext.web.RoutingContext;
 import lombok.extern.slf4j.Slf4j;
 import org.mendora.guice.properties.ConfigHolder;
 import org.mendora.service.dataAccesser.rxjava.DataAccessService;
-import org.mendora.util.constant.EBAddress;
 import org.mendora.util.constant.SqlReferences;
 import org.mendora.util.result.WebResult;
 import org.mendora.web.scanner.RequestRouting;
@@ -27,8 +24,8 @@ public class DemoRoute {
     private Vertx vertx;
     @Inject
     private ConfigHolder configHolder;
-
-//    private DataAccessService dataAccessService = ;
+    @Inject
+    private DataAccessService dataAccessService;
 
     @RequestRouting(path = "/demo", method = HttpMethod.GET)
     public void demo(RoutingContext rc) {
@@ -42,7 +39,7 @@ public class DemoRoute {
 
     @RequestRouting(path = "/sqlStatement/query", method = HttpMethod.POST)
     public void query(RoutingContext rc) {
-        DataAccessService.createProxy(vertx)
+        dataAccessService
                 .rxQuery(rc.getBodyAsJson().getString(SqlReferences.STATEMENT.val()))
                 .subscribe(replyJson -> WebResult.consume(replyJson, rc));
     }

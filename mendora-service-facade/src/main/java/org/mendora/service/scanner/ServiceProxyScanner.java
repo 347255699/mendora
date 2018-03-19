@@ -1,10 +1,10 @@
 package org.mendora.service.scanner;
 
+import io.vertx.rxjava.core.Vertx;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.mendora.util.scanner.PackageScannerImpl;
-import rx.Observable;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,25 +18,26 @@ public class ServiceProxyScanner {
     private static final String MODULE_NAME = "SERVICE_PROXY_SCANNER";
     private static final String PROXY_SERVICE_PACKAGE_PATH = "org.mendora.service";
     private static final String PREFIX = "rxjava";
+    private Vertx vertx;
 
-    public void scan() {
+    @Inject
+    public ServiceProxyScanner(Vertx vertx) {
+        this.vertx = vertx;
+    }
+
+    public ServiceProxyBinder scan() {
         List<String> names = new PackageScannerImpl<>(PROXY_SERVICE_PACKAGE_PATH, this.getClass().getClassLoader())
                 .classNames(this.getClass().getName());
-        val clazzs = new ArrayList<>();
-        for(String name : names){
+        List<Class<Object>> clazzs = new ArrayList<>();
+        for (String name : names) {
             try {
-
-                clazzs.add(Class.forName(name));
+                if (isProxy(name))
+                    clazzs.add((Class<Object>) Class.forName(name));
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
-        Observable.from(names)
-                .filter(this::isProxy)
-                .subscribe(name -> {
-
-                        }, err -> log.error(err.getMessage()),
-                        () -> log.info(MODULE_NAME + "all the service proxy scanning over."));
+        return new ServiceProxyBinder(clazzs, vertx);
     }
 
     public boolean isProxy(String name) {

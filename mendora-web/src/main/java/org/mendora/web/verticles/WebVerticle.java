@@ -10,6 +10,7 @@ import io.vertx.rxjava.ext.web.handler.LoggerHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.mendora.guice.properties.ConfigHolder;
 import org.mendora.guice.verticle.DefaultVerticle;
+import org.mendora.service.scanner.ServiceProxyScanner;
 import org.mendora.web.binder.WebBinder;
 import org.mendora.web.constant.WebConst;
 import org.mendora.web.scanner.RouteScanner;
@@ -37,7 +38,7 @@ public class WebVerticle extends DefaultVerticle {
         log.info(MODULE_NAME + "into WebVerticle");
         Router router = Router.router(vertx);
         // injecting your bean into WebBinder class
-        injector = injector.createChildInjector(new WebBinder(router));
+        injector = injector.createChildInjector(new WebBinder(router), injector.getInstance(ServiceProxyScanner.class).scan());
         /** before routing request **/
         // use http request logging.
         router.route().handler(LoggerHandler.create(LoggerFormat.TINY));

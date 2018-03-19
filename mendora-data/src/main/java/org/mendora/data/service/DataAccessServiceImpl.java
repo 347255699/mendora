@@ -56,6 +56,14 @@ public class DataAccessServiceImpl implements DataAccessService {
     }
 
     /**
+     * register service
+     */
+    @Override
+    public void register() {
+        ProxyHelper.registerService(DataAccessService.class, vertx.getDelegate(), this, EB_ADDRESS);
+    }
+
+    /**
      * execute find sql statement without params
      *
      * @param sql
@@ -232,10 +240,4 @@ public class DataAccessServiceImpl implements DataAccessService {
         return this;
     }
 
-    /**
-     * register service
-     */
-    public void register() {
-        ProxyHelper.registerService(DataAccessService.class, vertx.getDelegate(), this, EB_ADDRESS);
-    }
 }
