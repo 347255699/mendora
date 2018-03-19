@@ -16,18 +16,18 @@ import io.vertx.serviceproxy.ProxyHelper;
  */
 @ProxyGen
 @VertxGen
-public interface DataAccessService {
+public interface DataAccessService{
 
     String EB_ADDRESS = "data.eb.dataAccess";
 
-    /**
-     * register service.
-     *
-     * @param vertx
-     */
-    static void register(Vertx vertx, DataAccessService dataAccessService) {
-        ProxyHelper.registerService(DataAccessService.class, vertx, dataAccessService, EB_ADDRESS);
-    }
+//    /**
+//     * register service.
+//     *
+//     * @param vertx
+//     */
+//    static void register(Vertx vertx, DataAccessService dataAccessService) {
+//        ProxyHelper.registerService(DataAccessService.class, vertx, dataAccessService, EB_ADDRESS);
+//    }
 
     /**
      * create service proxy.

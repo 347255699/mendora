@@ -1,8 +1,6 @@
 package org.mendora.guice.scanner;
 
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -22,6 +20,7 @@ import java.util.jar.JarInputStream;
  */
 @Slf4j
 @RequiredArgsConstructor
+@NoArgsConstructor
 public class PackageScannerImpl<T> implements PackageScanner<T> {
     private static final String MODULE_NAME = "PSCANNER:";
     @NonNull
@@ -44,9 +43,10 @@ public class PackageScannerImpl<T> implements PackageScanner<T> {
             try {
                 Class<T> clazz = (Class<T>) Class.forName(className);
                 if (!clazz.isInterface() && !clazz.isEnum()) {
-                    T t = clazz.newInstance();
-                    if (tClass.isAssignableFrom(t.getClass()))
+                    if (clazz.isAssignableFrom(tClass)) {
+                        T t = clazz.newInstance();
                         objs.add(t);
+                    }
                 }
             } catch (Exception e) {
                 log.error(MODULE_NAME + e.getMessage());
@@ -102,6 +102,21 @@ public class PackageScannerImpl<T> implements PackageScanner<T> {
                 return name;
             return null;
         });
+    }
+
+    @Override
+    public List<Class<?>> classWithNoFilter(String packagePath, ClassLoader cl) {
+        this.cl = cl;
+        List<String> classNames = classNames(packagePath, new ArrayList<>(), name -> name);
+        val clazzs = new ArrayList<Class<?>>(classNames.size());
+        classNames.forEach(name -> {
+            try {
+                clazzs.add(Class.forName(name));
+            } catch (ClassNotFoundException e) {
+                log.error(e.getMessage());
+            }
+        });
+        return clazzs;
     }
 
     /**

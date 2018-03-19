@@ -32,6 +32,14 @@ public interface PackageScanner<T> {
     List<String> classNames(String except);
 
     /**
+     * Find target element without filter.
+     * @param packagePath
+     * @return
+     */
+    @SneakyThrows
+    List<Class<?>> classWithNoFilter(String packagePath, ClassLoader cl);
+
+    /**
      * Scanning target class blow package except @param except and @param except2 class.
      *
      * @param except

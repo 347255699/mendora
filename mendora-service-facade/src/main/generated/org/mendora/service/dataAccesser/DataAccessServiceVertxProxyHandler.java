@@ -123,7 +123,6 @@ public class DataAccessServiceVertxProxyHandler extends ProxyHandler {
       accessed();
       switch (action) {
 
-
         case "query": {
           service.query((java.lang.String)json.getValue("sql"), createHandler(msg));
           break;

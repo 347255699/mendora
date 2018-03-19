@@ -52,15 +52,6 @@ public class DataAccessService {
   }
 
   /**
-   * register service.
-   * @param vertx 
-   * @param dataAccessService 
-   */
-  public static void register(Vertx vertx, DataAccessService dataAccessService) { 
-    org.mendora.service.dataAccesser.DataAccessService.register(vertx.getDelegate(), dataAccessService.getDelegate());
-  }
-
-  /**
    * create service proxy.
    * @param vertx 
    * @return 

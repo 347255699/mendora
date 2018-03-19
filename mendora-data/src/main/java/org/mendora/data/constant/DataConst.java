@@ -15,4 +15,6 @@ public interface DataConst {
     String DATA_DB_POSTGRE_MAX_POOL_SIZE = "data.db.postgre.maxPoolSize";
     String DATA_DB_POSTGRE_CHARSET = "data.db.postgre.charset";
     String DATA_DB_POSTGRE_QUERY_TIMEOUT = "data.db.postgre.queryTimeout";
+    // data module
+    String DATA_SERVICE_INTO_PACKAGE = "data.service.into.package";
 }

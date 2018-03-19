@@ -207,20 +207,6 @@ DataAccessService._create = function(jdel) {
   return obj;
 }
 /**
- register service.
-
- @memberof module:dataAccesserService-js/data_access_service
- @param vertx {Vertx} 
- @param dataAccessService {DataAccessService} 
- */
-DataAccessService.register = function(vertx, dataAccessService) {
-  var __args = arguments;
-  if (__args.length === 2 && typeof __args[0] === 'object' && __args[0]._jdel && typeof __args[1] === 'object' && __args[1]._jdel) {
-    JDataAccessService["register(io.vertx.core.Vertx,org.mendora.service.dataAccesser.DataAccessService)"](vertx._jdel, dataAccessService._jdel);
-  } else throw new TypeError('function invoked with invalid arguments');
-};
-
-/**
  create service proxy.
 
  @memberof module:dataAccesserService-js/data_access_service

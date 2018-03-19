@@ -12,7 +12,7 @@ import org.mendora.guice.properties.ConfigHolder;
 import org.mendora.guice.verticle.DefaultVerticle;
 import org.mendora.web.binder.WebBinder;
 import org.mendora.web.constant.WebConst;
-import org.mendora.web.route.RouteScanner;
+import org.mendora.web.scanner.RouteScanner;
 
 /**
  * created by:xmf
@@ -36,6 +36,7 @@ public class WebVerticle extends DefaultVerticle {
     public void start() {
         log.info(MODULE_NAME + "into WebVerticle");
         Router router = Router.router(vertx);
+        // injecting your bean into WebBinder class
         injector = injector.createChildInjector(new WebBinder(router));
         /** before routing request **/
         // use http request logging.
@@ -43,7 +44,9 @@ public class WebVerticle extends DefaultVerticle {
         // use http request body as Json,Buffer,String
         long bodyLimit = Long.parseLong(configHolder.property(WebConst.AAA_WEB_REQUEST_BODY_SIZE));
         router.route().handler(BodyHandler.create().setBodyLimit(bodyLimit));
+        // scanning verticle
         RouteScanner scanner = injector.getInstance(RouteScanner.class);
-        scanner.sann(configHolder.property(WebConst.AAA_WEB_ROUTE_PACKAGE), injector, WebVerticle.class.getClassLoader());
+        scanner.scan(configHolder.property(WebConst.AAA_WEB_ROUTE_PACKAGE), injector, WebVerticle.class.getClassLoader());
+
     }
 }
