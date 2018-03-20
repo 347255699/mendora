@@ -13,12 +13,12 @@ import org.mendora.guice.properties.ConfigHolder;
  * date:2018/3/12
  * description:
  */
-public class ClientHolder {
+public class ClientLoader {
     private Vertx vertx;
     private ConfigHolder configHolder;
 
     @Inject
-    public ClientHolder(Vertx vertx, ConfigHolder configHolder) {
+    public ClientLoader(Vertx vertx, ConfigHolder configHolder) {
         this.vertx = vertx;
         this.configHolder = configHolder;
     }

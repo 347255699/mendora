@@ -6,7 +6,7 @@ import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.ext.asyncsql.AsyncSQLClient;
 import lombok.extern.slf4j.Slf4j;
 import org.mendora.data.binder.DataBinder;
-import org.mendora.data.client.ClientHolder;
+import org.mendora.data.client.ClientLoader;
 import org.mendora.data.constant.DataConst;
 import org.mendora.guice.properties.ConfigHolder;
 import org.mendora.guice.scanner.serviceProvider.ServiceProviderScanner;
@@ -32,7 +32,7 @@ public class DataVerticle extends DefaultVerticle {
     @Override
     public void start() throws Exception {
         // injecting postgreClient
-        ClientHolder clientHolder = injector.getInstance(ClientHolder.class);
+        ClientLoader clientHolder = injector.getInstance(ClientLoader.class);
         AsyncSQLClient postgreSQLClient = clientHolder.createPostgreSQLClient();
         injector = injector.createChildInjector(new DataBinder(postgreSQLClient));
         ServiceProviderScanner scanner = injector.getInstance(ServiceProviderScanner.class);
