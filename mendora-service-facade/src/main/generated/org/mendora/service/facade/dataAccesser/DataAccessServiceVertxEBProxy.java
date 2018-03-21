@@ -16,6 +16,7 @@
 
 package org.mendora.service.facade.dataAccesser;
 
+import org.mendora.service.facade.dataAccesser.DataAccessService;
 import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.Future;
@@ -28,9 +29,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.function.Function;
-
+import io.vertx.serviceproxy.ProxyHelper;
 import io.vertx.serviceproxy.ServiceException;
 import io.vertx.serviceproxy.ServiceExceptionMessageCodec;
+import org.mendora.service.facade.dataAccesser.DataAccessService;
+import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 
@@ -58,6 +62,16 @@ public class DataAccessServiceVertxEBProxy implements DataAccessService {
       this._vertx.eventBus().registerDefaultCodec(ServiceException.class,
           new ServiceExceptionMessageCodec());
     } catch (IllegalStateException ex) {}
+  }
+
+  public void register() {
+    if (closed) {
+      throw new IllegalStateException("Proxy is closed");
+    }
+    JsonObject _json = new JsonObject();
+    DeliveryOptions _deliveryOptions = (_options != null) ? new DeliveryOptions(_options) : new DeliveryOptions();
+    _deliveryOptions.addHeader("action", "register");
+    _vertx.eventBus().send(_address, _json, _deliveryOptions);
   }
 
   public DataAccessService query(String sql, Handler<AsyncResult<JsonObject>> handler) {

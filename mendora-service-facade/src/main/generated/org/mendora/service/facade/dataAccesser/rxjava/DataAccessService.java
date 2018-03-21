@@ -16,6 +16,8 @@
 
 package org.mendora.service.facade.dataAccesser.rxjava;
 
+import java.util.Map;
+import rx.Observable;
 import rx.Single;
 import io.vertx.rxjava.core.Vertx;
 import io.vertx.core.json.JsonObject;
@@ -57,6 +59,10 @@ public class DataAccessService {
   public static DataAccessService createProxy(Vertx vertx) { 
     DataAccessService ret = DataAccessService.newInstance(org.mendora.service.facade.dataAccesser.DataAccessService.createProxy(vertx.getDelegate()));
     return ret;
+  }
+
+  public void register() { 
+    delegate.register();
   }
 
   public DataAccessService query(String sql, Handler<AsyncResult<JsonObject>> handler) { 

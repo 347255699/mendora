@@ -20,7 +20,7 @@ var Vertx = require('vertx-js/vertx');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
-var JDataAccessService = Java.type('org.mendora.service.dataAccesser.DataAccessService');
+var JDataAccessService = Java.type('org.mendora.service.facade.dataAccesser.DataAccessService');
 
 /**
  created by:xmf
@@ -199,7 +199,7 @@ var DataAccessService = function(j_val) {
   this._jdel = j_dataAccessService;
 };
 
-DataAccessService._jclass = utils.getJavaClass("org.mendora.service.dataAccesser.DataAccessService");
+DataAccessService._jclass = utils.getJavaClass("org.mendora.service.facade.dataAccesser.DataAccessService");
 DataAccessService._jtype = {
   accept: function(obj) {
     return DataAccessService._jclass.isInstance(obj._jdel);
