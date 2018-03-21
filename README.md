@@ -41,7 +41,7 @@
 		-service-facade rpc服务接口
 			-generated 服务代理代码生成输出目录
 			-java
-				-scanner 扫描器，内置服务代理扫描器，外部使用需要注意扫描范围
+			-scanner 扫描器，内置服务代理扫描器，外部使用需要注意扫描范围
 	
 		-service-rear rpc服务实现载体
 			-ApplicationMain.java 服务入口
