@@ -2,6 +2,7 @@ package org.mendora.util.result;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.rxjava.core.http.HttpServerResponse;
 import io.vertx.rxjava.ext.web.RoutingContext;
 import org.mendora.util.constant.SysConst;
 
@@ -129,6 +130,17 @@ public class WebResult {
         if (!payload.containsKey(SysConst.SYS_RET_CODE))
             payload.put(SysConst.SYS_RET_CODE, defaultRetCode);
         common(payload, rc);
+    }
+
+    /**
+     * customize your response payload and default status code
+     *
+     * @param result
+     */
+    public static void consume(JsonObject header, String result, RoutingContext rc) {
+        HttpServerResponse response = rc.response();
+        header.fieldNames().forEach(k -> response.putHeader(k, header.getString(k)));
+        response.end(result);
     }
 
     /**

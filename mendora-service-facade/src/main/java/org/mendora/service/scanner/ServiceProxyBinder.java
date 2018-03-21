@@ -12,10 +12,9 @@ import java.util.List;
  * date:2018/3/19
  * description:
  */
-
 public class ServiceProxyBinder extends AbstractModule {
-    private static final String MODULE_NAME = "SERVICE_PROXY_BINDER:";
     private Logger log = LoggerFactory.getLogger(ServiceProxyBinder.class);
+    private static final String MODULE_NAME = "SERVICE_PROXY_BINDER:";
     private List<Class<Object>> clazzs;
     private Vertx vertx;
 

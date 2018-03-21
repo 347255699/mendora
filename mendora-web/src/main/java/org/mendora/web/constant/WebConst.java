@@ -7,7 +7,8 @@ package org.mendora.web.constant;
  */
 public interface WebConst {
     // web
-    String AAA_WEB_LISTENNING_PORT = "web.listenning.port";
-    String AAA_WEB_ROUTE_PACKAGE = "web.route.package";
-    String AAA_WEB_REQUEST_BODY_SIZE = "web.request.body.size";
+    String WEB_ROUTE_PACKAGE = "web.route.package";
+    String WEB_REQUEST_BODY_SIZE = "web.request.body.size";
+    // service proxy
+    String WEB_SERVICE_PROXY_INTO_PACKAGE = "web.service.proxy.into.package";
 }

@@ -2,14 +2,14 @@ package org.mendora.web.route.aider;
 
 import com.google.inject.Inject;
 import io.vertx.core.http.HttpMethod;
-import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.ext.web.RoutingContext;
 import lombok.extern.slf4j.Slf4j;
-import org.mendora.guice.properties.ConfigHolder;
+import org.mendora.guice.scanner.route.AbstractRoute;
 import org.mendora.guice.scanner.route.RequestRouting;
 import org.mendora.guice.scanner.route.Route;
 import org.mendora.service.dataAccesser.rxjava.DataAccessService;
 import org.mendora.util.constant.SqlReferences;
+import org.mendora.util.result.JsonResult;
 import org.mendora.util.result.WebResult;
 
 /**
@@ -19,11 +19,7 @@ import org.mendora.util.result.WebResult;
  */
 @Slf4j
 @Route("/mendora/aider")
-public class DemoRoute {
-    @Inject
-    private Vertx vertx;
-    @Inject
-    private ConfigHolder configHolder;
+public class DemoRoute extends AbstractRoute {
     @Inject
     private DataAccessService dataAccessService;
 
@@ -43,6 +39,14 @@ public class DemoRoute {
                 .rxQuery(rc.getBodyAsJson().getString(SqlReferences.STATEMENT.val()))
                 .subscribe(replyJson -> WebResult.consume(replyJson, rc));
     }
+
+    @Override
+    public void route(String prefix) {
+        router.route(prefix + "/demo2").handler(rc -> {
+            WebResult.consume(JsonResult.empty(), "<h1>Just a test demo2.</h1>", rc);
+        });
+    }
+
     // route demo
 //        router.get(MODULE + "/demo").handler(rc -> {
 //            rc.response().end("<h1>Just a test demo.</h1>");

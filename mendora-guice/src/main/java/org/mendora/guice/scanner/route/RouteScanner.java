@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.ext.web.Router;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.mendora.guice.properties.BaseConst;
@@ -21,6 +22,7 @@ import java.util.List;
 @Slf4j
 public class RouteScanner {
     private static final String MODULE_NAME = "ROUTE-SCANNER:";
+    private static final String DEFAULT_METHOD_NAME = "route";
     private ConfigHolder configHolder;
     private Vertx vertx;
     private Router router;
@@ -38,11 +40,13 @@ public class RouteScanner {
      * @param clazz
      * @param injector
      */
+    @SneakyThrows
     private void invokeRequestRouting(Class<?> clazz, Injector injector) {
         log.info(MODULE_NAME + clazz.getName());
         Route route = clazz.getAnnotation(Route.class);
         String prefix = route.value();
         Object instance = injector.getInstance(clazz);
+        clazz.getMethod(DEFAULT_METHOD_NAME, String.class).invoke(instance, prefix);
         Method[] methods = clazz.getMethods();
         Arrays.asList(methods).forEach(method -> {
             if (method.isAnnotationPresent(RequestRouting.class)) {

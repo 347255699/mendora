@@ -69,6 +69,10 @@ public class JsonResult {
                 .put(SysConst.SYS_DATA, payload);
     }
 
+    public static JsonObject empty(){
+        return allocate(0);
+    }
+
     /**
      * 若状态码为成功则提取data，否则返回空
      *
