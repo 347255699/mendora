@@ -26,7 +26,7 @@
 			-binder ioc容器绑定类，默认提供Vertx, ConfigHolder实现
 			-cluster 集群启动器
 			-properties 配置文件加载组件
-			-scanner 扫描器，内置服务提供者扫描器
+			-scanner 扫描器，内置服务提供者(ServiceProvider)扫描器和路由(Route)扫描器
 			-verticle verticle工具包，内置verticle默认扫描器
 			-GuiceLauncher.java 启动入口
 	
@@ -35,7 +35,6 @@
 			-constant web服务的相关常量
 			-launcher web服务启动器
 			-route route包，controller层主要业务包，注意模块划分
-			-scanner 扫描器，内置Route扫描器
 			-verticles verticle包
 			-ApplicationMain.java 服务入口
 	
