@@ -20,7 +20,6 @@ import java.util.jar.JarInputStream;
  */
 @Slf4j
 @RequiredArgsConstructor
-@NoArgsConstructor
 public class PackageScannerImpl<T> implements PackageScanner<T> {
     private static final String MODULE_NAME = "PSCANNER:";
     @NonNull
@@ -41,10 +40,10 @@ public class PackageScannerImpl<T> implements PackageScanner<T> {
         List<T> objs = new ArrayList<>(classNames.size());
         classNames.forEach(className -> {
             try {
-                Class<T> clazz = (Class<T>) Class.forName(className);
+                Class<?> clazz = Class.forName(className);
                 if (!clazz.isInterface() && !clazz.isEnum()) {
                     if (clazz.isAssignableFrom(tClass)) {
-                        T t = clazz.newInstance();
+                        T t = (T) clazz.newInstance();
                         objs.add(t);
                     }
                 }
@@ -63,7 +62,6 @@ public class PackageScannerImpl<T> implements PackageScanner<T> {
      * @throws Exception
      */
     @Override
-    @SneakyThrows
     public List<T> scan(Class<T> except) {
         List<String> classNames = classNames(except.getName());
         return instantiation(classNames, except);
@@ -78,14 +76,12 @@ public class PackageScannerImpl<T> implements PackageScanner<T> {
      * @throws Exception
      */
     @Override
-    @SneakyThrows
     public List<T> scan(Class<T> except, Class<?> except2) {
         List<String> classNames = classNames(except.getName(), except2.getName());
         return instantiation(classNames, except);
     }
 
     @Override
-    @SneakyThrows
     public List<String> classNames(String except, String except2) {
         return classNames(this.packagePath, new ArrayList<>(), name -> {
             if (!except.equals(name) && !except2.equals(name))
@@ -95,7 +91,6 @@ public class PackageScannerImpl<T> implements PackageScanner<T> {
     }
 
     @Override
-    @SneakyThrows
     public List<String> classNames(String except) {
         return classNames(this.packagePath, new ArrayList<>(), name -> {
             if (!except.equals(name))
@@ -105,18 +100,8 @@ public class PackageScannerImpl<T> implements PackageScanner<T> {
     }
 
     @Override
-    public List<Class<?>> classWithNoFilter(String packagePath, ClassLoader cl) {
-        this.cl = cl;
-        List<String> classNames = classNames(packagePath, new ArrayList<>(), name -> name);
-        val clazzs = new ArrayList<Class<?>>(classNames.size());
-        classNames.forEach(name -> {
-            try {
-                clazzs.add(Class.forName(name));
-            } catch (ClassNotFoundException e) {
-                log.error(e.getMessage());
-            }
-        });
-        return clazzs;
+    public List<String> classNames() {
+        return classNames(packagePath, new ArrayList<>(), name -> name);
     }
 
     /**
@@ -126,7 +111,6 @@ public class PackageScannerImpl<T> implements PackageScanner<T> {
      * @param nameList
      * @return
      */
-    @SneakyThrows
     private List<String> classNames(String packagePath, List<String> nameList, ScannerFilter filter) {
         // "." -> "/"
         String splashPath = dotToSplash(packagePath);

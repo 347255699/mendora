@@ -2,6 +2,7 @@ package org.mendora.guice.scanner.serviceProvider;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.mendora.util.scanner.PackageScannerImpl;
 import rx.Observable;
@@ -44,9 +45,18 @@ public class ServiceProviderScanner {
      * @param cl
      */
     public void scan(String packagePath, ClassLoader cl, Injector injector) {
-        List<Class<?>> clazzs = new PackageScannerImpl<>().classWithNoFilter(packagePath, cl);
-        log.info(MODULE_NAME + clazzs.size());
-        Observable.from(clazzs)
+        List<String> names = new PackageScannerImpl<>(packagePath, cl).classNames();
+        log.info(MODULE_NAME + names.size());
+        Observable.from(names)
+                .map(name -> {
+                    Class<?> clazz = null;
+                    try {
+                        clazz = Class.forName(name);
+                    } catch (ClassNotFoundException e) {
+                        log.error(e.getMessage());
+                    }
+                    return clazz;
+                })
                 .filter(clazz -> clazz.isAnnotationPresent(ServiceProvider.class))
                 .subscribe(clazz -> registerService(clazz, injector),
                         err -> log.error(MODULE_NAME + err.getMessage()),

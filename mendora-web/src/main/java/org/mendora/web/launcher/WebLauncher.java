@@ -1,6 +1,5 @@
 package org.mendora.web.launcher;
 
-import com.google.inject.Injector;
 import lombok.extern.slf4j.Slf4j;
 import org.mendora.guice.GuiceLauncher;
 
@@ -18,15 +17,10 @@ public class WebLauncher {
     // entrance
     public static void launch(URL rootUrl) {
         try {
-            GuiceLauncher.launch(rootUrl, WebLauncher.class.getClassLoader(), WebLauncher::init);
+            GuiceLauncher.launch(rootUrl, WebLauncher.class.getClassLoader());
             log.info(MODULE_NAME + "initialization logger and config properties");
         } catch (Exception e) {
             log.error(MODULE_NAME + e.getMessage());
         }
     }
-
-    public static void init(Injector injector) {
-        // you has vertx now, you can do everything you like.
-    }
-
 }

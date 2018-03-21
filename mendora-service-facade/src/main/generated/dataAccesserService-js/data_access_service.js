@@ -37,6 +37,18 @@ var DataAccessService = function(j_val) {
   /**
 
    @public
+
+   */
+  this.register = function() {
+    var __args = arguments;
+    if (__args.length === 0) {
+      j_dataAccessService["register()"]();
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
    @param sql {string} 
    @param handler {function} 
    @return {DataAccessService}

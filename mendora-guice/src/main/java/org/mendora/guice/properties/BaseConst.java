@@ -20,5 +20,7 @@ public interface BaseConst {
     String BASE_HAZELCAST_HEARBEAT_INTERVAL_SECONDS = "base.hazelcast.heartbeat.interval.seconds";
     String BASE_CLUSTER_PORT = "base.cluster.port";
     String BASE_CLUSTER_SERVER_IPS = "base.cluster.server.ips";
+    // web
+    String BASE_WEB_LISTENNING_PORT = "web.listenning.port";
 
 }

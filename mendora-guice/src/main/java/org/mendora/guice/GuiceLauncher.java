@@ -2,7 +2,6 @@ package org.mendora.guice;
 
 import org.apache.log4j.PropertyConfigurator;
 import org.mendora.guice.cluster.Cluster;
-import org.mendora.guice.cluster.ClusterHandler;
 import org.mendora.guice.properties.BaseConst;
 import org.mendora.guice.properties.ConfigHolder;
 import org.mendora.guice.properties.PropertiesLoader;
@@ -15,7 +14,7 @@ import java.net.URL;
  * Created by kam on 2018/3/18.
  */
 public class GuiceLauncher {
-    public static void launch(URL rootUrl, ClassLoader cl, ClusterHandler handler) {
+    public static void launch(URL rootUrl, ClassLoader cl) {
         String rootPath = rootUrl.getPath().substring(0, rootUrl.getPath().lastIndexOf("/"));
         // initialization config properties
         String propPath = rootPath + "/config/config.properties";
@@ -32,7 +31,7 @@ public class GuiceLauncher {
             logger.info("System options: {}", e.getKey() + " : " + e.getValue());
         });
         // launching cluster.
-        Cluster.launch(configHolder, cl, handler);
+        Cluster.launch(configHolder, cl);
     }
 
 }

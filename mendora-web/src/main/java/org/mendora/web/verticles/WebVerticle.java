@@ -9,11 +9,11 @@ import io.vertx.rxjava.ext.web.handler.BodyHandler;
 import io.vertx.rxjava.ext.web.handler.LoggerHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.mendora.guice.properties.ConfigHolder;
+import org.mendora.guice.scanner.route.RouteScanner;
 import org.mendora.guice.verticle.DefaultVerticle;
 import org.mendora.service.scanner.ServiceProxyScanner;
 import org.mendora.web.binder.WebBinder;
 import org.mendora.web.constant.WebConst;
-import org.mendora.web.scanner.RouteScanner;
 
 /**
  * created by:xmf
@@ -48,6 +48,5 @@ public class WebVerticle extends DefaultVerticle {
         // scanning verticle
         RouteScanner scanner = injector.getInstance(RouteScanner.class);
         scanner.scan(configHolder.property(WebConst.AAA_WEB_ROUTE_PACKAGE), injector, WebVerticle.class.getClassLoader());
-
     }
 }

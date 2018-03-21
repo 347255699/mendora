@@ -22,7 +22,7 @@ public class Cluster {
     /**
      * launching Vertx micro kernel and deploy verticle.
      */
-    public static void launch(ConfigHolder configHolder, ClassLoader cl, ClusterHandler handler) {
+    public static void launch(ConfigHolder configHolder, ClassLoader cl) {
         // seconds
         String intervalSeconds = configHolder.property(BaseConst.BASE_HAZELCAST_HEARBEAT_INTERVAL_SECONDS);
         /** hazelcast configuration **/
@@ -48,7 +48,6 @@ public class Cluster {
                 Injector injector = Guice.createInjector(new GuiceVertxBinder(configHolder, vertx));
                 VerticleScanner scanner = injector.getInstance(VerticleScanner.class);
                 scanner.scan(configHolder.property(BaseConst.BASE_VERTICLE_INTO_PACKAGE), injector, cl);
-                handler.handle(injector);
             }
         });
     }

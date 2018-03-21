@@ -1,4 +1,4 @@
-package org.mendora.web.scanner;
+package org.mendora.guice.scanner.route;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -6,9 +6,9 @@ import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.ext.web.Router;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.mendora.guice.properties.BaseConst;
 import org.mendora.guice.properties.ConfigHolder;
 import org.mendora.util.scanner.PackageScannerImpl;
-import org.mendora.web.constant.WebConst;
 import rx.Observable;
 
 import java.lang.reflect.Method;
@@ -64,7 +64,7 @@ public class RouteScanner {
      * launching http server.
      */
     private void launchHttpServer() {
-        String webServerPort = configHolder.property(WebConst.AAA_WEB_LISTENNING_PORT);
+        String webServerPort = configHolder.property(BaseConst.BASE_WEB_LISTENNING_PORT);
         log.info(MODULE_NAME + "all the \"routes\" deployed");
         router.getRoutes().forEach(r -> log.info(r.getPath()));
         vertx.createHttpServer().requestHandler(router::accept)
@@ -79,9 +79,18 @@ public class RouteScanner {
      * @param injector
      */
     public void scan(String packagePath, Injector injector, ClassLoader cl) {
-        List<Class<?>> clazzs = new PackageScannerImpl().classWithNoFilter(packagePath, cl);
-        log.info(MODULE_NAME + clazzs.size());
-        Observable.from(clazzs)
+        List<String> names = new PackageScannerImpl(packagePath, cl).classNames();
+        log.info(MODULE_NAME + names.size());
+        Observable.from(names)
+                .map(name -> {
+                    Class clazz = null;
+                    try {
+                        clazz = Class.forName(name);
+                    } catch (ClassNotFoundException e) {
+                        log.error(e.getMessage());
+                    }
+                    return clazz;
+                })
                 .filter(clazz -> clazz.isAnnotationPresent(Route.class))
                 .subscribe(clazz -> invokeRequestRouting(clazz, injector),
                         err -> log.error(MODULE_NAME + err.getMessage()),

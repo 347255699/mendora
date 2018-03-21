@@ -1,7 +1,5 @@
 package org.mendora.util.scanner;
 
-import lombok.SneakyThrows;
-
 import java.util.List;
 
 /**
@@ -19,7 +17,6 @@ public interface PackageScanner<T> {
      * @param except2
      * @return
      */
-    @SneakyThrows
     List<String> classNames(String except, String except2);
 
     /**
@@ -28,16 +25,14 @@ public interface PackageScanner<T> {
      * @param except
      * @return
      */
-    @SneakyThrows
     List<String> classNames(String except);
 
     /**
-     * Find target element without filter.
-     * @param packagePath
+     * Find target element blow package
+     *
      * @return
      */
-    @SneakyThrows
-    List<Class<?>> classWithNoFilter(String packagePath, ClassLoader cl);
+    List<String> classNames();
 
     /**
      * Scanning target class blow package except @param except and @param except2 class.
@@ -46,7 +41,6 @@ public interface PackageScanner<T> {
      * @param except2
      * @return
      */
-    @SneakyThrows
     List<T> scan(Class<T> except, Class<?> except2);
 
     /**
@@ -55,7 +49,6 @@ public interface PackageScanner<T> {
      * @param except
      * @return
      */
-    @SneakyThrows
     List<T> scan(Class<T> except);
 
     /**
@@ -64,6 +57,5 @@ public interface PackageScanner<T> {
      * @param classNames
      * @return
      */
-    @SneakyThrows
     List<T> instantiation(List<String> classNames, Class<T> tClass);
 }

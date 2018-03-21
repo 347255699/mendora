@@ -6,11 +6,11 @@ import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.ext.web.RoutingContext;
 import lombok.extern.slf4j.Slf4j;
 import org.mendora.guice.properties.ConfigHolder;
+import org.mendora.guice.scanner.route.RequestRouting;
+import org.mendora.guice.scanner.route.Route;
 import org.mendora.service.dataAccesser.rxjava.DataAccessService;
 import org.mendora.util.constant.SqlReferences;
 import org.mendora.util.result.WebResult;
-import org.mendora.web.scanner.RequestRouting;
-import org.mendora.web.scanner.Route;
 
 /**
  * created by:xmf
