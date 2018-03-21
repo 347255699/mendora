@@ -63,7 +63,7 @@
 			-verticles verticle包
 			-ApplicationMain.java 服务入口
 ### 基础结构图
-![基础结构图](doc/structure.png "png")
+![基础结构图](doc/draft/structure.png "png")
 ## 架构思想
 ### 微服务
 系统采用微服务形式搭建，系统由多个微服务构成，微服务可部署至一台或多台服务器上且可部署一或多个实例。微服务之间可互相感知存在和通信。微服务之间每`15s`发送一次存在感知请求。若某个服务断开可以通过日志中的连接错误知晓。
@@ -211,8 +211,16 @@ public class DataAccessServiceImpl implements DataAccessService {
     ServiceProviderScanner scanner = injector.getInstance(ServiceProviderScanner.class);
     scanner.scan(configHolder.property(DataConst.DATA_SERVICE_INTO_PACKAGE), DataVerticle.class.getClassLoader(), injector);
 ```
-## 扫描器
+## 其他
+### 扫描器
 系统提供了四种扫描器用于批量操作类。分别是VerticleScanner、RouteScanner、ServiceProviderScanner和ServiceProxyScanner。扫描单位为类包。
+### Util包
+提供了一些特别优秀的工具包，如`result`，顾名思义用于快速生成常用结果集，如Http请求结果集等。
+### doc文件夹
+系统中的所设计的文档可以copy一份置放在该目录下，让开放人员可以快速浏览。
+
+
+
 
 
 
