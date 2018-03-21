@@ -15,7 +15,7 @@ import io.vertx.serviceproxy.ProxyHelper;
 import io.vertx.serviceproxy.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.mendora.guice.scanner.serviceProvider.ServiceProvider;
-import org.mendora.service.dataAccesser.DataAccessService;
+import org.mendora.service.facade.dataAccesser.DataAccessService;
 import org.mendora.util.constant.RetCode;
 import org.mendora.util.constant.SqlReferences;
 import org.mendora.util.result.JsonResult;

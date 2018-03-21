@@ -1,4 +1,4 @@
-package org.mendora.service.dataAccesser;
+package org.mendora.service.facade.dataAccesser;
 
 import io.vertx.codegen.annotations.Fluent;
 import io.vertx.codegen.annotations.ProxyGen;
@@ -8,8 +8,6 @@ import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.serviceproxy.ProxyHelper;
-
-import javax.xml.crypto.Data;
 
 /**
  * created by:xmf

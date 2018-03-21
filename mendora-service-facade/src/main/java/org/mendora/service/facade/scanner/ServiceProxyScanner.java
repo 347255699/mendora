@@ -1,4 +1,4 @@
-package org.mendora.service.scanner;
+package org.mendora.service.facade.scanner;
 
 import io.vertx.rxjava.core.Vertx;
 import org.mendora.util.scanner.PackageScannerImpl;

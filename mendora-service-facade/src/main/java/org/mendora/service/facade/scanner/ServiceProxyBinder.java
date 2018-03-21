@@ -1,4 +1,4 @@
-package org.mendora.service.scanner;
+package org.mendora.service.facade.scanner;
 
 import com.google.inject.AbstractModule;
 import io.vertx.rxjava.core.Vertx;

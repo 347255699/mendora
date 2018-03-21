@@ -14,10 +14,8 @@
  * under the License.
  */
 
-package org.mendora.service.dataAccesser.rxjava;
+package org.mendora.service.facade.dataAccesser.rxjava;
 
-import java.util.Map;
-import rx.Observable;
 import rx.Single;
 import io.vertx.rxjava.core.Vertx;
 import io.vertx.core.json.JsonObject;
@@ -30,24 +28,24 @@ import io.vertx.core.Handler;
  * description:
  *
  * <p/>
- * NOTE: This class has been automatically generated from the {@link org.mendora.service.dataAccesser.DataAccessService original} non RX-ified interface using Vert.x codegen.
+ * NOTE: This class has been automatically generated from the {@link org.mendora.service.facade.dataAccesser.DataAccessService original} non RX-ified interface using Vert.x codegen.
  */
 
-@io.vertx.lang.rxjava.RxGen(org.mendora.service.dataAccesser.DataAccessService.class)
+@io.vertx.lang.rxjava.RxGen(org.mendora.service.facade.dataAccesser.DataAccessService.class)
 public class DataAccessService {
 
   public static final io.vertx.lang.rxjava.TypeArg<DataAccessService> __TYPE_ARG = new io.vertx.lang.rxjava.TypeArg<>(
-    obj -> new DataAccessService((org.mendora.service.dataAccesser.DataAccessService) obj),
+    obj -> new DataAccessService((org.mendora.service.facade.dataAccesser.DataAccessService) obj),
     DataAccessService::getDelegate
   );
 
-  private final org.mendora.service.dataAccesser.DataAccessService delegate;
+  private final org.mendora.service.facade.dataAccesser.DataAccessService delegate;
   
-  public DataAccessService(org.mendora.service.dataAccesser.DataAccessService delegate) {
+  public DataAccessService(org.mendora.service.facade.dataAccesser.DataAccessService delegate) {
     this.delegate = delegate;
   }
 
-  public org.mendora.service.dataAccesser.DataAccessService getDelegate() {
+  public org.mendora.service.facade.dataAccesser.DataAccessService getDelegate() {
     return delegate;
   }
 
@@ -57,7 +55,7 @@ public class DataAccessService {
    * @return 
    */
   public static DataAccessService createProxy(Vertx vertx) { 
-    DataAccessService ret = DataAccessService.newInstance(org.mendora.service.dataAccesser.DataAccessService.createProxy(vertx.getDelegate()));
+    DataAccessService ret = DataAccessService.newInstance(org.mendora.service.facade.dataAccesser.DataAccessService.createProxy(vertx.getDelegate()));
     return ret;
   }
 
@@ -139,7 +137,7 @@ public class DataAccessService {
   }
 
 
-  public static  DataAccessService newInstance(org.mendora.service.dataAccesser.DataAccessService arg) {
+  public static  DataAccessService newInstance(org.mendora.service.facade.dataAccesser.DataAccessService arg) {
     return arg != null ? new DataAccessService(arg) : null;
   }
 }

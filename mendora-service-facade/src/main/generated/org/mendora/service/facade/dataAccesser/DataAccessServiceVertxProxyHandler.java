@@ -14,36 +14,25 @@
 * under the License.
 */
 
-package org.mendora.service.dataAccesser;
+package org.mendora.service.facade.dataAccesser;
 
-import org.mendora.service.dataAccesser.DataAccessService;
 import io.vertx.core.Vertx;
 import io.vertx.core.Handler;
 import io.vertx.core.AsyncResult;
-import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.eventbus.MessageConsumer;
-import io.vertx.core.eventbus.DeliveryOptions;
-import io.vertx.core.eventbus.ReplyException;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.json.JsonArray;
-import java.util.Collection;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import io.vertx.serviceproxy.ProxyHelper;
+
 import io.vertx.serviceproxy.ProxyHandler;
 import io.vertx.serviceproxy.ServiceException;
 import io.vertx.serviceproxy.ServiceExceptionMessageCodec;
-import io.vertx.core.Vertx;
-import io.vertx.core.json.JsonObject;
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Handler;
-import org.mendora.service.dataAccesser.DataAccessService;
 
 /*
   Generated Proxy code - DO NOT EDIT

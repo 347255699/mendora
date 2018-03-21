@@ -8,8 +8,8 @@ import io.vertx.rxjava.ext.web.handler.LoggerHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.mendora.guice.scanner.route.RouteScanner;
 import org.mendora.guice.verticle.DefaultVerticle;
-import org.mendora.service.scanner.ServiceProxyBinder;
-import org.mendora.service.scanner.ServiceProxyScanner;
+import org.mendora.service.facade.scanner.ServiceProxyBinder;
+import org.mendora.service.facade.scanner.ServiceProxyScanner;
 import org.mendora.web.binder.WebBinder;
 import org.mendora.web.constant.WebConst;
 
