@@ -22,6 +22,8 @@ public class GuiceLauncher {
         // loading app root path
         configHolder.setProperty(BaseConst.BASE_ROOT_PATH, rootPath);
         System.setProperty(BaseConst.BASE_ROOT_PATH, rootPath);
+        // loading cup number.
+        configHolder.setProperty(BaseConst.BASE_AVAILABLE_PROCESSORS, Runtime.getRuntime().availableProcessors());
         // initialization logger
         System.setProperty("vertx.logger-delegate-factory-class-name", configHolder.property(BaseConst.BASE_LOGGER_FACTORY_CLASS_NAME));
         String log4jConfigPath = rootPath + configHolder.property(BaseConst.BASE_LOGGER_CONFIG_PATH);

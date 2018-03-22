@@ -35,3 +35,5 @@
 
 坑：
     注意服务的启动顺序，data和rear模块务必先启动
+    jwt keystore生成命令：keytool -genseckey -keystore keystore.jceks -storetype jceks -storepass crmudeafx -keyalg HMacSHA512 -keysize 2048 -alias HS512 -keypass crmudeafx
+    其中keystore参数和keypass参数要一致，作为秘钥

@@ -1,4 +1,4 @@
-package org.mendora.web.verticles;
+package org.mendora.aider.verticles;
 
 import io.vertx.core.DeploymentOptions;
 import io.vertx.ext.web.handler.LoggerFormat;
@@ -6,13 +6,12 @@ import io.vertx.rxjava.ext.web.Router;
 import io.vertx.rxjava.ext.web.handler.BodyHandler;
 import io.vertx.rxjava.ext.web.handler.LoggerHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.mendora.aider.binder.AiderBinder;
+import org.mendora.aider.constant.AiderConst;
 import org.mendora.guice.scanner.route.RouteScanner;
 import org.mendora.guice.verticle.DefaultVerticle;
 import org.mendora.service.facade.scanner.ServiceProxyBinder;
 import org.mendora.service.facade.scanner.ServiceProxyScanner;
-import org.mendora.web.auth.WebAuth;
-import org.mendora.web.binder.WebBinder;
-import org.mendora.web.constant.WebConst;
 
 /**
  * created by:xmf
@@ -20,7 +19,7 @@ import org.mendora.web.constant.WebConst;
  * description:
  */
 @Slf4j
-public class WebVerticle extends DefaultVerticle {
+public class AiderVerticle extends DefaultVerticle {
     private static final String MODULE_NAME = "WEB-VERTICLE:";
 
     @Override
@@ -30,31 +29,21 @@ public class WebVerticle extends DefaultVerticle {
 
     @Override
     public void start() {
-        log.info(MODULE_NAME + "into WebVerticle");
+        log.info(MODULE_NAME + "into AiderVerticle");
         Router router = Router.router(vertx);
-        WebAuth webAuth = new WebAuth(vertx, configHolder);
-
-        // injecting your bean into WebBinder class
-        String proxyIntoPackage = configHolder.property(WebConst.WEB_SERVICE_PROXY_INTO_PACKAGE);
+        // injecting your bean into AiderBinder class
+        String proxyIntoPackage = configHolder.property(AiderConst.AIDER_SERVICE_PROXY_INTO_PACKAGE);
         ServiceProxyBinder serviceProxyBinder = injector.getInstance(ServiceProxyScanner.class).scan(proxyIntoPackage);
-        injector = injector.createChildInjector(new WebBinder(router, webAuth), serviceProxyBinder);
+        injector = injector.createChildInjector(new AiderBinder(router), serviceProxyBinder);
 
-        // before routing request
-        beforeRoutingRequest(router);
-
-        // scanning route
-        RouteScanner scanner = injector.getInstance(RouteScanner.class);
-        scanner.scan(configHolder.property(WebConst.WEB_ROUTE_INTO_PACKAGE), injector, WebVerticle.class.getClassLoader());
-    }
-
-    /**
-     * setting handler before routing request
-     */
-    private void beforeRoutingRequest(Router router){
+        /** before routing request **/
         // use http request logging.
         router.route().handler(LoggerHandler.create(LoggerFormat.TINY));
         // use http request body as Json,Buffer,String
-        long bodyLimit = Long.parseLong(configHolder.property(WebConst.WEB_REQUEST_BODY_SIZE));
+        long bodyLimit = Long.parseLong(configHolder.property(AiderConst.AIDER_REQUEST_BODY_SIZE));
         router.route().handler(BodyHandler.create().setBodyLimit(bodyLimit));
+        // scanning verticle
+        RouteScanner scanner = injector.getInstance(RouteScanner.class);
+        scanner.scan(configHolder.property(AiderConst.AIDER_ROUTE_INTO_PACKAGE), injector, AiderVerticle.class.getClassLoader());
     }
 }

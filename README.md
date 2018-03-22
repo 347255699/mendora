@@ -19,7 +19,7 @@
 > note：集成版本可查看项目.pom文件properties节点
 
 ## 体系结构
-共划分为七个模块。分别为四个服务包，aider、web、data和service-rear。三个基础包，guice、util和service-facade。各包的详细作用可参见下表。
+共划分为七个模块。分别为四个服务包，aider、web、data和service-rear。三个基础包，guice、util和service-facade。各包的详细作用可参见下表：
 
 	-root
 		-guice 集成了guice ioc容器的集群服务启动器
@@ -161,7 +161,7 @@ injector = injector.createChildInjector(serviceProxyBinder);
 ```
 扫描完成后即可通过@Inject的方式注入服务，在Route中使用看起来是这样的：
 ```java
-@Route("/mendora/aider")
+@Route(route)
 public class DemoRoute extends AbstractRoute {
     @Inject
     DataAccesserService service;
