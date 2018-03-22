@@ -2,7 +2,6 @@ package org.mendora.guice.scanner.serviceProvider;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.mendora.util.scanner.PackageScannerImpl;
 import rx.Observable;
@@ -53,7 +52,7 @@ public class ServiceProviderScanner {
                     try {
                         clazz = Class.forName(name);
                     } catch (ClassNotFoundException e) {
-                        log.error(e.getMessage());
+                        Observable.error(e);
                     }
                     return clazz;
                 })

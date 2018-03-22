@@ -41,7 +41,7 @@ public class ServiceProxyScanner {
                 if (rxServiceProxy(name))
                     clazzs.add((Class<Object>) Class.forName(name));
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                log.error(MODULE_NAME + e.getMessage());
             }
         }
         return new ServiceProxyBinder(clazzs, vertx);

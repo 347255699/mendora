@@ -57,7 +57,7 @@ public class RouteScanner {
                     try {
                         method.invoke(instance, rc);
                     } catch (Exception e) {
-                        log.error(e.getMessage());
+                        log.error(MODULE_NAME + e.getMessage());
                     }
                 });
             }
@@ -91,7 +91,7 @@ public class RouteScanner {
                     try {
                         clazz = Class.forName(name);
                     } catch (ClassNotFoundException e) {
-                        log.error(e.getMessage());
+                        Observable.error(e);
                     }
                     return clazz;
                 })
