@@ -74,7 +74,7 @@ public class JsonResult {
     }
 
     /**
-     * 若状态码为成功则提取data，否则返回空
+     * if status was success unzip data result,else return null value.
      *
      * @param result
      * @return
@@ -89,7 +89,7 @@ public class JsonResult {
     }
 
     /**
-     * 若状态码为半成功则提取data，否则返回空
+     * if status was half success unzip data result,else return null value.
      *
      * @param result
      * @return
@@ -104,7 +104,7 @@ public class JsonResult {
     }
 
     /**
-     * 判断是否成功
+     * assert success status.
      *
      * @param result
      * @return
@@ -118,7 +118,7 @@ public class JsonResult {
     }
 
     /**
-     * 判断是否为半成功
+     * assert half success status.
      *
      * @param result
      * @return
@@ -132,7 +132,7 @@ public class JsonResult {
     }
 
     /**
-     * 判断是否为失败
+     * assert fail status.
      *
      * @param result
      * @return
