@@ -1,6 +1,7 @@
 package org.mendora.util.constant;
 
 import io.vertx.core.json.JsonObject;
+import org.mendora.util.result.JsonResult;
 
 public enum MongoReferences {
     COLLECTION("collection"), DOCUMENT("document"),
@@ -14,11 +15,11 @@ public enum MongoReferences {
     }
 
     public String str(JsonObject params) {
-        return params.getString(val);
+        return params.containsKey(val) ? params.getString(val) : null;
     }
 
     public JsonObject json(JsonObject params) {
-        return params.getJsonObject(val);
+        return params.containsKey(val) ? params.getJsonObject(val) : JsonResult.empty();
     }
 
     public String val() {
