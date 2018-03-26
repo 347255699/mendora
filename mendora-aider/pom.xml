@@ -8,7 +8,6 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>mendora-aider</artifactId>
     <properties>
         <common.version>1.0-SNAPSHOT</common.version>
@@ -18,11 +17,6 @@
         <dependency>
             <groupId>org.mendora</groupId>
             <artifactId>mendora-guice</artifactId>
-            <version>${common.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mendora</groupId>
-            <artifactId>mendora-util</artifactId>
             <version>${common.version}</version>
         </dependency>
         <dependency>
@@ -41,7 +35,6 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>

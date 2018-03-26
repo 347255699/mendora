@@ -5,8 +5,10 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.ext.asyncsql.AsyncSQLClient;
 import io.vertx.rxjava.ext.asyncsql.PostgreSQLClient;
+import io.vertx.rxjava.ext.mongo.MongoClient;
 import org.mendora.data.constant.DataConst;
 import org.mendora.guice.properties.ConfigHolder;
+import org.mendora.util.result.JsonResult;
 
 /**
  * created by:xmf
@@ -35,5 +37,15 @@ public class ClientLoader {
                 .put("charset", configHolder.property(DataConst.DATA_DB_POSTGRE_CHARSET))
                 .put("queryTimeout", Integer.parseInt(configHolder.property(DataConst.DATA_DB_POSTGRE_QUERY_TIMEOUT)));
         return PostgreSQLClient.createShared(vertx, postgreSQLClientConfig);
+    }
+
+    /**
+     * create mongodb client.
+     * @return
+     */
+    public MongoClient createMongoClient(){
+        JsonObject mongoUri = JsonResult.one()
+                .put("connection_string", configHolder.property(DataConst.DATA_DB_MONGO_URI));
+        return MongoClient.createShared(vertx, mongoUri);
     }
 }

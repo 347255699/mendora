@@ -21,11 +21,6 @@
         </dependency>
         <dependency>
             <groupId>org.mendora</groupId>
-            <artifactId>mendora-util</artifactId>
-            <version>${common.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mendora</groupId>
             <artifactId>mendora-service-facade</artifactId>
             <version>${common.version}</version>
         </dependency>

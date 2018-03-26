@@ -2,6 +2,7 @@ package org.mendora.data.verticles;
 
 import io.vertx.core.DeploymentOptions;
 import io.vertx.rxjava.ext.asyncsql.AsyncSQLClient;
+import io.vertx.rxjava.ext.mongo.MongoClient;
 import lombok.extern.slf4j.Slf4j;
 import org.mendora.data.binder.DataBinder;
 import org.mendora.data.client.ClientLoader;
@@ -23,10 +24,13 @@ public class DataVerticle extends DefaultVerticle {
 
     @Override
     public void start() throws Exception {
-        // injecting postgreClient
+        // injecting db client instance
         ClientLoader clientHolder = injector.getInstance(ClientLoader.class);
         AsyncSQLClient postgreSQLClient = clientHolder.createPostgreSQLClient();
-        injector = injector.createChildInjector(new DataBinder(postgreSQLClient));
+        MongoClient mongoClient = clientHolder.createMongoClient();
+        injector = injector.createChildInjector(new DataBinder(postgreSQLClient, mongoClient));
+
+        // scanning service provider implementation
         ServiceProviderScanner scanner = injector.getInstance(ServiceProviderScanner.class);
         scanner.scan(configHolder.property(DataConst.DATA_SERVICE_INTO_PACKAGE), DataVerticle.class.getClassLoader(), injector);
     }

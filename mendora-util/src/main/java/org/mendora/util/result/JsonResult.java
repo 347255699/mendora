@@ -17,6 +17,14 @@ public class JsonResult {
         return new JsonObject(MapResult.allocate(initialCapacity));
     }
 
+    public static JsonObject one(){
+        return allocate(1);
+    }
+
+    public static JsonObject two(){
+        return allocate(2);
+    }
+
     public static JsonObject succ() {
         return allocate(1).put(SysConst.SYS_RET_CODE, RetCode.SUCCESS.val());
     }

@@ -22,11 +22,6 @@
         </dependency>
         <dependency>
             <groupId>org.mendora</groupId>
-            <artifactId>mendora-util</artifactId>
-            <version>${common.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mendora</groupId>
             <artifactId>mendora-service-facade</artifactId>
             <version>${common.version}</version>
         </dependency>
@@ -41,7 +36,6 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>

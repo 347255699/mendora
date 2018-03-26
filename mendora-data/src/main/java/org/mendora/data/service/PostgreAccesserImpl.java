@@ -2,7 +2,6 @@ package org.mendora.data.service;
 
 import com.google.inject.Inject;
 import io.vertx.core.AsyncResult;
-import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
@@ -12,13 +11,11 @@ import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.ext.asyncsql.AsyncSQLClient;
 import io.vertx.rxjava.ext.sql.SQLConnection;
 import io.vertx.serviceproxy.ProxyHelper;
-import io.vertx.serviceproxy.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.mendora.guice.scanner.serviceProvider.ServiceProvider;
-import org.mendora.service.facade.dataAccesser.DataAccessService;
-import org.mendora.util.constant.RetCode;
+import org.mendora.service.facade.dataAccesser.PostgreAccesser;
 import org.mendora.util.constant.SqlReferences;
-import org.mendora.util.result.JsonResult;
+import org.mendora.util.result.AsyncHandlerResult;
 
 /**
  * created by:xmf
@@ -27,24 +24,12 @@ import org.mendora.util.result.JsonResult;
  */
 @Slf4j
 @ServiceProvider
-public class DataAccessServiceImpl implements DataAccessService {
-    // private static final int CLIENT_NO_READY = -2;
-    private static final int POSTGRE_CONNECT_FAIL = -3;
+public class PostgreAccesserImpl implements PostgreAccesser {
+    private static final String MODULE_NAME = "POSTGRE_ACCESSER_IMPL";
     @Inject
     private AsyncSQLClient postgreSQLClient;
     @Inject
     private Vertx vertx;
-
-    /**
-     * reply failure message.
-     *
-     * @param handler
-     * @param failureCode
-     * @param message
-     */
-    private void fail(Handler<AsyncResult<JsonObject>> handler, int failureCode, String message) {
-        handler.handle(ServiceException.fail(failureCode, message));
-    }
 
     /**
      * connecting postgreSQL db failure.
@@ -52,7 +37,7 @@ public class DataAccessServiceImpl implements DataAccessService {
      * @param handler
      */
     private void connectFailure(Handler<AsyncResult<JsonObject>> handler) {
-        fail(handler, POSTGRE_CONNECT_FAIL, "postgreSQL db connect failure.");
+        AsyncHandlerResult.fail(MODULE_NAME + "postgreSQL db connect failure.", handler);
     }
 
     /**
@@ -60,7 +45,7 @@ public class DataAccessServiceImpl implements DataAccessService {
      */
     @Override
     public void register() {
-        ProxyHelper.registerService(DataAccessService.class, vertx.getDelegate(), this, EB_ADDRESS);
+        ProxyHelper.registerService(PostgreAccesser.class, vertx.getDelegate(), this, EB_ADDRESS);
     }
 
     /**
@@ -70,7 +55,7 @@ public class DataAccessServiceImpl implements DataAccessService {
      * @param handler
      */
     @Override
-    public DataAccessService query(String sql, Handler<AsyncResult<JsonObject>> handler) {
+    public PostgreAccesser query(String sql, Handler<AsyncResult<JsonObject>> handler) {
         postgreSQLClient.getConnection(res -> {
             if (res.succeeded()) {
                 SQLConnection conn = res.result();
@@ -79,8 +64,8 @@ public class DataAccessServiceImpl implements DataAccessService {
                         .map(JsonArray::new)
                         .subscribe(rows -> {
                             conn.close();
-                            handler.handle(Future.succeededFuture(JsonResult.succWithRows(rows)));
-                        }, err -> fail(handler, RetCode.FAILURE.val(), err.getMessage()));
+                            AsyncHandlerResult.succWithRows(rows, handler);
+                        }, err -> AsyncHandlerResult.fail(err, handler));
             } else {
                 connectFailure(handler);
             }
@@ -95,7 +80,7 @@ public class DataAccessServiceImpl implements DataAccessService {
      * @param handler
      */
     @Override
-    public DataAccessService queryWithParams(JsonObject doc, Handler<AsyncResult<JsonObject>> handler) {
+    public PostgreAccesser queryWithParams(JsonObject doc, Handler<AsyncResult<JsonObject>> handler) {
         String sql = doc.getString(SqlReferences.STATEMENT.val());
         JsonArray params = doc.getJsonArray(SqlReferences.PARAMS.val());
         postgreSQLClient.getConnection(res -> {
@@ -106,8 +91,8 @@ public class DataAccessServiceImpl implements DataAccessService {
                         .map(JsonArray::new)
                         .subscribe(rows -> {
                             conn.close();
-                            handler.handle(Future.succeededFuture(JsonResult.succWithRows(rows)));
-                        }, err -> fail(handler, RetCode.FAILURE.val(), err.getMessage()));
+                            AsyncHandlerResult.succWithRows(rows, handler);
+                        }, err -> AsyncHandlerResult.fail(err, handler));
             } else {
                 connectFailure(handler);
             }
@@ -122,17 +107,18 @@ public class DataAccessServiceImpl implements DataAccessService {
      * @param handler
      */
     @Override
-    public DataAccessService querySingle(String sql, Handler<AsyncResult<JsonObject>> handler) {
+    public PostgreAccesser querySingle(String sql, Handler<AsyncResult<JsonObject>> handler) {
         postgreSQLClient.getConnection(res -> {
             if (res.succeeded()) {
                 SQLConnection conn = res.result();
                 conn.rxQuery(sql)
                         .map(ResultSet::getRows)
                         .map(JsonArray::new)
-                        .subscribe(rows -> {
+                        .map(rows -> rows.getJsonObject(0))
+                        .subscribe(record -> {
                             conn.close();
-                            handler.handle(Future.succeededFuture(JsonResult.succ(rows.getJsonObject(0))));
-                        }, err -> fail(handler, RetCode.FAILURE.val(), err.getMessage()));
+                            AsyncHandlerResult.succ(record, handler);
+                        }, err -> AsyncHandlerResult.fail(err, handler));
             } else {
                 connectFailure(handler);
             }
@@ -147,7 +133,7 @@ public class DataAccessServiceImpl implements DataAccessService {
      * @param handler
      */
     @Override
-    public DataAccessService querySingleWithParams(JsonObject doc, Handler<AsyncResult<JsonObject>> handler) {
+    public PostgreAccesser querySingleWithParams(JsonObject doc, Handler<AsyncResult<JsonObject>> handler) {
         String sql = doc.getString(SqlReferences.STATEMENT.val());
         JsonArray params = doc.getJsonArray(SqlReferences.PARAMS.val());
         postgreSQLClient.getConnection(res -> {
@@ -156,10 +142,11 @@ public class DataAccessServiceImpl implements DataAccessService {
                 conn.rxQueryWithParams(sql, params)
                         .map(ResultSet::getRows)
                         .map(JsonArray::new)
-                        .subscribe(rows -> {
+                        .map(rows -> rows.getJsonObject(0))
+                        .subscribe(record -> {
                             conn.close();
-                            handler.handle(Future.succeededFuture(JsonResult.succ(rows.getJsonObject(0))));
-                        }, err -> fail(handler, RetCode.FAILURE.val(), err.getMessage()));
+                            AsyncHandlerResult.succ(record, handler);
+                        }, err -> AsyncHandlerResult.fail(err, handler));
             } else {
                 connectFailure(handler);
             }
@@ -174,7 +161,7 @@ public class DataAccessServiceImpl implements DataAccessService {
      * @param handler
      */
     @Override
-    public DataAccessService update(String sql, Handler<AsyncResult<JsonObject>> handler) {
+    public PostgreAccesser update(String sql, Handler<AsyncResult<JsonObject>> handler) {
         postgreSQLClient.getConnection(res -> {
             if (res.succeeded()) {
                 SQLConnection conn = res.result();
@@ -182,8 +169,8 @@ public class DataAccessServiceImpl implements DataAccessService {
                         .map(UpdateResult::toJson)
                         .subscribe(updateResult -> {
                             conn.close();
-                            handler.handle(Future.succeededFuture(JsonResult.succ(updateResult)));
-                        }, err -> fail(handler, RetCode.FAILURE.val(), err.getMessage()));
+                            AsyncHandlerResult.succ(updateResult, handler);
+                        }, err -> AsyncHandlerResult.fail(err, handler));
             } else {
                 connectFailure(handler);
             }
@@ -198,7 +185,7 @@ public class DataAccessServiceImpl implements DataAccessService {
      * @param handler
      */
     @Override
-    public DataAccessService updateWithParams(JsonObject doc, Handler<AsyncResult<JsonObject>> handler) {
+    public PostgreAccesser updateWithParams(JsonObject doc, Handler<AsyncResult<JsonObject>> handler) {
         String sql = doc.getString(SqlReferences.STATEMENT.val());
         JsonArray params = doc.getJsonArray(SqlReferences.PARAMS.val());
         postgreSQLClient.getConnection(res -> {
@@ -208,8 +195,8 @@ public class DataAccessServiceImpl implements DataAccessService {
                         .map(UpdateResult::toJson)
                         .subscribe(updateResult -> {
                             conn.close();
-                            handler.handle(Future.succeededFuture(JsonResult.succ(updateResult)));
-                        }, err -> fail(handler, RetCode.FAILURE.val(), err.getMessage()));
+                            AsyncHandlerResult.succ(updateResult, handler);
+                        }, err -> AsyncHandlerResult.fail(err, handler));
             } else {
                 connectFailure(handler);
             }
@@ -224,15 +211,15 @@ public class DataAccessServiceImpl implements DataAccessService {
      * @param handler
      */
     @Override
-    public DataAccessService execute(String sql, Handler<AsyncResult<JsonObject>> handler) {
+    public PostgreAccesser execute(String sql, Handler<AsyncResult<JsonObject>> handler) {
         postgreSQLClient.getConnection(res -> {
             if (res.succeeded()) {
                 SQLConnection conn = res.result();
                 conn.rxExecute(sql)
                         .subscribe(v -> {
                             conn.close();
-                            handler.handle(Future.succeededFuture(JsonResult.succ()));
-                        }, err -> fail(handler, RetCode.FAILURE.val(), err.getMessage()));
+                            AsyncHandlerResult.succ(handler);
+                        }, err -> AsyncHandlerResult.fail(err, handler));
             } else {
                 connectFailure(handler);
             }

@@ -4,6 +4,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 
 import io.vertx.rxjava.ext.asyncsql.AsyncSQLClient;
+import io.vertx.rxjava.ext.mongo.MongoClient;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -13,9 +14,11 @@ import lombok.RequiredArgsConstructor;
  * description:
  */
 @RequiredArgsConstructor
-public class DataBinder extends AbstractModule{
+public class DataBinder extends AbstractModule {
     @NonNull
     private AsyncSQLClient postgreSQLClient;
+    @NonNull
+    private MongoClient mongoClient;
 
     @Override
     protected void configure() {
@@ -23,7 +26,12 @@ public class DataBinder extends AbstractModule{
     }
 
     @Provides
-    public AsyncSQLClient providePostgreSQLClient(){
+    public AsyncSQLClient providePostgreSQLClient() {
         return this.postgreSQLClient;
+    }
+
+    @Provides
+    public MongoClient provideMongoClient() {
+        return mongoClient;
     }
 }
