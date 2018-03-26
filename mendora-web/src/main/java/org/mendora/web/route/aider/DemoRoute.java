@@ -9,7 +9,7 @@ import lombok.val;
 import org.mendora.guice.scanner.route.AbstractRoute;
 import org.mendora.guice.scanner.route.RequestRouting;
 import org.mendora.guice.scanner.route.Route;
-import org.mendora.service.facade.dataAccesser.rxjava.DataAccessService;
+import org.mendora.service.facade.dataAccesser.rxjava.PostgreAccesser;
 import org.mendora.util.constant.SqlReferences;
 import org.mendora.util.result.JsonResult;
 import org.mendora.util.result.WebResult;
@@ -24,9 +24,10 @@ import org.mendora.web.auth.WebAuth;
 @Route("/mendora/aider")
 public class DemoRoute extends AbstractRoute {
     @Inject
-    private DataAccessService dataAccessService;
+    private PostgreAccesser postgreAccesser;
     @Inject
     private WebAuth webAuth;
+
     @RequestRouting(path = "/demo", method = HttpMethod.GET)
     public void demo(RoutingContext rc) {
         rc.response().end("<h1>Just a test demo.</h1>");
@@ -39,7 +40,7 @@ public class DemoRoute extends AbstractRoute {
 
     @RequestRouting(path = "/sqlStatement/query", method = HttpMethod.POST)
     public void query(RoutingContext rc) {
-        dataAccessService
+        postgreAccesser
                 .rxQuery(rc.getBodyAsJson().getString(SqlReferences.STATEMENT.val()))
                 .subscribe(replyJson -> WebResult.consume(replyJson, rc));
     }
@@ -53,7 +54,7 @@ public class DemoRoute extends AbstractRoute {
         });
         router.post(prefix + "/login").handler(rc -> {
             JsonObject doc = rc.getBodyAsJson();
-            if (usr.equals(doc.getString("usr")) && passwd.equals(doc.getString("passwd"))){
+            if (usr.equals(doc.getString("usr")) && passwd.equals(doc.getString("passwd"))) {
                 WebResult.consume(JsonResult.succ(webAuth.issueJWToken(doc)), rc);
             }
         });
