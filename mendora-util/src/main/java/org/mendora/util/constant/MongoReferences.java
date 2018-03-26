@@ -7,7 +7,8 @@ public enum MongoReferences {
     COLLECTION("collection"), DOCUMENT("document"),
     FIND_OPTIONS("findOptions"), UPDATE_OPTIONS("updateOptions"),
     FIELDS("fields"), QUERY("query"), COMMAND_NAME("commandName"),
-    COMMAND("command");
+    COMMAND("command"), _ID("_id"), ASC("1"), DESC("-1");
+
     private String val;
 
     MongoReferences(String val) {
@@ -24,5 +25,9 @@ public enum MongoReferences {
 
     public String val() {
         return val;
+    }
+
+    public int number() {
+        return Integer.parseInt(val);
     }
 }

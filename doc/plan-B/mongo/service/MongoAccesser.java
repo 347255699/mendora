@@ -2,12 +2,12 @@ package com.udeafx.data.service;
 
 import com.crmfx.guice.scanner.serviceProvider.ServiceProvider;
 import com.crmfx.util.constant.MongoReferences;
+import com.crmfx.util.constant.PageReferences;
 import com.crmfx.util.result.AsyncHandlerResult;
 import com.crmfx.util.result.JsonResult;
 import com.google.inject.Inject;
 import com.udeafx.service.facade.dataAccesser.DataAccessService;
 import io.vertx.core.AsyncResult;
-import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
@@ -54,7 +54,7 @@ public class MongoAccesser implements DataAccessService {
      */
     public DataAccessService save(JsonObject params, Handler<AsyncResult<JsonObject>> handler) {
         mongoClient.rxSave(col(params), MongoReferences.DOCUMENT.json(params))
-                .subscribe(id -> handler.handle(Future.succeededFuture(JsonResult.succ(id))));
+                .subscribe(id -> AsyncHandlerResult.succ(id, handler));
         return this;
     }
 
@@ -126,8 +126,34 @@ public class MongoAccesser implements DataAccessService {
      */
     public DataAccessService execute(JsonObject params, Handler<AsyncResult<JsonObject>> handler) {
         mongoClient.rxRunCommand(MongoReferences.COMMAND_NAME.str(params), MongoReferences.COMMAND.json(params))
-                .subscribe(result -> AsyncHandlerResult.succ(result, handler), err -> AsyncHandlerResult.fail(err, handler));
+                .subscribe(result -> AsyncHandlerResult.succ(result, handler),
+                        err -> AsyncHandlerResult.fail(err, handler));
         return this;
+    }
+
+    /**
+     * page options convert to find options.
+     *
+     * @param pageOptions {
+     *                    size:<current page size>,
+     *                    currPage:<current page number>,
+     *                    sortBy:<sort by json object>,
+     *                    fields:<mapping fields from document>
+     *                    }
+     * @return FindOptions Mongo format find options.
+     */
+    private FindOptions page2findOptions(JsonObject pageOptions) {
+        String sortFlag = PageReferences.SORT_BY.val();
+        if (!pageOptions.containsKey(sortFlag))
+            // default sort by "_id" field asc.
+            pageOptions.put(sortFlag, JsonResult.one().put(MongoReferences._ID.val(), MongoReferences.ASC.number()));
+        FindOptions findOptions = new FindOptions()
+                .setSkip(PageReferences.SIZE.number(pageOptions) * (PageReferences.CURR_PAGE.number(pageOptions) - 1))
+                .setLimit(PageReferences.SIZE.number(pageOptions))
+                .setSort(PageReferences.SORT_BY.json(pageOptions));
+        // has 'fields' field ?
+        return pageOptions.containsKey(MongoReferences.FIELDS.val()) ?
+                findOptions.setFields(MongoReferences.FIELDS.json(pageOptions)) : findOptions;
     }
 
 }
