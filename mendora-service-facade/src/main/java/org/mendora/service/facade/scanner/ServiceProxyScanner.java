@@ -17,7 +17,6 @@ import java.util.List;
 public class ServiceProxyScanner {
     private Logger log = LoggerFactory.getLogger(ServiceProxyScanner.class);
     private static final String MODULE_NAME = "SERVICE_PROXY_SCANNER:";
-    private static final String PREFIX = "rxjava";
     private Vertx vertx;
 
     @Inject
@@ -38,8 +37,7 @@ public class ServiceProxyScanner {
         List<Class<Object>> clazzs = new ArrayList<>();
         for (String name : names) {
             try {
-                if (rxServiceProxy(name))
-                    clazzs.add((Class<Object>) Class.forName(name));
+                clazzs.add((Class<Object>) Class.forName(name));
             } catch (ClassNotFoundException e) {
                 log.error(MODULE_NAME + e.getMessage());
             }
@@ -47,13 +45,4 @@ public class ServiceProxyScanner {
         return new ServiceProxyBinder(clazzs, vertx);
     }
 
-    /**
-     * scanning only rx service proxy.
-     *
-     * @param name
-     * @return
-     */
-    public boolean rxServiceProxy(String name) {
-        return name.contains(PREFIX);
-    }
 }
