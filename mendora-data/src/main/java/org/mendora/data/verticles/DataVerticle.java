@@ -8,7 +8,7 @@ import org.mendora.data.binder.DataBinder;
 import org.mendora.data.client.ClientLoader;
 import org.mendora.data.constant.DataConst;
 import org.mendora.guice.scanner.serviceProvider.ServiceProviderScanner;
-import org.mendora.guice.verticle.DefaultVerticle;
+import org.mendora.guice.verticles.DefaultVerticle;
 
 /**
  * created by:xmf

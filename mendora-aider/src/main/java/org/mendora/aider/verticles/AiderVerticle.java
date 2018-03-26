@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.mendora.aider.binder.AiderBinder;
 import org.mendora.aider.constant.AiderConst;
 import org.mendora.guice.scanner.route.RouteScanner;
-import org.mendora.guice.verticle.DefaultVerticle;
+import org.mendora.guice.verticles.DefaultVerticle;
 import org.mendora.service.facade.scanner.ServiceProxyBinder;
 import org.mendora.service.facade.scanner.ServiceProxyScanner;
 
@@ -42,7 +42,7 @@ public class AiderVerticle extends DefaultVerticle {
         // use http request body as Json,Buffer,String
         long bodyLimit = Long.parseLong(configHolder.property(AiderConst.AIDER_REQUEST_BODY_SIZE));
         router.route().handler(BodyHandler.create().setBodyLimit(bodyLimit));
-        // scanning verticle
+        // scanning verticles
         RouteScanner scanner = injector.getInstance(RouteScanner.class);
         scanner.scan(configHolder.property(AiderConst.AIDER_ROUTE_INTO_PACKAGE), injector, AiderVerticle.class.getClassLoader());
     }

@@ -14,7 +14,7 @@ public interface BaseConst {
     String BASE_LOGGER_FACTORY_CLASS_NAME = "base.logger.factory.class.name";
     String BASE_LOGGER_CONFIG_PATH = "base.logger.config.path";
     String BASE_VERTICLE_INTO_PACKAGE = "base.verticle.into.package";
-    String BASE_VERTICLE_STORAGE_KEY = "base.verticle.storage.key";
+    String BASE_VERTICLE_STORAGE_KEY = "base.verticles.storage.key";
     String BASE_AVAILABLE_PROCESSORS = "base.available.processors";
     // hazelcast
     String BASE_HAZELCAST_LOGGER_TYPE = "base.hazelcast.logger.type";

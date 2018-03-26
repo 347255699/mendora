@@ -1,4 +1,4 @@
-package org.mendora.guice.verticle;
+package org.mendora.guice.verticles;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -35,7 +35,7 @@ public class VerticleScanner {
     }
 
     /**
-     * scanning verticle
+     * scanning verticles
      */
     public void scan(String packagePath, Injector injector, ClassLoader cl) {
         try {
@@ -56,7 +56,7 @@ public class VerticleScanner {
                     .subscribe(v -> deploy(v, storage),
                             err -> log.error(MODULE_NAME + err.getMessage()),
                             () -> {
-                                log.info(MODULE_NAME + "all the \"verticle\" deployed");
+                                log.info(MODULE_NAME + "all the \"verticles\" deployed");
                                 configHolder.setProperty(BaseConst.BASE_VERTICLE_STORAGE_KEY, storage);
                             });
             names.forEach(log::info);
@@ -66,7 +66,7 @@ public class VerticleScanner {
     }
 
     /**
-     * deploy verticle and record info.
+     * deploy verticles and record info.
      *
      * @param verticle
      * @param storage

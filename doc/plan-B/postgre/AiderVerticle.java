@@ -5,7 +5,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.rxjava.core.eventbus.EventBus;
 import lombok.extern.slf4j.Slf4j;
 import org.mendora.data.service.ebService.DataAccesser;
-import org.mendora.guice.verticle.DefaultVerticle;
+import org.mendora.guice.verticles.DefaultVerticle;
 import org.mendora.util.constant.EBAddress;
 
 /**

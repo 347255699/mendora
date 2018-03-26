@@ -9,7 +9,7 @@ import io.vertx.spi.cluster.hazelcast.HazelcastClusterManager;
 import org.mendora.guice.binder.GuiceVertxBinder;
 import org.mendora.guice.properties.BaseConst;
 import org.mendora.guice.properties.ConfigHolder;
-import org.mendora.guice.verticle.VerticleScanner;
+import org.mendora.guice.verticles.VerticleScanner;
 
 import java.util.Arrays;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  */
 public class Cluster {
     /**
-     * launching Vertx micro kernel and deploy verticle.
+     * launching Vertx micro kernel and deploy verticles.
      */
     public static void launch(ConfigHolder configHolder, ClassLoader cl) {
         // seconds

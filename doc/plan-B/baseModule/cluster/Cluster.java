@@ -18,7 +18,7 @@ import java.util.Arrays;
  */
 public class Cluster {
     /**
-     * launching Vertx micro kernel and deploy verticle.
+     * launching Vertx micro kernel and deploy verticles.
      */
     public static void launch(ClassLoader cl, ClusterHandler handler) {
         // seconds
