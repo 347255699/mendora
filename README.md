@@ -6,16 +6,18 @@
 1. guice：ioc容器，依赖注入
 2. lombok：简化代码
 3. slf4j-log4j12：日志记录  
-	a. log4j 日志记录实现
+	a. log4j：日志记录实现
 4. commons-lang3：第三方工具包
 5. Vertx Java  
 	a. vertx-web：创建http服务器，http请求路由  
 	b. vertx-hazelcase：集群管理器  
-	&nbsp;&nbsp;&nbsp;&nbsp;1) hazelcast 集群管理器实现  
+	&nbsp;&nbsp;&nbsp;&nbsp;1) hazelcast：集群管理器实现  
 	c. vertx-auth-jwt：http认证授权服务  
 	d. vertx-rx-java: rx化api实现  
 	e. vertx-codegen：服务代理代码生成器，与vertx-service-proxy一起使用  
-	f. vertx-service-proxy：服务代理实现
+	f. vertx-service-proxy：服务代理实现  
+	g. vertx-mysql-postgresql-client：postgre/mysql客户端  
+	h. vertx-mongo-client：mongo客户端
 > note：集成版本可查看项目.pom文件properties节点
 
 ## 体系结构
@@ -66,7 +68,7 @@
 ![基础结构图](doc/draft/structure.png "png")
 ## 架构思想
 ### 微服务
-系统采用微服务形式搭建，系统由多个微服务构成，微服务可部署至一台或多台服务器上且可部署一或多个实例。微服务之间可互相感知存在和通信。微服务之间每`15s`发送一次存在感知请求。若某个服务断开可以通过日志中的连接错误知晓。
+系统采用微服务形式搭建，系统由多个微服务构成，微服务可部署到一至多台服务器上且可部署一到多个实例。微服务之间可互相感知存在和通信。微服务之间每`15s`发送一次存在感知请求。若某个服务断开可以通过日志中的连接错误知晓。
 ### 微服务种类
 服务种类可划分为aider、web、data和service-rear。
 #### 1. aider服务
@@ -124,9 +126,9 @@ Service主要采用异步rpc方式，即服务接口与实现分离，无论服�
 ```java
 @ProxyGen
 @VertxGen
-public interface DataAccessService {
+public interface PostgreAccesser {
 
-    String EB_ADDRESS = "data.eb.dataAccess";
+    String EB_ADDRESS = "eb.data.postgre.accesser";
 
     /**
      * create service proxy.
@@ -134,8 +136,8 @@ public interface DataAccessService {
      * @param vertx
      * @return
      */
-    static DataAccessService createProxy(Vertx vertx) {
-        return ProxyHelper.createProxy(DataAccessService.class, vertx, EB_ADDRESS);
+    static PostgreAccesser createProxy(Vertx vertx) {
+        return ProxyHelper.createProxy(PostgreAccesser.class, vertx, EB_ADDRESS);
     }
 
    /**
@@ -144,8 +146,8 @@ public interface DataAccessService {
     void register();
     
     @Fluent
-    DataAccessService query(String sql, Handler<AsyncResult<JsonObject>> handler);
-    void upate(String sql);
+    PostgreAccesser query(String sql, Handler<AsyncResult<JsonObject>> handler);
+    void update(String sql);
 ```
 实例中`Handler<AsyncResult<JsonObject>> handler`参数用于异步回调。若无需回调可不携带该参数。
 > note：@Fluent用于返回当前实例实现链式调用。接口必须定义在service-facade中，调用一方需要依赖该基础包。
@@ -179,7 +181,7 @@ public class DemoRoute extends AbstractRoute {
 Service实现可以在任何一个服务内编写和注册。在编写服务实现类时需要添加`@ServiceProvider`和实现`register`方法已供扫描器完成服务注册。一个服务实现看起来是这样的：
 ```java
 @ServiceProvider
-public class DataAccessServiceImpl implements DataAccessService {
+public class PostgreAccesserImpl implements PostgreAccesser {
      @Inject
      private Vertx vertx;
      
@@ -188,7 +190,7 @@ public class DataAccessServiceImpl implements DataAccessService {
      */
      @Override
      public void register() {
-        ProxyHelper.registerService(DataAccessService.class, vertx.getDelegate(), this, EB_ADDRESS);
+        ProxyHelper.registerService(PostgreAccesser.class, vertx.getDelegate(), this, EB_ADDRESS);
      }
      
      /**
@@ -198,7 +200,7 @@ public class DataAccessServiceImpl implements DataAccessService {
       * @param handler
       */
       @Override
-      public DataAccessService query(String sql, Handler<AsyncResult<JsonObject>> handler) {
+      public PostgreAccesser query(String sql, Handler<AsyncResult<JsonObject>> handler) {
         // execute sql find data.
         // result query result.
         handler.handle(Future.succeededFuture(JsonResult.succWithRows(rows)));
