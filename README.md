@@ -206,7 +206,7 @@ public class PostgreAccesserImpl implements PostgreAccesser {
       @Override
       public PostgreAccesser query(String sql, Handler<AsyncResult<JsonObject>> handler) {
         // execute sql find data.
-        // result query result.
+        // return query result.
         handler.handle(Future.succeededFuture(JsonResult.succWithRows(rows)));
       }
 }
