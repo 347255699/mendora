@@ -7,6 +7,7 @@ import io.vertx.rxjava.ext.asyncsql.AsyncSQLClient;
 import io.vertx.rxjava.ext.mongo.MongoClient;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.mendora.data.auth.DBAuth;
 
 /**
  * created by:xmf
@@ -19,6 +20,8 @@ public class DataBinder extends AbstractModule {
     private AsyncSQLClient postgreSQLClient;
     @NonNull
     private MongoClient mongoClient;
+    @NonNull
+    private DBAuth dbAuth;
 
     @Override
     protected void configure() {
@@ -33,5 +36,10 @@ public class DataBinder extends AbstractModule {
     @Provides
     public MongoClient provideMongoClient() {
         return mongoClient;
+    }
+
+    @Provides
+    public DBAuth provideDbAuth() {
+        return dbAuth;
     }
 }

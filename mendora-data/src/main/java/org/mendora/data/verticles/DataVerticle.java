@@ -4,9 +4,9 @@ import io.vertx.core.DeploymentOptions;
 import io.vertx.rxjava.ext.asyncsql.AsyncSQLClient;
 import io.vertx.rxjava.ext.mongo.MongoClient;
 import lombok.extern.slf4j.Slf4j;
+import org.mendora.data.auth.DBAuth;
 import org.mendora.data.binder.DataBinder;
 import org.mendora.data.client.ClientLoader;
-import org.mendora.data.constant.DataConst;
 import org.mendora.guice.properties.BaseConst;
 import org.mendora.guice.scanner.serviceProvider.ServiceProviderScanner;
 import org.mendora.guice.verticles.DefaultVerticle;
@@ -29,7 +29,8 @@ public class DataVerticle extends DefaultVerticle {
         ClientLoader clientHolder = injector.getInstance(ClientLoader.class);
         AsyncSQLClient postgreSQLClient = clientHolder.createPostgreSQLClient();
         MongoClient mongoClient = clientHolder.createMongoClient();
-        injector = injector.createChildInjector(new DataBinder(postgreSQLClient, mongoClient));
+        DBAuth dbAuth = injector.getInstance(DBAuth.class);
+        injector = injector.createChildInjector(new DataBinder(postgreSQLClient, mongoClient, dbAuth));
 
         // scanning service provider implementation
         ServiceProviderScanner scanner = injector.getInstance(ServiceProviderScanner.class);

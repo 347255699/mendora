@@ -17,5 +17,6 @@ public interface DataConst {
     String DATA_DB_POSTGRE_QUERY_TIMEOUT = "data.db.postgre.queryTimeout";
     // mongo db config
     String DATA_DB_MONGO_URI = "data.db.mongo.uri";
+    String DATA_DB_AUTH_DEFAULT_SALT = "data.db.auth.default.salt";
 
 }
