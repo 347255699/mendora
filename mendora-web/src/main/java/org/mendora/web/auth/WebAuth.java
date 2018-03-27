@@ -103,7 +103,7 @@ public class WebAuth {
      * @return
      */
     public Single<User> rxAuthenticateJWToken(String jwToken) {
-        return jwtAuth.rxAuthenticate(JsonResult.allocate(1)
+        return jwtAuth.rxAuthenticate(JsonResult.one()
                 .put("jwt", jwToken));
     }
 
@@ -115,7 +115,7 @@ public class WebAuth {
      * @return
      */
     public Single<User> rxAuthenticateJWToken(String jwToken, JsonObject options) {
-        JsonObject doc = JsonResult.allocate(1)
+        JsonObject doc = JsonResult.two()
                 .put("jwt", jwToken)
                 .put("options", options);
         return jwtAuth.rxAuthenticate(doc);

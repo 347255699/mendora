@@ -76,7 +76,7 @@ public class VerticleScanner {
             if (res.succeeded()) {
                 String dId = res.result();
                 String vName = verticle.getClass().getName();
-                storage.add(JsonResult.allocate(2).put(DEPLOY_ID, dId).put(VERTICLE_NAME, vName));
+                storage.add(JsonResult.two().put(DEPLOY_ID, dId).put(VERTICLE_NAME, vName));
             } else {
                 log.error(MODULE_NAME + res.cause().getMessage());
             }
