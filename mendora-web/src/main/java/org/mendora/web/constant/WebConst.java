@@ -13,7 +13,4 @@ public interface WebConst {
     String WEB_JWT_KEY_PASSWD = "web.jwt.key.passwd";
     String WEB_JWT_ISSUER = "web.jwt.issuer";
     String WEB_JWT_EXPIRES_MINUTES = "web.jwt.expires.minutes";
-    // service proxy
-    String WEB_SERVICE_PROXY_INTO_PACKAGE = "web.service.proxy.into.package";
-
 }

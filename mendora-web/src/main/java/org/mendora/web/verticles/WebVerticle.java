@@ -8,6 +8,7 @@ import io.vertx.rxjava.ext.web.handler.LoggerHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.mendora.guice.scanner.route.RouteScanner;
 import org.mendora.guice.verticles.DefaultVerticle;
+import org.mendora.service.facade.constant.FacadeConst;
 import org.mendora.service.facade.scanner.ServiceProxyBinder;
 import org.mendora.service.facade.scanner.ServiceProxyScanner;
 import org.mendora.web.auth.WebAuth;
@@ -35,7 +36,7 @@ public class WebVerticle extends DefaultVerticle {
         WebAuth webAuth = new WebAuth(vertx, configHolder);
 
         // injecting your bean into WebBinder class
-        String proxyIntoPackage = configHolder.property(WebConst.WEB_SERVICE_PROXY_INTO_PACKAGE);
+        String proxyIntoPackage = configHolder.property(FacadeConst.FACADE_SERVICE_PROXY_INTO_PACKAGE);
         ServiceProxyBinder serviceProxyBinder = injector.getInstance(ServiceProxyScanner.class).scan(proxyIntoPackage);
         injector = injector.createChildInjector(new WebBinder(router, webAuth), serviceProxyBinder);
 

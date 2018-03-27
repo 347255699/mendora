@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.mendora.data.binder.DataBinder;
 import org.mendora.data.client.ClientLoader;
 import org.mendora.data.constant.DataConst;
+import org.mendora.guice.properties.BaseConst;
 import org.mendora.guice.scanner.serviceProvider.ServiceProviderScanner;
 import org.mendora.guice.verticles.DefaultVerticle;
 
@@ -32,6 +33,6 @@ public class DataVerticle extends DefaultVerticle {
 
         // scanning service provider implementation
         ServiceProviderScanner scanner = injector.getInstance(ServiceProviderScanner.class);
-        scanner.scan(configHolder.property(DataConst.DATA_SERVICE_INTO_PACKAGE), DataVerticle.class.getClassLoader(), injector);
+        scanner.scan(configHolder.property(BaseConst.BASE_SERVICE_PROVIDER_INTO_PACKAGE), DataVerticle.class.getClassLoader(), injector);
     }
 }
