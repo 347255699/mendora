@@ -7,7 +7,7 @@ public enum MongoReferences {
     COLLECTION("collection"), DOCUMENT("document"),
     FIND_OPTIONS("findOptions"), UPDATE_OPTIONS("updateOptions"),
     FIELDS("fields"), QUERY("query"), COMMAND_NAME("commandName"),
-    COMMAND("command"), _ID("_id"), ASC("1"), DESC("-1");
+    COMMAND("command"), _ID("_id"), ASC("1"), DESC("-1"),PAGE("page");
 
     private String val;
 

@@ -135,6 +135,10 @@ public class MongoAccesserVertxProxyHandler extends ProxyHandler {
           service.find((io.vertx.core.json.JsonObject)json.getValue("params"), createHandler(msg));
           break;
         }
+        case "findWithPage": {
+          service.findWithPage((io.vertx.core.json.JsonObject)json.getValue("params"), createHandler(msg));
+          break;
+        }
         case "findOne": {
           service.findOne((io.vertx.core.json.JsonObject)json.getValue("params"), createHandler(msg));
           break;

@@ -16,6 +16,7 @@ import org.mendora.util.constant.MongoReferences;
 import org.mendora.util.constant.PageReferences;
 import org.mendora.util.result.AsyncHandlerResult;
 import org.mendora.util.result.JsonResult;
+import rx.Single;
 
 /**
  * created by:xmf
@@ -48,7 +49,9 @@ public class MongoAccesserImpl implements MongoAccesser {
     /**
      * insert/update document from collection.
      *
-     * @param params
+     * @param params{ "collection":<collection name>,
+     *                "document":<insert document>
+     *                }
      * @param handler
      * @return
      */
@@ -61,7 +64,10 @@ public class MongoAccesserImpl implements MongoAccesser {
     /**
      * find document list from collection.
      *
-     * @param params
+     * @param params{ "collection":<collection name>,
+     *                "query":<query parameter>,
+     *                "findOptions":<find options>
+     *                }
      * @param handler
      * @return
      */
@@ -76,9 +82,43 @@ public class MongoAccesserImpl implements MongoAccesser {
     }
 
     /**
+     * find document list from collection.
+     *
+     * @param params{ "collection":<collection name>,
+     *                "query":<query parameter>,
+     *                "page":<page parameter>
+     *                }
+     * @param handler
+     * @return
+     */
+    public MongoAccesser findWithPage(JsonObject params, Handler<AsyncResult<JsonObject>> handler) {
+        JsonObject page = MongoReferences.PAGE.json(params);
+        FindOptions options = pageOptions2findOptions(page);
+        JsonObject query = MongoReferences.QUERY.json(params);
+        mongoClient.rxFindWithOptions(col(params), query, options)
+                .map(JsonArray::new)
+                .flatMap(rows ->
+                        rxCount(params).map(totalSize -> {
+                            page.put(PageReferences.TOTAL_SIZE.val(), totalSize);
+                            JsonObject rs = JsonResult.allocate(3)
+                                    .put(MongoReferences.PAGE.val(), page)
+                                    .put(PageReferences.ROWS.val(), rows);
+                            // 'query' field not empty?
+                            return query.size() > 0 ? rs.put(MongoReferences.QUERY.val(), query) : rs;
+                        })
+                )
+                .subscribe(doc -> AsyncHandlerResult.succ(doc, handler),
+                        err -> AsyncHandlerResult.fail(err, handler));
+        return this;
+    }
+
+    /**
      * find single document from collection.
      *
-     * @param params
+     * @param params{ "collection":<collection name>,
+     *                "query":<query parameter>,
+     *                "fields":<fields mapper set>
+     *                }
      * @param handler
      * @return
      */
@@ -92,7 +132,9 @@ public class MongoAccesserImpl implements MongoAccesser {
     /**
      * remove document from collection.
      *
-     * @param params
+     * @param params{ "collection":<collection name>,
+     *                "query":<query parameter>
+     *                }
      * @param handler
      * @return
      */
@@ -104,23 +146,38 @@ public class MongoAccesserImpl implements MongoAccesser {
     }
 
     /**
-     * return document count.
+     * counting document.
      *
-     * @param params
+     * @param params{ "collection":<collection name>,
+     *                "query":<query parameter>
+     *                }
      * @param handler
      * @return
      */
     public MongoAccesser count(JsonObject params, Handler<AsyncResult<JsonObject>> handler) {
-        mongoClient.rxCount(col(params), MongoReferences.QUERY.json(params))
-                .subscribe(count -> AsyncHandlerResult.succ(count, handler),
-                        err -> AsyncHandlerResult.fail(err, handler));
+        rxCount(params).subscribe(count -> AsyncHandlerResult.succ(count, handler),
+                err -> AsyncHandlerResult.fail(err, handler));
         return this;
+    }
+
+    /**
+     * counting document with rx format.
+     *
+     * @param params{ "collection":<collection name>,
+     *                "query":<query parameter>
+     *                }
+     * @return
+     */
+    private Single<Long> rxCount(JsonObject params) {
+        return mongoClient.rxCount(col(params), MongoReferences.QUERY.json(params));
     }
 
     /**
      * execute origin db statement
      *
-     * @param params
+     * @param params{ "commandName":<command name>,
+     *                "command":<command statement>
+     *                }
      * @param handler
      * @return
      */
@@ -142,8 +199,13 @@ public class MongoAccesserImpl implements MongoAccesser {
      *                    }
      * @return FindOptions Mongo format find options.
      */
-    private FindOptions page2findOptions(JsonObject pageOptions) {
+    private FindOptions pageOptions2findOptions(JsonObject pageOptions) {
+        boolean hasSizeField = pageOptions.containsKey(PageReferences.SIZE.val());
+        boolean hasCurrPageField = pageOptions.containsKey(PageReferences.CURR_PAGE.val());
+        if (!(hasSizeField && hasCurrPageField))
+            return new FindOptions();
         String sortFlag = PageReferences.SORT_BY.val();
+        // has 'sortBy' field?
         if (!pageOptions.containsKey(sortFlag))
             // default sort by "_id" field asc.
             pageOptions.put(sortFlag, JsonResult.one().put(MongoReferences._ID.val(), MongoReferences.ASC.number()));

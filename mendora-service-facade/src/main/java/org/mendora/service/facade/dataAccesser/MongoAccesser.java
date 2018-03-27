@@ -34,7 +34,8 @@ public interface MongoAccesser {
 
     @Fluent
     MongoAccesser find(JsonObject params, Handler<AsyncResult<JsonObject>> handler);
-
+    @Fluent
+    MongoAccesser findWithPage(JsonObject params, Handler<AsyncResult<JsonObject>> handler);
     @Fluent
     MongoAccesser findOne(JsonObject params, Handler<AsyncResult<JsonObject>> handler);
 

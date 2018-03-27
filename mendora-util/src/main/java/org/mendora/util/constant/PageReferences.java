@@ -1,12 +1,14 @@
 package org.mendora.util.constant;
 
 import io.vertx.core.json.JsonObject;
+import org.mendora.util.result.JsonResult;
 
 /**
  * Created by kam on 2018/3/26.
  */
 public enum PageReferences {
-    SORT_BY("sortBy"), CURR_PAGE("currPage"), SIZE("size");
+    SORT_BY("sortBy"), CURR_PAGE("currPage"), SIZE("size"),TOTAL_SIZE("totalSize"),
+    ROWS("rows");
     private String val;
 
     PageReferences(String val) {
@@ -22,7 +24,7 @@ public enum PageReferences {
     }
 
     public JsonObject json(JsonObject params) {
-        return params.getJsonObject(val);
+        return params.containsKey(val)?params.getJsonObject(val): JsonResult.empty();
     }
 
     public int number() {

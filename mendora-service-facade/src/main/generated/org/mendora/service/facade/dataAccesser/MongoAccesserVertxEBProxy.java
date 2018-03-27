@@ -112,6 +112,25 @@ public class MongoAccesserVertxEBProxy implements MongoAccesser {
     return this;
   }
 
+  public MongoAccesser findWithPage(JsonObject params, Handler<AsyncResult<JsonObject>> handler) {
+    if (closed) {
+      handler.handle(Future.failedFuture(new IllegalStateException("Proxy is closed")));
+      return this;
+    }
+    JsonObject _json = new JsonObject();
+    _json.put("params", params);
+    DeliveryOptions _deliveryOptions = (_options != null) ? new DeliveryOptions(_options) : new DeliveryOptions();
+    _deliveryOptions.addHeader("action", "findWithPage");
+    _vertx.eventBus().<JsonObject>send(_address, _json, _deliveryOptions, res -> {
+      if (res.failed()) {
+        handler.handle(Future.failedFuture(res.cause()));
+      } else {
+        handler.handle(Future.succeededFuture(res.result().body()));
+      }
+    });
+    return this;
+  }
+
   public MongoAccesser findOne(JsonObject params, Handler<AsyncResult<JsonObject>> handler) {
     if (closed) {
       handler.handle(Future.failedFuture(new IllegalStateException("Proxy is closed")));

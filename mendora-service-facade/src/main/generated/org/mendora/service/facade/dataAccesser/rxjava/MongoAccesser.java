@@ -85,6 +85,17 @@ public class MongoAccesser {
     }));
   }
 
+  public MongoAccesser findWithPage(JsonObject params, Handler<AsyncResult<JsonObject>> handler) { 
+    delegate.findWithPage(params, handler);
+    return this;
+  }
+
+  public Single<JsonObject> rxFindWithPage(JsonObject params) { 
+    return Single.create(new io.vertx.rx.java.SingleOnSubscribeAdapter<>(fut -> {
+      findWithPage(params, fut);
+    }));
+  }
+
   public MongoAccesser findOne(JsonObject params, Handler<AsyncResult<JsonObject>> handler) { 
     delegate.findOne(params, handler);
     return this;

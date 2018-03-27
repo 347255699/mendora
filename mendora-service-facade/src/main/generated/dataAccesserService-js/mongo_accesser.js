@@ -93,6 +93,27 @@ var MongoAccesser = function(j_val) {
    @param handler {function} 
    @return {MongoAccesser}
    */
+  this.findWithPage = function(params, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && (typeof __args[0] === 'object' && __args[0] != null) && typeof __args[1] === 'function') {
+      j_mongoAccesser["findWithPage(io.vertx.core.json.JsonObject,io.vertx.core.Handler)"](utils.convParamJsonObject(params), function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnJson(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+      return that;
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param params {Object} 
+   @param handler {function} 
+   @return {MongoAccesser}
+   */
   this.findOne = function(params, handler) {
     var __args = arguments;
     if (__args.length === 2 && (typeof __args[0] === 'object' && __args[0] != null) && typeof __args[1] === 'function') {
