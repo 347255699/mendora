@@ -25,7 +25,6 @@ public class DBAuth {
     private MongoAuth mongoAuth;
     private MongoClient mongoClient;
 
-    @Inject
     public DBAuth(Vertx vertx, ConfigHolder configHolder, MongoClient mongoClient) {
         this.vertx = vertx;
         this.configHolder = configHolder;

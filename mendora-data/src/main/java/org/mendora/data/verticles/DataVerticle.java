@@ -29,7 +29,7 @@ public class DataVerticle extends DefaultVerticle {
         ClientLoader clientHolder = injector.getInstance(ClientLoader.class);
         AsyncSQLClient postgreSQLClient = clientHolder.createPostgreSQLClient();
         MongoClient mongoClient = clientHolder.createMongoClient();
-        DBAuth dbAuth = injector.getInstance(DBAuth.class);
+        DBAuth dbAuth = new DBAuth(vertx, configHolder, mongoClient);
         injector = injector.createChildInjector(new DataBinder(postgreSQLClient, mongoClient, dbAuth));
 
         // scanning service provider implementation
