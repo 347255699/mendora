@@ -37,8 +37,8 @@ public class WebVerticle extends DefaultVerticle {
 
         // injecting your bean into WebBinder class
         String proxyIntoPackage = configHolder.property(FacadeConst.FACADE_SERVICE_PROXY_INTO_PACKAGE);
-        ServiceProxyBinder serviceProxyBinder = injector.getInstance(ServiceProxyScanner.class).scan(proxyIntoPackage);
-        injector = injector.createChildInjector(new WebBinder(router, webAuth), serviceProxyBinder);
+        injector.getInstance(ServiceProxyScanner.class).scan(proxyIntoPackage, injector);
+        injector = injector.createChildInjector(new WebBinder(router, webAuth));
 
         // before routing request
         beforeRoutingRequest(router);

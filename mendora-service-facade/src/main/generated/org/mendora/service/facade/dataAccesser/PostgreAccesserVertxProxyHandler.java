@@ -40,7 +40,6 @@ import io.vertx.serviceproxy.ProxyHandler;
 import io.vertx.serviceproxy.ServiceException;
 import io.vertx.serviceproxy.ServiceExceptionMessageCodec;
 import org.mendora.service.facade.dataAccesser.PostgreAccesser;
-import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
@@ -122,9 +121,16 @@ public class PostgreAccesserVertxProxyHandler extends ProxyHandler {
       }
       accessed();
       switch (action) {
-
-        case "register": {
-          service.register();
+        case "unRegister": {
+          service.unRegister(createHandler(msg));
+          break;
+        }
+        case "pause": {
+          service.pause(createHandler(msg));
+          break;
+        }
+        case "isRegistered": {
+          service.isRegistered(createHandler(msg));
           break;
         }
         case "query": {

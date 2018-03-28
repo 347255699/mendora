@@ -17,9 +17,10 @@
 package org.mendora.service.facade.dataAccesser.rxjava;
 
 import java.util.Map;
+
+import com.google.inject.Inject;
 import rx.Observable;
 import rx.Single;
-import io.vertx.rxjava.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
@@ -42,7 +43,8 @@ public class PostgreAccesser {
   );
 
   private final org.mendora.service.facade.dataAccesser.PostgreAccesser delegate;
-  
+
+  @Inject
   public PostgreAccesser(org.mendora.service.facade.dataAccesser.PostgreAccesser delegate) {
     this.delegate = delegate;
   }
@@ -51,18 +53,37 @@ public class PostgreAccesser {
     return delegate;
   }
 
-  /**
-   * create service proxy.
-   * @param vertx 
-   * @return 
-   */
-  public static PostgreAccesser createProxy(Vertx vertx) { 
-    PostgreAccesser ret = PostgreAccesser.newInstance(org.mendora.service.facade.dataAccesser.PostgreAccesser.createProxy(vertx.getDelegate()));
-    return ret;
+  public PostgreAccesser unRegister(Handler<AsyncResult<Void>> handler) { 
+    delegate.unRegister(handler);
+    return this;
   }
 
-  public void register() { 
-    delegate.register();
+  public Single<Void> rxUnRegister() { 
+    return Single.create(new io.vertx.rx.java.SingleOnSubscribeAdapter<>(fut -> {
+      unRegister(fut);
+    }));
+  }
+
+  public PostgreAccesser pause(Handler<AsyncResult<Void>> handler) { 
+    delegate.pause(handler);
+    return this;
+  }
+
+  public Single<Void> rxPause() { 
+    return Single.create(new io.vertx.rx.java.SingleOnSubscribeAdapter<>(fut -> {
+      pause(fut);
+    }));
+  }
+
+  public PostgreAccesser isRegistered(Handler<AsyncResult<Boolean>> handler) { 
+    delegate.isRegistered(handler);
+    return this;
+  }
+
+  public Single<Boolean> rxIsRegistered() { 
+    return Single.create(new io.vertx.rx.java.SingleOnSubscribeAdapter<>(fut -> {
+      isRegistered(fut);
+    }));
   }
 
   public PostgreAccesser query(String sql, Handler<AsyncResult<JsonObject>> handler) { 

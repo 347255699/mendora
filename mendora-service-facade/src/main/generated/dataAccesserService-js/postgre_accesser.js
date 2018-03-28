@@ -16,7 +16,6 @@
 
 /** @module dataAccesserService-js/postgre_accesser */
 var utils = require('vertx-js/util/utils');
-var Vertx = require('vertx-js/vertx');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
@@ -37,12 +36,60 @@ var PostgreAccesser = function(j_val) {
   /**
 
    @public
-
+   @param handler {function} 
+   @return {PostgreAccesser}
    */
-  this.register = function() {
+  this.unRegister = function(handler) {
     var __args = arguments;
-    if (__args.length === 0) {
-      j_postgreAccesser["register()"]();
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_postgreAccesser["unRegister(io.vertx.core.Handler)"](function(ar) {
+      if (ar.succeeded()) {
+        handler(null, null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+      return that;
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {function} 
+   @return {PostgreAccesser}
+   */
+  this.pause = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_postgreAccesser["pause(io.vertx.core.Handler)"](function(ar) {
+      if (ar.succeeded()) {
+        handler(null, null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+      return that;
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {function} 
+   @return {PostgreAccesser}
+   */
+  this.isRegistered = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_postgreAccesser["isRegistered(io.vertx.core.Handler)"](function(ar) {
+      if (ar.succeeded()) {
+        handler(ar.result(), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+      return that;
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -218,18 +265,4 @@ PostgreAccesser._create = function(jdel) {
   PostgreAccesser.apply(obj, arguments);
   return obj;
 }
-/**
- create service proxy.
-
- @memberof module:dataAccesserService-js/postgre_accesser
- @param vertx {Vertx} 
- @return {PostgreAccesser} 
- */
-PostgreAccesser.createProxy = function(vertx) {
-  var __args = arguments;
-  if (__args.length === 1 && typeof __args[0] === 'object' && __args[0]._jdel) {
-    return utils.convReturnVertxGen(PostgreAccesser, JPostgreAccesser["createProxy(io.vertx.core.Vertx)"](vertx._jdel));
-  } else throw new TypeError('function invoked with invalid arguments');
-};
-
 module.exports = PostgreAccesser;

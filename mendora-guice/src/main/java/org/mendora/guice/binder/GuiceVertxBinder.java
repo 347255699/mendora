@@ -28,13 +28,18 @@ public class GuiceVertxBinder extends AbstractModule {
     @Provides
     @Singleton
     public ConfigHolder provideConfig() {
-        return this.config;
+        return config;
     }
 
     @Provides
     @Singleton
-    public Vertx provideVertx() {
-        return this.vertx;
+    public Vertx provideRxVertx() {
+        return vertx;
     }
 
+    @Provides
+    @Singleton
+    public io.vertx.core.Vertx provideVertx(){
+        return vertx.getDelegate();
+    }
 }

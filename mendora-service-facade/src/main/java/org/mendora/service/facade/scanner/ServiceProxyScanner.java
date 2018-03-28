@@ -1,12 +1,12 @@
 package org.mendora.service.facade.scanner;
 
+import com.google.inject.Injector;
 import io.vertx.rxjava.core.Vertx;
 import org.mendora.util.scanner.PackageScannerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,19 +30,33 @@ public class ServiceProxyScanner {
      * @param packagePath
      * @return
      */
-    public ServiceProxyBinder scan(String packagePath) {
+    public void scan(String packagePath, Injector injector) {
         List<String> names = new PackageScannerImpl<>(packagePath, this.getClass().getClassLoader())
                 .classNames(this.getClass().getName());
-        names.forEach(name -> log.info(MODULE_NAME + name));
-        List<Class<Object>> clazzs = new ArrayList<>();
-        for (String name : names) {
+        names.forEach(name -> {
+            log.info(MODULE_NAME + name);
             try {
-                clazzs.add((Class<Object>) Class.forName(name));
+                Class<Object> clazz = (Class<Object>) Class.forName(name);
+                if (clazz.isAnnotationPresent(ServiceFacade.class)) {
+                    ServiceFacade facade = clazz.getAnnotation(ServiceFacade.class);
+                    Class proxy = facade.proxy();
+                    Class rxProxy = facade.rxProxy();
+                    injector.createChildInjector(binder -> binder.bind(clazz).toInstance(injector.getInstance(proxy)));
+                    injector.createChildInjector(binder -> binder.bind(rxProxy).toInstance(injector.getInstance(rxProxy)));
+                }
             } catch (ClassNotFoundException e) {
                 log.error(MODULE_NAME + e.getMessage());
             }
-        }
-        return new ServiceProxyBinder(clazzs, vertx);
+        });
+//        List<Class<Object>> clazzs = new ArrayList<>();
+//        for (String name : names) {
+//            try {
+//                clazzs.add((Class<Object>) Class.forName(name));
+//            } catch (ClassNotFoundException e) {
+//                log.error(MODULE_NAME + e.getMessage());
+//            }
+//        }
+//        return new ServiceProxyBinder(clazzs, vertx);
     }
 
 }

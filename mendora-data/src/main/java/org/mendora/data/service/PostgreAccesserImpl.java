@@ -43,9 +43,23 @@ public class PostgreAccesserImpl implements PostgreAccesser {
     /**
      * register service
      */
-    @Override
     public void register() {
         ProxyHelper.registerService(PostgreAccesser.class, vertx.getDelegate(), this, EB_ADDRESS);
+    }
+
+    @Override
+    public PostgreAccesser unRegister(Handler<AsyncResult<Void>> handler) {
+        return null;
+    }
+
+    @Override
+    public PostgreAccesser pause(Handler<AsyncResult<Void>> handler) {
+        return null;
+    }
+
+    @Override
+    public PostgreAccesser isRegistered(Handler<AsyncResult<Boolean>> handler) {
+        return null;
     }
 
     /**
