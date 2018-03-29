@@ -9,8 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.mendora.guice.scanner.route.RouteScanner;
 import org.mendora.guice.verticles.DefaultVerticle;
 import org.mendora.service.facade.constant.FacadeConst;
-import org.mendora.service.facade.scanner.ServiceProxyBinder;
-import org.mendora.service.facade.scanner.ServiceProxyScanner;
+import org.mendora.service.facade.scanner.ServiceRxProxyScanner;
 import org.mendora.web.auth.WebAuth;
 import org.mendora.web.binder.WebBinder;
 import org.mendora.web.constant.WebConst;
@@ -37,7 +36,7 @@ public class WebVerticle extends DefaultVerticle {
 
         // injecting your bean into WebBinder class
         String proxyIntoPackage = configHolder.property(FacadeConst.FACADE_SERVICE_PROXY_INTO_PACKAGE);
-        injector.getInstance(ServiceProxyScanner.class).scan(proxyIntoPackage, injector);
+        new ServiceRxProxyScanner().scan(proxyIntoPackage, injector);
         injector = injector.createChildInjector(new WebBinder(router, webAuth));
 
         // before routing request
@@ -51,7 +50,7 @@ public class WebVerticle extends DefaultVerticle {
     /**
      * setting handler before routing request
      */
-    private void beforeRoutingRequest(Router router){
+    private void beforeRoutingRequest(Router router) {
         // use http request logging.
         router.route().handler(LoggerHandler.create(LoggerFormat.TINY));
         // use http request body as Json,Buffer,String

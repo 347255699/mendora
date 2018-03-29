@@ -33,7 +33,7 @@ public class DataVerticle extends DefaultVerticle {
         injector = injector.createChildInjector(new DataBinder(postgreSQLClient, mongoClient, dbAuth));
 
         // scanning service provider implementation
-        ServiceProviderScanner scanner = injector.getInstance(ServiceProviderScanner.class);
+        ServiceProviderScanner scanner = new ServiceProviderScanner();
         scanner.scan(configHolder.property(BaseConst.BASE_SERVICE_PROVIDER_INTO_PACKAGE), DataVerticle.class.getClassLoader(), injector);
     }
 }

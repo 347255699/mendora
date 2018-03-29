@@ -36,6 +36,9 @@ public interface PostgreAccesser {
     PostgreAccesser pause(Handler<AsyncResult<Void>> handler);
 
     @Fluent
+    PostgreAccesser resume(Handler<AsyncResult<Void>> handler);
+
+    @Fluent
     PostgreAccesser isRegistered(Handler<AsyncResult<Boolean>> handler);
 
     @Fluent

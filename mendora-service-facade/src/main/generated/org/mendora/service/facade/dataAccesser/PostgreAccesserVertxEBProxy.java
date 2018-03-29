@@ -101,6 +101,11 @@ public class PostgreAccesserVertxEBProxy implements PostgreAccesser {
     return this;
   }
 
+  @Override
+  public PostgreAccesser resume(Handler<AsyncResult<Void>> handler) {
+    return null;
+  }
+
   public PostgreAccesser isRegistered(Handler<AsyncResult<Boolean>> handler) {
     if (closed) {
       handler.handle(Future.failedFuture(new IllegalStateException("Proxy is closed")));

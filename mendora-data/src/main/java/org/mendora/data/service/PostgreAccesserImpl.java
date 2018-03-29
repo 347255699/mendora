@@ -58,6 +58,11 @@ public class PostgreAccesserImpl implements PostgreAccesser {
     }
 
     @Override
+    public PostgreAccesser resume(Handler<AsyncResult<Void>> handler) {
+        return null;
+    }
+
+    @Override
     public PostgreAccesser isRegistered(Handler<AsyncResult<Boolean>> handler) {
         return null;
     }

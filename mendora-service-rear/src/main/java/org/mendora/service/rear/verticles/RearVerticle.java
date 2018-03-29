@@ -6,8 +6,8 @@ import org.mendora.guice.properties.BaseConst;
 import org.mendora.guice.scanner.serviceProvider.ServiceProviderScanner;
 import org.mendora.guice.verticles.DefaultVerticle;
 import org.mendora.service.facade.constant.FacadeConst;
-import org.mendora.service.facade.scanner.ServiceProxyBinder;
-import org.mendora.service.facade.scanner.ServiceProxyScanner;
+import org.mendora.service.facade.scanner.ServiceRxProxyBinder;
+import org.mendora.service.facade.scanner.ServiceRxProxyScanner;
 
 /**
  * created by:xmf
@@ -25,7 +25,7 @@ public class RearVerticle extends DefaultVerticle {
     public void start() throws Exception {
         // injecting service proxy implementation.
         String proxyIntoPackage = configHolder.property(FacadeConst.FACADE_SERVICE_PROXY_INTO_PACKAGE);
-        ServiceProxyBinder serviceProxyBinder = injector.getInstance(ServiceProxyScanner.class).scan(proxyIntoPackage);
+        ServiceRxProxyBinder serviceProxyBinder = new ServiceRxProxyScanner().scan(proxyIntoPackage, injector);
         injector = injector.createChildInjector(serviceProxyBinder);
 
         // scanning service and register.

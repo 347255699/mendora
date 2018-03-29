@@ -19,6 +19,7 @@ package org.mendora.service.facade.dataAccesser.rxjava;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import org.mendora.service.facade.aop.Monitor;
 import rx.Observable;
 import rx.Single;
 import io.vertx.core.json.JsonObject;
@@ -86,6 +87,7 @@ public class PostgreAccesser {
     }));
   }
 
+  @Monitor
   public PostgreAccesser query(String sql, Handler<AsyncResult<JsonObject>> handler) { 
     delegate.query(sql, handler);
     return this;

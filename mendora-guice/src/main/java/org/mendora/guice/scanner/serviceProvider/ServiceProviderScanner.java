@@ -1,6 +1,5 @@
 package org.mendora.guice.scanner.serviceProvider;
 
-import com.google.inject.Inject;
 import com.google.inject.Injector;
 import lombok.extern.slf4j.Slf4j;
 import org.mendora.util.scanner.PackageScannerImpl;
@@ -17,10 +16,6 @@ import java.util.List;
 public class ServiceProviderScanner {
     public static final String MODULE_NAME = "SERVICE_PROVIDER_SCANNER:";
     public static final String REGISTER_METHOD_NAME = "register";
-
-    @Inject
-    public ServiceProviderScanner() {
-    }
 
     /**
      * register service

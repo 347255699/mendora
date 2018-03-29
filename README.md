@@ -43,6 +43,7 @@
 		-service-facade rpc服务接口
 			-generated 服务代理代码生成输出目录
 			-java
+			    -aop 切面编程相关类和注解
 			    -scanner 扫描器，内置服务代理扫描器，外部使用需要注意扫描范围
 	
 		-service-rear rpc服务实现载体
@@ -127,44 +128,45 @@ public class DemoRoute extends AbstractRoute{
 Service主要采用异步rpc方式，即服务接口与实现分离，无论服务实现置放在哪个服务内(服务可以身处任何多台服务器上)，只要通过相关的注册规则，即可让拥有接口的任何一方异步调用rpc服务。
 #### Service接口
 编写服务的第一步是设计接口，设计接口需要满足几个规则。我们编写的异步Service实现实际上是通过Vertx EventBus通讯实现，因此需要让Vertx相关组件帮我们生成相应的Service Proxy。详细实现将不在这里赘述。可查看[Vertx Java Service Proxy章节](https://vertxchina.github.io/vertx-translation-chinese/services/ServiceProxies.html)。  
-首先需要在接口上加上`@ProxyGen`和`@VertxGen`，前者用于生成服务代理类，后者用于生成Rx风格的服务代理类。我们一般会选择使用Rx风格的代理类。然后需要在接口中定义一个EventBus地址常量，一个`register`方法和一个静态`createProxy`方法。定义好的接口大概是这样的。
+首先需要在接口上加上`@ProxyGen`、`@VertxGen`和`@ServiceFacade`，`ProxyGen`用于生成服务代理类，`VertxGen`用于生成Rx风格的服务代理类，`ServiceFacade`用于实现aop切面编程。我们一般会选择使用Rx风格的代理类。然后需要在接口中定义一个EventBus地址常量。定义好的接口大概是这样的。
 ```java
 @ProxyGen
 @VertxGen
+@ServiceFacade(proxy = PostgreAccesserVertxEBProxy.class, rxProxy = org.mendora.service.facade.dataAccesser.rxjava.PostgreAccesser.class)
 public interface PostgreAccesser {
 
     String EB_ADDRESS = "eb.data.postgre.accesser";
 
-    /**
-     * create service proxy.
-     *
-     * @param vertx
-     * @return
-     */
-    static PostgreAccesser createProxy(Vertx vertx) {
-        return ProxyHelper.createProxy(PostgreAccesser.class, vertx, EB_ADDRESS);
-    }
-
-   /**
-    * register service implementation. 
-    */
-    void register();
+    @Fluent
+    PostgreAccesser unRegister(Handler<AsyncResult<Void>> handler);
+   
+    @Fluent
+    PostgreAccesser pause(Handler<AsyncResult<Void>> handler);
+   
+    @Fluent
+    PostgreAccesser resume(Handler<AsyncResult<Void>> handler);
+   
+    @Fluent
+    PostgreAccesser isRegistered(Handler<AsyncResult<Boolean>> handler);
     
     @Fluent
     PostgreAccesser query(String sql, Handler<AsyncResult<JsonObject>> handler);
+   
     void update(String sql);
+}
 ```
 实例中`Handler<AsyncResult<JsonObject>> handler`参数用于异步回调。若无需回调可不携带该参数。
 > note：@Fluent用于返回当前实例实现链式调用。接口必须定义在service-facade中，调用一方需要依赖该基础包。
+> 建议添加`unRegister`、`pause`、`isRegistered`和`resume`等方法用于实现对服务的操作。
 
-service-facade中内置了一个服务代理扫描器`ServiceProxyScanner`；用于扫描指定包中的服务代理类，返回一个`ServiceProxyBinder`实例；而后在调用方注入guice的ioc容器，最后通过依赖注入的方式来调用服务。在调用方扫描接口看起来是这样的：
+service-facade中内置了一个服务代理扫描器`ServiceRxProxyScanner`；用于扫描指定包中的接口，返回一个`ServiceRxProxyBinder`实例；而后在调用方注入guice的ioc容器，最后通过依赖注入的方式来调用服务。在调用方扫描接口看起来是这样的：
 ```java
-// default service proxy package path.
-String proxyIntoPackage = configHolder.property(WebConst.WEB_SERVICE_PROXY_INTO_PACKAGE);
-// scanning
-ServiceProxyBinder serviceProxyBinder = injector.getInstance(ServiceProxyScanner.class).scan(proxyIntoPackage);
-// injecting ioc container.
-injector = injector.createChildInjector(serviceProxyBinder);
+    // default service proxy package path.
+    String proxyIntoPackage = configHolder.property(WebConst.WEB_SERVICE_PROXY_INTO_PACKAGE);
+    // scanning
+    ServiceRxProxyBinder serviceRxProxyBinder = new ServiceRxProxyScanner.scan(proxyIntoPackage);
+    // injecting ioc container.
+    injector = injector.createChildInjector(serviceProxyBinder);
 ```
 扫描完成后即可通过@Inject的方式注入服务，在Route中使用看起来是这样的：
 ```java
@@ -181,6 +183,108 @@ public class DemoRoute extends AbstractRoute {
 }
 ```
 > note: 在调用服务接口前需要确保服务实现已经在EventBus上注册。上文中缺失了如何生成服务代理类细节，详情同样可以查看[Vertx Java Service Proxy章节](https://vertxchina.github.io/vertx-translation-chinese/services/ServiceProxies.html)。此处仅需要知道执行mvn:compiler生命周期即可生成服务代理类。
+##### 迎合aop
+需要注意Service Proxy组件生成的代码并不能兼容aop，因此需要做几点改动以适应aop编程。
+1. 在接口上添加`@ServiceFacade`注解。并绑定该接口相关的代理类和rx版代理类。如下所示：
+```java
+@ServiceFacade(proxy = PostgreAccesserVertxEBProxy.class, rxProxy = org.mendora.service.facade.dataAccesser.rxjava.PostgreAccesser.class)
+public interface PostgreAccesser{}
+```
+2. 在接口代理类第一个构造函数上添加`@Inject`注解。并删除构造函数上的`address`，替换成接口定义的默认EventBus地址。如下所示：
+```java
+public class PostgreAccesserVertxEBProxy implements PostgreAccesser {
+
+    private Vertx _vertx;
+    private String _address;
+    private DeliveryOptions _options;
+    private boolean closed;
+
+    @Inject
+    public PostgreAccesserVertxEBProxy(Vertx vertx) {
+        this(vertx, EB_ADDRESS, null);
+    }
+
+    public PostgreAccesserVertxEBProxy(Vertx vertx, String address, DeliveryOptions options) {
+        this._vertx = vertx;
+        this._address = address;
+        this._options = options;
+        try {
+            this._vertx.eventBus().registerDefaultCodec(ServiceException.class, new ServiceExceptionMessageCodec());
+        } catch (IllegalStateException ex) {}
+    }
+}
+```
+3. 同样在接口rx版代理类的构造函数添加`@Inject`。如下所示：
+```java
+@io.vertx.lang.rxjava.RxGen(org.mendora.service.facade.dataAccesser.PostgreAccesser.class)
+public class PostgreAccesser {
+
+    private final org.mendora.service.facade.dataAccesser.PostgreAccesser delegate;
+
+    @Inject
+    public PostgreAccesser(org.mendora.service.facade.dataAccesser.PostgreAccesser delegate) {
+        this.delegate = delegate;
+    }
+}
+```
+##### aop实践
+可在service-facade模块的aop包中编写拦截器，在ioc容器中的bean实例方法执行前后做相应的处理。  
+编写步骤大概是这样的：
+1. 编写注解，添加至需要执行拦截的方法上。一般是添加到接口的rx版代理类上。如下所示：
+```java
+@io.vertx.lang.rxjava.RxGen(org.mendora.service.facade.dataAccesser.PostgreAccesser.class)
+public class PostgreAccesser {
+    @Monitor
+    public PostgreAccesser query(String sql, Handler<AsyncResult<JsonObject>> handler) { 
+        delegate.query(sql, handler);
+        return this;
+    }
+}
+```
+2. 编写MethodInterceptor，如下所示：
+```java
+public class MonitorMethodInterceptor implements org.aopalliance.intercept.MethodInterceptor {
+    private Logger log = LoggerFactory.getLogger(MonitorMethodInterceptor.class);
+    
+    @Override
+    public Object invoke(MethodInvocation methodInvocation) throws Throwable {
+        before(methodInvocation);
+        Object object = methodInvocation.proceed();
+        after(methodInvocation);
+        return object;
+    }
+
+   /**
+    * before service method execute.
+    *
+    * @param methodInvocation
+    */
+    private void before(MethodInvocation methodInvocation) {
+        // before service method execute.
+        String name = methodInvocation.getMethod().getName();
+        log.info(name);
+    }
+
+   /**
+    * after service method execute.
+    *
+    * @param methodInvocation
+    */
+    private void after(MethodInvocation methodInvocation) {
+        // after service method execute.
+        String name = methodInvocation.getMethod().getName();
+        log.info(name);
+    }
+}
+```
+3. 将MethodInterceptor绑定到Binder中。如下所示：
+```java
+    injector = injector.createChildInjector(binder -> {
+        binder.bindInterceptor(Matchers.any(), Matchers.annotatedWith(Monitor.class), new MonitorMethodInterceptor());
+        // binding instances
+    });
+```
+> note：以上所有操作必须在Service Proxy组件生成代码后操作，且一定要在facade定义和编写。详情可参考[Guice AOP](https://github.com/google/guice/wiki/AOP)。
 #### Service实现
 Service实现可以在任何一个服务内编写和注册。在编写服务实现类时需要添加`@ServiceProvider`和实现`register`方法已供扫描器完成服务注册。一个服务实现看起来是这样的：
 ```java

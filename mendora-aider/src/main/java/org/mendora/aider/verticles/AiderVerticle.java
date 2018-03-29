@@ -10,8 +10,8 @@ import org.mendora.aider.binder.AiderBinder;
 import org.mendora.aider.constant.AiderConst;
 import org.mendora.guice.scanner.route.RouteScanner;
 import org.mendora.guice.verticles.DefaultVerticle;
-import org.mendora.service.facade.scanner.ServiceProxyBinder;
-import org.mendora.service.facade.scanner.ServiceProxyScanner;
+import org.mendora.service.facade.scanner.ServiceRxProxyBinder;
+import org.mendora.service.facade.scanner.ServiceRxProxyScanner;
 
 /**
  * created by:xmf
@@ -33,7 +33,7 @@ public class AiderVerticle extends DefaultVerticle {
         Router router = Router.router(vertx);
         // injecting your bean into AiderBinder class
         String proxyIntoPackage = configHolder.property(AiderConst.AIDER_SERVICE_PROXY_INTO_PACKAGE);
-        ServiceProxyBinder serviceProxyBinder = injector.getInstance(ServiceProxyScanner.class).scan(proxyIntoPackage);
+        ServiceRxProxyBinder serviceProxyBinder = new ServiceRxProxyScanner().scan(proxyIntoPackage, injector);
         injector = injector.createChildInjector(new AiderBinder(router), serviceProxyBinder);
 
         /** before routing request **/
