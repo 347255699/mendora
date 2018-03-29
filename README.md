@@ -284,7 +284,7 @@ public class MonitorMethodInterceptor implements org.aopalliance.intercept.Metho
         // binding instances
     });
 ```
-> note：以上所有操作必须在Service Proxy组件生成代码后操作，且一定要在facade定义和编写。详情可参考[Guice AOP](https://github.com/google/guice/wiki/AOP)。
+> note：以上所有操作必须在Service Proxy组件生成代码后操作，且一定要在facade模块内定义和编写。详情可参考[Guice AOP](https://github.com/google/guice/wiki/AOP)。
 #### Service实现
 Service实现可以在任何一个服务内编写和注册。在编写服务实现类时需要添加`@ServiceProvider`和实现`register`方法已供扫描器完成服务注册。一个服务实现看起来是这样的：
 ```java
