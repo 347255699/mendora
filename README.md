@@ -296,7 +296,6 @@ public class PostgreAccesserImpl implements PostgreAccesser {
     /**
      * register service
      */
-     @Override
      public void register() {
         ProxyHelper.registerService(PostgreAccesser.class, vertx.getDelegate(), this, EB_ADDRESS);
      }
@@ -316,9 +315,11 @@ public class PostgreAccesserImpl implements PostgreAccesser {
 }
 ```
 > note：需要注意注册服务时需要四个参数，分别是服务类型、Vertx实例、服务实现实例和EventBus地址。一般EventBus地址由实现的接口提供。
-通过服务提供者扫描器(`ServiceProviderScanner`)来注册服务。注册服务看起来是这样的：
+通过服务提供者扫描器(`ServiceProviderScanner`)来注册服务。register由服务实现类自行提供，服务接口中无需定义。
+
+注册服务看起来是这样的：
 ```java
-    ServiceProviderScanner scanner = injector.getInstance(ServiceProviderScanner.class);
+    ServiceProviderScanner scanner = new ServiceProviderScanner();
     scanner.scan(configHolder.property(DataConst.DATA_SERVICE_INTO_PACKAGE), DataVerticle.class.getClassLoader(), injector);
 ```
 ## 其他
