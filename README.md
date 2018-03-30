@@ -41,7 +41,7 @@
 			-ApplicationMain.java 服务入口
 	
 		-service-facade rpc服务接口
-			-generated 服务代理代码生成输出目录
+			-generated 服务代理代码生成置放目录
 			-java
 			    -aop 切面编程相关类和注解
 			    -scanner 扫描器，内置服务代理扫描器，外部使用需要注意扫描范围
@@ -70,6 +70,11 @@
 			-service 数据访问实现载体
 			-verticles verticle包
 			-ApplicationMain.java 服务入口
+	    
+	    -generate 代码生成辅助模块，将facade模块的代码生成功能转移到该包下，跟业务功能剥离开
+	        -generated 代码生成输出目录
+	        -java 接口置放处
+	        
 ### 基础结构图
 ![基础结构图](doc/draft/structure.png "png")
 ## 架构思想
@@ -329,6 +334,8 @@ public class PostgreAccesserImpl implements PostgreAccesser {
 提供了一些特别优秀的工具包，如`result`，顾名思义用于快速生成常用结果集，如Http请求结果集等。
 ### doc文件夹
 架构中所用到的设计文档草稿都在该目录下，其他说明文档可以copy一份置放在该目录下，让相关开放人员可以快速浏览。
+### generate包
+该包主要用于协助service-facade包生成代码，不属于系统功能模块或基础模块。generate包承当了原来service-facade包的服务代理类代码生成功能。让service-facade包能专注定义接口。让代码生成辅助特性与实际业务功能接口分离。
 
 
 
