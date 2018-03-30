@@ -33,7 +33,6 @@ import io.vertx.serviceproxy.ProxyHelper;
 import io.vertx.serviceproxy.ServiceException;
 import io.vertx.serviceproxy.ServiceExceptionMessageCodec;
 import org.mendora.service.facade.dataAccesser.MongoAccesser;
-import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
@@ -62,16 +61,6 @@ public class MongoAccesserVertxEBProxy implements MongoAccesser {
       this._vertx.eventBus().registerDefaultCodec(ServiceException.class,
           new ServiceExceptionMessageCodec());
     } catch (IllegalStateException ex) {}
-  }
-
-  public void register() {
-    if (closed) {
-      throw new IllegalStateException("Proxy is closed");
-    }
-    JsonObject _json = new JsonObject();
-    DeliveryOptions _deliveryOptions = (_options != null) ? new DeliveryOptions(_options) : new DeliveryOptions();
-    _deliveryOptions.addHeader("action", "register");
-    _vertx.eventBus().send(_address, _json, _deliveryOptions);
   }
 
   public MongoAccesser save(JsonObject params, Handler<AsyncResult<JsonObject>> handler) {

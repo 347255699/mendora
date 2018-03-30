@@ -17,7 +17,6 @@
 package org.mendora.service.facade.dataAccesser;
 
 import com.google.inject.Inject;
-import org.mendora.service.facade.dataAccesser.PostgreAccesser;
 import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.Future;
@@ -30,11 +29,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.function.Function;
-import io.vertx.serviceproxy.ProxyHelper;
+
 import io.vertx.serviceproxy.ServiceException;
 import io.vertx.serviceproxy.ServiceExceptionMessageCodec;
-import org.mendora.service.facade.dataAccesser.PostgreAccesser;
-import io.vertx.core.json.JsonObject;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 
@@ -101,12 +98,25 @@ public class PostgreAccesserVertxEBProxy implements PostgreAccesser {
     return this;
   }
 
-  @Override
   public PostgreAccesser resume(Handler<AsyncResult<Void>> handler) {
-    return null;
+    if (closed) {
+      handler.handle(Future.failedFuture(new IllegalStateException("Proxy is closed")));
+      return this;
+    }
+    JsonObject _json = new JsonObject();
+    DeliveryOptions _deliveryOptions = (_options != null) ? new DeliveryOptions(_options) : new DeliveryOptions();
+    _deliveryOptions.addHeader("action", "resume");
+    _vertx.eventBus().<Void>send(_address, _json, _deliveryOptions, res -> {
+      if (res.failed()) {
+        handler.handle(Future.failedFuture(res.cause()));
+      } else {
+        handler.handle(Future.succeededFuture(res.result().body()));
+      }
+    });
+    return this;
   }
 
-  public PostgreAccesser isRegistered(Handler<AsyncResult<Boolean>> handler) {
+  public PostgreAccesser isRegistered(Handler<AsyncResult<JsonObject>> handler) {
     if (closed) {
       handler.handle(Future.failedFuture(new IllegalStateException("Proxy is closed")));
       return this;
@@ -114,7 +124,7 @@ public class PostgreAccesserVertxEBProxy implements PostgreAccesser {
     JsonObject _json = new JsonObject();
     DeliveryOptions _deliveryOptions = (_options != null) ? new DeliveryOptions(_options) : new DeliveryOptions();
     _deliveryOptions.addHeader("action", "isRegistered");
-    _vertx.eventBus().<Boolean>send(_address, _json, _deliveryOptions, res -> {
+    _vertx.eventBus().<JsonObject>send(_address, _json, _deliveryOptions, res -> {
       if (res.failed()) {
         handler.handle(Future.failedFuture(res.cause()));
       } else {

@@ -16,33 +16,23 @@
 
 package org.mendora.service.facade.dataAccesser;
 
-import org.mendora.service.facade.dataAccesser.PostgreAccesser;
 import io.vertx.core.Vertx;
 import io.vertx.core.Handler;
 import io.vertx.core.AsyncResult;
-import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.eventbus.MessageConsumer;
-import io.vertx.core.eventbus.DeliveryOptions;
-import io.vertx.core.eventbus.ReplyException;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.json.JsonArray;
-import java.util.Collection;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import io.vertx.serviceproxy.ProxyHelper;
+
 import io.vertx.serviceproxy.ProxyHandler;
 import io.vertx.serviceproxy.ServiceException;
 import io.vertx.serviceproxy.ServiceExceptionMessageCodec;
-import org.mendora.service.facade.dataAccesser.PostgreAccesser;
-import io.vertx.core.json.JsonObject;
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Handler;
 
 /*
   Generated Proxy code - DO NOT EDIT
@@ -129,36 +119,40 @@ public class PostgreAccesserVertxProxyHandler extends ProxyHandler {
           service.pause(createHandler(msg));
           break;
         }
+        case "resume": {
+          service.resume(createHandler(msg));
+          break;
+        }
         case "isRegistered": {
           service.isRegistered(createHandler(msg));
           break;
         }
         case "query": {
-          service.query((java.lang.String)json.getValue("sql"), createHandler(msg));
+          service.query((String)json.getValue("sql"), createHandler(msg));
           break;
         }
         case "queryWithParams": {
-          service.queryWithParams((io.vertx.core.json.JsonObject)json.getValue("doc"), createHandler(msg));
+          service.queryWithParams((JsonObject)json.getValue("doc"), createHandler(msg));
           break;
         }
         case "querySingle": {
-          service.querySingle((java.lang.String)json.getValue("sql"), createHandler(msg));
+          service.querySingle((String)json.getValue("sql"), createHandler(msg));
           break;
         }
         case "querySingleWithParams": {
-          service.querySingleWithParams((io.vertx.core.json.JsonObject)json.getValue("doc"), createHandler(msg));
+          service.querySingleWithParams((JsonObject)json.getValue("doc"), createHandler(msg));
           break;
         }
         case "update": {
-          service.update((java.lang.String)json.getValue("sql"), createHandler(msg));
+          service.update((String)json.getValue("sql"), createHandler(msg));
           break;
         }
         case "updateWithParams": {
-          service.updateWithParams((io.vertx.core.json.JsonObject)json.getValue("doc"), createHandler(msg));
+          service.updateWithParams((JsonObject)json.getValue("doc"), createHandler(msg));
           break;
         }
         case "execute": {
-          service.execute((java.lang.String)json.getValue("sql"), createHandler(msg));
+          service.execute((String)json.getValue("sql"), createHandler(msg));
           break;
         }
         default: {

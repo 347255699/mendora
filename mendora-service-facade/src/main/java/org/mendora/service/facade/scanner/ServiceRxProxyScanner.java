@@ -2,14 +2,12 @@ package org.mendora.service.facade.scanner;
 
 import com.google.inject.Injector;
 import com.google.inject.matcher.Matchers;
-import io.vertx.rxjava.core.Vertx;
 import org.mendora.service.facade.aop.Monitor;
 import org.mendora.service.facade.aop.MonitorMethodInterceptor;
 import org.mendora.util.scanner.PackageScannerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 

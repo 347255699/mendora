@@ -16,11 +16,7 @@
 
 package org.mendora.service.facade.dataAccesser.rxjava;
 
-import java.util.Map;
-
 import com.google.inject.Inject;
-import org.mendora.service.facade.aop.Monitor;
-import rx.Observable;
 import rx.Single;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.AsyncResult;
@@ -76,18 +72,28 @@ public class PostgreAccesser {
     }));
   }
 
-  public PostgreAccesser isRegistered(Handler<AsyncResult<Boolean>> handler) { 
+  public PostgreAccesser resume(Handler<AsyncResult<Void>> handler) { 
+    delegate.resume(handler);
+    return this;
+  }
+
+  public Single<Void> rxResume() { 
+    return Single.create(new io.vertx.rx.java.SingleOnSubscribeAdapter<>(fut -> {
+      resume(fut);
+    }));
+  }
+
+  public PostgreAccesser isRegistered(Handler<AsyncResult<JsonObject>> handler) { 
     delegate.isRegistered(handler);
     return this;
   }
 
-  public Single<Boolean> rxIsRegistered() { 
+  public Single<JsonObject> rxIsRegistered() { 
     return Single.create(new io.vertx.rx.java.SingleOnSubscribeAdapter<>(fut -> {
       isRegistered(fut);
     }));
   }
 
-  @Monitor
   public PostgreAccesser query(String sql, Handler<AsyncResult<JsonObject>> handler) { 
     delegate.query(sql, handler);
     return this;

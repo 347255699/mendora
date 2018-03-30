@@ -5,10 +5,14 @@ import io.vertx.ext.web.handler.LoggerFormat;
 import io.vertx.rxjava.ext.web.Router;
 import io.vertx.rxjava.ext.web.handler.BodyHandler;
 import io.vertx.rxjava.ext.web.handler.LoggerHandler;
+import io.vertx.rxjava.ext.web.handler.SessionHandler;
+import io.vertx.rxjava.ext.web.sstore.ClusteredSessionStore;
+import io.vertx.rxjava.ext.web.sstore.SessionStore;
 import lombok.extern.slf4j.Slf4j;
 import org.mendora.guice.scanner.route.RouteScanner;
 import org.mendora.guice.verticles.DefaultVerticle;
 import org.mendora.service.facade.constant.FacadeConst;
+import org.mendora.service.facade.scanner.ServiceRxProxyBinder;
 import org.mendora.service.facade.scanner.ServiceRxProxyScanner;
 import org.mendora.web.auth.WebAuth;
 import org.mendora.web.binder.WebBinder;
@@ -36,8 +40,8 @@ public class WebVerticle extends DefaultVerticle {
 
         // injecting your bean into WebBinder class
         String proxyIntoPackage = configHolder.property(FacadeConst.FACADE_SERVICE_PROXY_INTO_PACKAGE);
-        new ServiceRxProxyScanner().scan(proxyIntoPackage, injector);
-        injector = injector.createChildInjector(new WebBinder(router, webAuth));
+        ServiceRxProxyBinder serviceRxProxyBinder = new ServiceRxProxyScanner().scan(proxyIntoPackage, injector);
+        injector = injector.createChildInjector(new WebBinder(router, webAuth), serviceRxProxyBinder);
 
         // before routing request
         beforeRoutingRequest(router);
@@ -52,9 +56,12 @@ public class WebVerticle extends DefaultVerticle {
      */
     private void beforeRoutingRequest(Router router) {
         // use http request logging.
-        router.route().handler(LoggerHandler.create(LoggerFormat.TINY));
-        // use http request body as Json,Buffer,String
+        router.route().order(0).handler(LoggerHandler.create(LoggerFormat.TINY));
+        // use http request body as Json,Buffer,String.
         long bodyLimit = Long.parseLong(configHolder.property(WebConst.WEB_REQUEST_BODY_SIZE));
-        router.route().handler(BodyHandler.create().setBodyLimit(bodyLimit));
+        router.route().order(1).handler(BodyHandler.create().setBodyLimit(bodyLimit));
+        // use session store.
+        SessionStore store = ClusteredSessionStore.create(vertx);
+        router.route().order(2).handler(SessionHandler.create(store));
     }
 }

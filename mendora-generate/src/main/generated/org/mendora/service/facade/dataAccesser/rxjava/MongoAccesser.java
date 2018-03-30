@@ -19,7 +19,6 @@ package org.mendora.service.facade.dataAccesser.rxjava;
 import java.util.Map;
 import rx.Observable;
 import rx.Single;
-import io.vertx.rxjava.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
@@ -47,20 +46,6 @@ public class MongoAccesser {
 
   public org.mendora.service.facade.dataAccesser.MongoAccesser getDelegate() {
     return delegate;
-  }
-
-  /**
-   * create service proxy.
-   * @param vertx 
-   * @return 
-   */
-  public static MongoAccesser createProxy(Vertx vertx) { 
-    MongoAccesser ret = MongoAccesser.newInstance(org.mendora.service.facade.dataAccesser.MongoAccesser.createProxy(vertx.getDelegate()));
-    return ret;
-  }
-
-  public void register() { 
-    delegate.register();
   }
 
   public MongoAccesser save(JsonObject params, Handler<AsyncResult<JsonObject>> handler) { 

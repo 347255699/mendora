@@ -2,7 +2,9 @@ package org.mendora.data.service;
 
 import com.google.inject.Inject;
 import io.vertx.core.AsyncResult;
+import io.vertx.core.Future;
 import io.vertx.core.Handler;
+import io.vertx.core.eventbus.MessageConsumer;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.ResultSet;
@@ -26,6 +28,7 @@ import org.mendora.util.result.AsyncHandlerResult;
 @ServiceProvider
 public class PostgreAccesserImpl implements PostgreAccesser {
     private static final String MODULE_NAME = "POSTGRE_ACCESSER_IMPL";
+    private MessageConsumer messageConsumer;
     @Inject
     private AsyncSQLClient postgreSQLClient;
     @Inject
@@ -44,27 +47,34 @@ public class PostgreAccesserImpl implements PostgreAccesser {
      * register service
      */
     public void register() {
-        ProxyHelper.registerService(PostgreAccesser.class, vertx.getDelegate(), this, EB_ADDRESS);
+        messageConsumer = ProxyHelper.registerService(PostgreAccesser.class, vertx.getDelegate(), this, EB_ADDRESS);
     }
 
     @Override
     public PostgreAccesser unRegister(Handler<AsyncResult<Void>> handler) {
-        return null;
+        messageConsumer.unregister();
+        handler.handle(Future.succeededFuture());
+        return this;
     }
 
     @Override
     public PostgreAccesser pause(Handler<AsyncResult<Void>> handler) {
-        return null;
+        messageConsumer.pause();
+        handler.handle(Future.succeededFuture());
+        return this;
     }
 
     @Override
     public PostgreAccesser resume(Handler<AsyncResult<Void>> handler) {
-        return null;
+        messageConsumer.resume();
+        handler.handle(Future.succeededFuture());
+        return this;
     }
 
     @Override
-    public PostgreAccesser isRegistered(Handler<AsyncResult<Boolean>> handler) {
-        return null;
+    public PostgreAccesser isRegistered(Handler<AsyncResult<JsonObject>> handler) {
+        AsyncHandlerResult.succ(messageConsumer.isRegistered(), handler);
+        return this;
     }
 
     /**

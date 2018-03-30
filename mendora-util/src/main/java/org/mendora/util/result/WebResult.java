@@ -72,6 +72,18 @@ public class WebResult {
         common(JsonResult.fail(err), rc);
     }
 
+
+    /**
+     * return failure status code and error msg.
+     * example:{
+     * "retCode":-1,
+     * "errMsg":[errMsg]
+     * }
+     */
+    public static void fail(String errMsg, RoutingContext rc){
+        fail(new RuntimeException(errMsg), rc);
+    }
+
     /**
      * only half success status code.
      * example:{

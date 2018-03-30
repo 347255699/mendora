@@ -104,7 +104,7 @@ var PostgreAccesser = function(j_val) {
     if (__args.length === 1 && typeof __args[0] === 'function') {
       j_postgreAccesser["isRegistered(io.vertx.core.Handler)"](function(ar) {
       if (ar.succeeded()) {
-        handler(ar.result(), null);
+        handler(utils.convReturnJson(ar.result()), null);
       } else {
         handler(null, ar.cause());
       }

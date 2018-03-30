@@ -16,7 +16,6 @@
 
 /** @module dataAccesserService-js/mongo_accesser */
 var utils = require('vertx-js/util/utils');
-var Vertx = require('vertx-js/vertx');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
@@ -31,18 +30,6 @@ var MongoAccesser = function(j_val) {
 
   var j_mongoAccesser = j_val;
   var that = this;
-
-  /**
-
-   @public
-
-   */
-  this.register = function() {
-    var __args = arguments;
-    if (__args.length === 0) {
-      j_mongoAccesser["register()"]();
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
 
   /**
 
@@ -216,18 +203,4 @@ MongoAccesser._create = function(jdel) {
   MongoAccesser.apply(obj, arguments);
   return obj;
 }
-/**
- create service proxy.
-
- @memberof module:dataAccesserService-js/mongo_accesser
- @param vertx {Vertx} 
- @return {MongoAccesser} 
- */
-MongoAccesser.createProxy = function(vertx) {
-  var __args = arguments;
-  if (__args.length === 1 && typeof __args[0] === 'object' && __args[0]._jdel) {
-    return utils.convReturnVertxGen(MongoAccesser, JMongoAccesser["createProxy(io.vertx.core.Vertx)"](vertx._jdel));
-  } else throw new TypeError('function invoked with invalid arguments');
-};
-
 module.exports = MongoAccesser;

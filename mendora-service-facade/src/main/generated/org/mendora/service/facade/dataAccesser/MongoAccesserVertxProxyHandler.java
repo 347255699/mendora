@@ -16,34 +16,23 @@
 
 package org.mendora.service.facade.dataAccesser;
 
-import org.mendora.service.facade.dataAccesser.MongoAccesser;
 import io.vertx.core.Vertx;
 import io.vertx.core.Handler;
 import io.vertx.core.AsyncResult;
-import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.eventbus.MessageConsumer;
-import io.vertx.core.eventbus.DeliveryOptions;
-import io.vertx.core.eventbus.ReplyException;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.json.JsonArray;
-import java.util.Collection;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import io.vertx.serviceproxy.ProxyHelper;
+
 import io.vertx.serviceproxy.ProxyHandler;
 import io.vertx.serviceproxy.ServiceException;
 import io.vertx.serviceproxy.ServiceExceptionMessageCodec;
-import org.mendora.service.facade.dataAccesser.MongoAccesser;
-import io.vertx.core.Vertx;
-import io.vertx.core.json.JsonObject;
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Handler;
 
 /*
   Generated Proxy code - DO NOT EDIT
@@ -122,37 +111,32 @@ public class MongoAccesserVertxProxyHandler extends ProxyHandler {
       }
       accessed();
       switch (action) {
-
-        case "register": {
-          service.register();
-          break;
-        }
         case "save": {
-          service.save((io.vertx.core.json.JsonObject)json.getValue("params"), createHandler(msg));
+          service.save((JsonObject)json.getValue("params"), createHandler(msg));
           break;
         }
         case "find": {
-          service.find((io.vertx.core.json.JsonObject)json.getValue("params"), createHandler(msg));
+          service.find((JsonObject)json.getValue("params"), createHandler(msg));
           break;
         }
         case "findWithPage": {
-          service.findWithPage((io.vertx.core.json.JsonObject)json.getValue("params"), createHandler(msg));
+          service.findWithPage((JsonObject)json.getValue("params"), createHandler(msg));
           break;
         }
         case "findOne": {
-          service.findOne((io.vertx.core.json.JsonObject)json.getValue("params"), createHandler(msg));
+          service.findOne((JsonObject)json.getValue("params"), createHandler(msg));
           break;
         }
         case "remove": {
-          service.remove((io.vertx.core.json.JsonObject)json.getValue("params"), createHandler(msg));
+          service.remove((JsonObject)json.getValue("params"), createHandler(msg));
           break;
         }
         case "count": {
-          service.count((io.vertx.core.json.JsonObject)json.getValue("params"), createHandler(msg));
+          service.count((JsonObject)json.getValue("params"), createHandler(msg));
           break;
         }
         case "execute": {
-          service.execute((io.vertx.core.json.JsonObject)json.getValue("params"), createHandler(msg));
+          service.execute((JsonObject)json.getValue("params"), createHandler(msg));
           break;
         }
         default: {

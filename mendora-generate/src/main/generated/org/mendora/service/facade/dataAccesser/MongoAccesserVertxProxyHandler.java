@@ -40,7 +40,6 @@ import io.vertx.serviceproxy.ProxyHandler;
 import io.vertx.serviceproxy.ServiceException;
 import io.vertx.serviceproxy.ServiceExceptionMessageCodec;
 import org.mendora.service.facade.dataAccesser.MongoAccesser;
-import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
@@ -122,11 +121,6 @@ public class MongoAccesserVertxProxyHandler extends ProxyHandler {
       }
       accessed();
       switch (action) {
-
-        case "register": {
-          service.register();
-          break;
-        }
         case "save": {
           service.save((io.vertx.core.json.JsonObject)json.getValue("params"), createHandler(msg));
           break;

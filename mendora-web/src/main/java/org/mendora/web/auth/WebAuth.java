@@ -81,7 +81,7 @@ public class WebAuth {
      * @return
      */
     public AuthHandler createAuthHandler(String permissionFlag) {
-        return RedirectAuthHandler.create(jwtAuth)
+        return RedirectAuthHandler.create(jwtAuth, "/mendora/user/redirect")
                 .addAuthority(permissionFlag);
     }
 

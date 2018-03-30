@@ -2,16 +2,13 @@ package org.mendora.web.route.aider;
 
 import com.google.inject.Inject;
 import io.vertx.core.http.HttpMethod;
-import io.vertx.core.json.JsonObject;
 import io.vertx.rxjava.ext.web.RoutingContext;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.mendora.guice.scanner.route.AbstractRoute;
 import org.mendora.guice.scanner.route.RequestRouting;
 import org.mendora.guice.scanner.route.Route;
 import org.mendora.service.facade.dataAccesser.rxjava.PostgreAccesser;
 import org.mendora.util.constant.SqlReferences;
-import org.mendora.util.result.JsonResult;
 import org.mendora.util.result.WebResult;
 import org.mendora.web.auth.WebAuth;
 
@@ -47,16 +44,6 @@ public class DemoRoute extends AbstractRoute {
 
     @Override
     public void route(String prefix) {
-        val usr = "root";
-        val passwd = "123";
-        router.get(prefix + "/demo2").handler(rc -> {
-            WebResult.consume(JsonResult.empty(), "<h1>Just a test demo2.</h1>", rc);
-        });
-        router.post(prefix + "/login").handler(rc -> {
-            JsonObject doc = rc.getBodyAsJson();
-            if (usr.equals(doc.getString("usr")) && passwd.equals(doc.getString("passwd"))) {
-                WebResult.consume(JsonResult.succ(webAuth.issueJWToken(doc)), rc);
-            }
-        });
+        router.route(prefix + "/*").order(10).handler(webAuth.createAuthHandler("normal"));
     }
 }

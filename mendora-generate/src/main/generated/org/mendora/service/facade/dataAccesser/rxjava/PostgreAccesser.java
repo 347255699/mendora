@@ -83,12 +83,12 @@ public class PostgreAccesser {
     }));
   }
 
-  public PostgreAccesser isRegistered(Handler<AsyncResult<Boolean>> handler) { 
+  public PostgreAccesser isRegistered(Handler<AsyncResult<JsonObject>> handler) { 
     delegate.isRegistered(handler);
     return this;
   }
 
-  public Single<Boolean> rxIsRegistered() { 
+  public Single<JsonObject> rxIsRegistered() { 
     return Single.create(new io.vertx.rx.java.SingleOnSubscribeAdapter<>(fut -> {
       isRegistered(fut);
     }));

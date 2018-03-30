@@ -22,7 +22,7 @@ import java.util.List;
 @Slf4j
 public class RouteScanner {
     private static final String MODULE_NAME = "ROUTE-SCANNER:";
-    private static final String DEFAULT_METHOD_NAME = "route";
+    private static final String ROUTE_METHOD_NAME = "route";
     private ConfigHolder configHolder;
     private Vertx vertx;
     private Router router;
@@ -46,14 +46,15 @@ public class RouteScanner {
         Route route = clazz.getAnnotation(Route.class);
         String prefix = route.value();
         Object instance = injector.getInstance(clazz);
-        clazz.getMethod(DEFAULT_METHOD_NAME, String.class).invoke(instance, prefix);
+        clazz.getMethod(ROUTE_METHOD_NAME, String.class).invoke(instance, prefix);
         Method[] methods = clazz.getMethods();
-        Arrays.asList(methods).forEach(method -> {
+        int order = 11;
+        for (Method method : Arrays.asList(methods)) {
             if (method.isAnnotationPresent(RequestRouting.class)) {
                 RequestRouting requestRouting = method.getAnnotation(RequestRouting.class);
                 String path = requestRouting.path();
                 path = (StringUtils.isNotEmpty(prefix)) ? prefix + path : path;
-                router.route(requestRouting.method(), path).handler(rc -> {
+                router.route(requestRouting.method(), path).order(order++).handler(rc -> {
                     try {
                         method.invoke(instance, rc);
                     } catch (Exception e) {
@@ -61,7 +62,7 @@ public class RouteScanner {
                     }
                 });
             }
-        });
+        }
     }
 
     /**

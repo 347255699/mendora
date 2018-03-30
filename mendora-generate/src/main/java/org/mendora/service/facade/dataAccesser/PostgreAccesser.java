@@ -18,15 +18,6 @@ public interface PostgreAccesser {
 
     String EB_ADDRESS = "eb.data.postgre.accesser";
 
-    //    /**
-//     * create service proxy.
-//     *
-//     * @param vertx
-//     * @return
-//     */
-//    static PostgreAccesser createProxy(Vertx vertx) {
-//        return ProxyHelper.createProxy(PostgreAccesser.class, vertx, EB_ADDRESS);
-//    }
     @Fluent
     PostgreAccesser unRegister(Handler<AsyncResult<Void>> handler);
 
@@ -37,7 +28,7 @@ public interface PostgreAccesser {
     PostgreAccesser resume(Handler<AsyncResult<Void>> handler);
 
     @Fluent
-    PostgreAccesser isRegistered(Handler<AsyncResult<Boolean>> handler);
+    PostgreAccesser isRegistered(Handler<AsyncResult<JsonObject>> handler);
 
     @Fluent
     PostgreAccesser query(String sql, Handler<AsyncResult<JsonObject>> handler);
