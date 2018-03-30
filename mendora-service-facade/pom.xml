@@ -27,25 +27,6 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-                    <useIncrementalCompilation>false</useIncrementalCompilation>
-                    <annotationProcessors>
-                        <annotationProcessor>io.vertx.codegen.CodeGenProcessor</annotationProcessor>
-                    </annotationProcessors>
-                    <generatedSourcesDirectory>${project.basedir}/src/main/generated</generatedSourcesDirectory>
-                    <compilerArgs>
-                        <arg>-AoutputDirectory=${project.basedir}/src/main</arg>
-                    </compilerArgs>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>3.0.0</version>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>${project.basedir}/src/main/generated</directory>
-                        </fileset>
-                    </filesets>
                 </configuration>
             </plugin>
         </plugins>

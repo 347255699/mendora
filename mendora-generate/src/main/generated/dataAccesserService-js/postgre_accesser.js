@@ -79,6 +79,26 @@ var PostgreAccesser = function(j_val) {
    @param handler {function} 
    @return {PostgreAccesser}
    */
+  this.resume = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_postgreAccesser["resume(io.vertx.core.Handler)"](function(ar) {
+      if (ar.succeeded()) {
+        handler(null, null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+      return that;
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {function} 
+   @return {PostgreAccesser}
+   */
   this.isRegistered = function(handler) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'function') {

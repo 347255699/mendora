@@ -15,6 +15,7 @@
         <module>mendora-service-facade</module>
         <module>mendora-aider</module>
         <module>mendora-service-rear</module>
+        <module>mendora-generate</module>
     </modules>
     <properties>
         <vertx.version>3.4.2</vertx.version>
