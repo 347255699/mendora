@@ -48,13 +48,13 @@ public class RouteScanner {
         Object instance = injector.getInstance(clazz);
         clazz.getMethod(ROUTE_METHOD_NAME, String.class).invoke(instance, prefix);
         Method[] methods = clazz.getMethods();
-        int order = 11;
         for (Method method : Arrays.asList(methods)) {
             if (method.isAnnotationPresent(RequestRouting.class)) {
                 RequestRouting requestRouting = method.getAnnotation(RequestRouting.class);
                 String path = requestRouting.path();
+                int order = requestRouting.order();
                 path = (StringUtils.isNotEmpty(prefix)) ? prefix + path : path;
-                router.route(requestRouting.method(), path).order(order++).handler(rc -> {
+                router.route(requestRouting.method(), path).order(order).handler(rc -> {
                     try {
                         method.invoke(instance, rc);
                     } catch (Exception e) {

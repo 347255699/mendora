@@ -2,6 +2,7 @@ package org.mendora.web.route.aider;
 
 import com.google.inject.Inject;
 import io.vertx.core.http.HttpMethod;
+import io.vertx.core.json.JsonObject;
 import io.vertx.rxjava.ext.web.RoutingContext;
 import lombok.extern.slf4j.Slf4j;
 import org.mendora.guice.scanner.route.AbstractRoute;
@@ -37,6 +38,8 @@ public class DemoRoute extends AbstractRoute {
 
     @RequestRouting(path = "/sqlStatement/query", method = HttpMethod.POST)
     public void query(RoutingContext rc) {
+        JsonObject user = rc.user().principal();
+        log.info(user.toString());
         postgreAccesser
                 .rxQuery(rc.getBodyAsJson().getString(SqlReferences.STATEMENT.val()))
                 .subscribe(replyJson -> WebResult.consume(replyJson, rc));
@@ -44,6 +47,6 @@ public class DemoRoute extends AbstractRoute {
 
     @Override
     public void route(String prefix) {
-        router.route(prefix + "/*").order(10).handler(webAuth.createAuthHandler("normal"));
+        router.route(prefix + "/*").handler(webAuth.createAuthHandler("normal"));
     }
 }

@@ -5,9 +5,6 @@ import io.vertx.ext.web.handler.LoggerFormat;
 import io.vertx.rxjava.ext.web.Router;
 import io.vertx.rxjava.ext.web.handler.BodyHandler;
 import io.vertx.rxjava.ext.web.handler.LoggerHandler;
-import io.vertx.rxjava.ext.web.handler.SessionHandler;
-import io.vertx.rxjava.ext.web.sstore.ClusteredSessionStore;
-import io.vertx.rxjava.ext.web.sstore.SessionStore;
 import lombok.extern.slf4j.Slf4j;
 import org.mendora.guice.scanner.route.RouteScanner;
 import org.mendora.guice.verticles.DefaultVerticle;
@@ -44,7 +41,7 @@ public class WebVerticle extends DefaultVerticle {
         injector = injector.createChildInjector(new WebBinder(router, webAuth), serviceRxProxyBinder);
 
         // before routing request
-        beforeRoutingRequest(router);
+        beforeRoutingRequest(router, webAuth);
 
         // scanning route
         RouteScanner scanner = injector.getInstance(RouteScanner.class);
@@ -54,14 +51,11 @@ public class WebVerticle extends DefaultVerticle {
     /**
      * setting handler before routing request
      */
-    private void beforeRoutingRequest(Router router) {
+    private void beforeRoutingRequest(Router router, WebAuth webAuth) {
         // use http request logging.
-        router.route().order(0).handler(LoggerHandler.create(LoggerFormat.TINY));
+        router.route().handler(LoggerHandler.create(LoggerFormat.TINY));
         // use http request body as Json,Buffer,String.
         long bodyLimit = Long.parseLong(configHolder.property(WebConst.WEB_REQUEST_BODY_SIZE));
-        router.route().order(1).handler(BodyHandler.create().setBodyLimit(bodyLimit));
-        // use session store.
-        SessionStore store = ClusteredSessionStore.create(vertx);
-        router.route().order(2).handler(SessionHandler.create(store));
+        router.route().handler(BodyHandler.create().setBodyLimit(bodyLimit));
     }
 }

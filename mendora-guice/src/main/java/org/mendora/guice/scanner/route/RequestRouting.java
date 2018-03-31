@@ -12,5 +12,6 @@ import java.lang.annotation.Target;
 public @interface RequestRouting {
     String path();
     HttpMethod method();
+    int order() default 11;
 }
 

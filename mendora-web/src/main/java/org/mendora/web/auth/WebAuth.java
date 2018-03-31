@@ -8,6 +8,7 @@ import io.vertx.rxjava.ext.auth.User;
 import io.vertx.rxjava.ext.auth.jwt.JWTAuth;
 import io.vertx.rxjava.ext.web.RoutingContext;
 import io.vertx.rxjava.ext.web.handler.AuthHandler;
+import io.vertx.rxjava.ext.web.handler.JWTAuthHandler;
 import io.vertx.rxjava.ext.web.handler.RedirectAuthHandler;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -81,7 +82,7 @@ public class WebAuth {
      * @return
      */
     public AuthHandler createAuthHandler(String permissionFlag) {
-        return RedirectAuthHandler.create(jwtAuth, "/mendora/user/redirect")
+        return JWTAuthHandler.create(jwtAuth)
                 .addAuthority(permissionFlag);
     }
 
@@ -92,7 +93,7 @@ public class WebAuth {
      * @return
      */
     public AuthHandler createAuthHandler(Set<String> permissionFlags) {
-        return RedirectAuthHandler.create(jwtAuth)
+        return JWTAuthHandler.create(jwtAuth)
                 .addAuthorities(permissionFlags);
     }
 
