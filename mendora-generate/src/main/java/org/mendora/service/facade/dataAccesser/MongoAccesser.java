@@ -16,12 +16,26 @@ public interface MongoAccesser {
     String EB_ADDRESS = "eb.data.mongo.accesser";
 
     @Fluent
+    MongoAccesser unRegister(Handler<AsyncResult<Void>> handler);
+
+    @Fluent
+    MongoAccesser pause(Handler<AsyncResult<Void>> handler);
+
+    @Fluent
+    MongoAccesser resume(Handler<AsyncResult<Void>> handler);
+
+    @Fluent
+    MongoAccesser isRegistered(Handler<AsyncResult<JsonObject>> handler);
+
+    @Fluent
     MongoAccesser save(JsonObject params, Handler<AsyncResult<JsonObject>> handler);
 
     @Fluent
     MongoAccesser find(JsonObject params, Handler<AsyncResult<JsonObject>> handler);
+
     @Fluent
     MongoAccesser findWithPage(JsonObject params, Handler<AsyncResult<JsonObject>> handler);
+
     @Fluent
     MongoAccesser findOne(JsonObject params, Handler<AsyncResult<JsonObject>> handler);
 

@@ -2,7 +2,9 @@ package org.mendora.data.service;
 
 import com.google.inject.Inject;
 import io.vertx.core.AsyncResult;
+import io.vertx.core.Future;
 import io.vertx.core.Handler;
+import io.vertx.core.eventbus.MessageConsumer;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.FindOptions;
@@ -31,9 +33,11 @@ public class MongoAccesserImpl implements MongoAccesser {
     private MongoClient mongoClient;
     @Inject
     private Vertx vertx;
+    private MessageConsumer messageConsumer;
+
 
     public void register() {
-        ProxyHelper.registerService(MongoAccesser.class, vertx.getDelegate(), this, EB_ADDRESS);
+        messageConsumer = ProxyHelper.registerService(MongoAccesser.class, vertx.getDelegate(), this, EB_ADDRESS);
     }
 
     /**
@@ -44,6 +48,33 @@ public class MongoAccesserImpl implements MongoAccesser {
      */
     private String col(JsonObject params) {
         return MongoReferences.COLLECTION.str(params);
+    }
+
+    @Override
+    public MongoAccesser unRegister(Handler<AsyncResult<Void>> handler) {
+        messageConsumer.unregister();
+        handler.handle(Future.succeededFuture());
+        return this;
+    }
+
+    @Override
+    public MongoAccesser pause(Handler<AsyncResult<Void>> handler) {
+        messageConsumer.pause();
+        handler.handle(Future.succeededFuture());
+        return this;
+    }
+
+    @Override
+    public MongoAccesser resume(Handler<AsyncResult<Void>> handler) {
+        messageConsumer.resume();
+        handler.handle(Future.succeededFuture());
+        return this;
+    }
+
+    @Override
+    public MongoAccesser isRegistered(Handler<AsyncResult<JsonObject>> handler) {
+        AsyncHandlerResult.succ(messageConsumer.isRegistered(), handler);
+        return this;
     }
 
     /**

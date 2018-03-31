@@ -34,6 +34,86 @@ var MongoAccesser = function(j_val) {
   /**
 
    @public
+   @param handler {function} 
+   @return {MongoAccesser}
+   */
+  this.unRegister = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_mongoAccesser["unRegister(io.vertx.core.Handler)"](function(ar) {
+      if (ar.succeeded()) {
+        handler(null, null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+      return that;
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {function} 
+   @return {MongoAccesser}
+   */
+  this.pause = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_mongoAccesser["pause(io.vertx.core.Handler)"](function(ar) {
+      if (ar.succeeded()) {
+        handler(null, null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+      return that;
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {function} 
+   @return {MongoAccesser}
+   */
+  this.resume = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_mongoAccesser["resume(io.vertx.core.Handler)"](function(ar) {
+      if (ar.succeeded()) {
+        handler(null, null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+      return that;
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+   @param handler {function} 
+   @return {MongoAccesser}
+   */
+  this.isRegistered = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_mongoAccesser["isRegistered(io.vertx.core.Handler)"](function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnJson(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+      return that;
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
    @param params {Object} 
    @param handler {function} 
    @return {MongoAccesser}

@@ -111,6 +111,22 @@ public class MongoAccesserVertxProxyHandler extends ProxyHandler {
       }
       accessed();
       switch (action) {
+        case "unRegister": {
+          service.unRegister(createHandler(msg));
+          break;
+        }
+        case "pause": {
+          service.pause(createHandler(msg));
+          break;
+        }
+        case "resume": {
+          service.resume(createHandler(msg));
+          break;
+        }
+        case "isRegistered": {
+          service.isRegistered(createHandler(msg));
+          break;
+        }
         case "save": {
           service.save((JsonObject)json.getValue("params"), createHandler(msg));
           break;

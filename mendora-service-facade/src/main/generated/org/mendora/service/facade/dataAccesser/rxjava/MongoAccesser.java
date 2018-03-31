@@ -16,6 +16,7 @@
 
 package org.mendora.service.facade.dataAccesser.rxjava;
 
+import com.google.inject.Inject;
 import rx.Single;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.AsyncResult;
@@ -37,13 +38,58 @@ public class MongoAccesser {
   );
 
   private final org.mendora.service.facade.dataAccesser.MongoAccesser delegate;
-  
+
+  @Inject
   public MongoAccesser(org.mendora.service.facade.dataAccesser.MongoAccesser delegate) {
     this.delegate = delegate;
   }
 
   public org.mendora.service.facade.dataAccesser.MongoAccesser getDelegate() {
     return delegate;
+  }
+
+  public MongoAccesser unRegister(Handler<AsyncResult<Void>> handler) { 
+    delegate.unRegister(handler);
+    return this;
+  }
+
+  public Single<Void> rxUnRegister() { 
+    return Single.create(new io.vertx.rx.java.SingleOnSubscribeAdapter<>(fut -> {
+      unRegister(fut);
+    }));
+  }
+
+  public MongoAccesser pause(Handler<AsyncResult<Void>> handler) { 
+    delegate.pause(handler);
+    return this;
+  }
+
+  public Single<Void> rxPause() { 
+    return Single.create(new io.vertx.rx.java.SingleOnSubscribeAdapter<>(fut -> {
+      pause(fut);
+    }));
+  }
+
+  public MongoAccesser resume(Handler<AsyncResult<Void>> handler) { 
+    delegate.resume(handler);
+    return this;
+  }
+
+  public Single<Void> rxResume() { 
+    return Single.create(new io.vertx.rx.java.SingleOnSubscribeAdapter<>(fut -> {
+      resume(fut);
+    }));
+  }
+
+  public MongoAccesser isRegistered(Handler<AsyncResult<JsonObject>> handler) { 
+    delegate.isRegistered(handler);
+    return this;
+  }
+
+  public Single<JsonObject> rxIsRegistered() { 
+    return Single.create(new io.vertx.rx.java.SingleOnSubscribeAdapter<>(fut -> {
+      isRegistered(fut);
+    }));
   }
 
   public MongoAccesser save(JsonObject params, Handler<AsyncResult<JsonObject>> handler) { 
