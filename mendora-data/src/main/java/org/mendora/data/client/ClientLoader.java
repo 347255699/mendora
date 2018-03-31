@@ -25,25 +25,55 @@ public class ClientLoader {
         this.configHolder = configHolder;
     }
 
+    /**
+     * parser postgre uri -> json.
+     *
+     * @param connectionStr
+     * @return
+     */
+    private JsonObject parserPostgreUri(String connectionStr) {
+        JsonObject postgreUri = new JsonObject();
+        connectionStr = connectionStr.substring(connectionStr.indexOf(":") + 3);
+        String[] uri = connectionStr.split("\\?");
+        String[] params = uri[1].split("&");
+        String[] temp;
+        for (String param : params) {
+            temp = param.split("=");
+            postgreUri.put(temp[0], temp[1]);
+        }
+        int i = uri[0].lastIndexOf("/") + 1;
+        postgreUri.put("database", uri[0].substring(i));
+        String host = uri[0].substring(0, i - 1);
+        i = host.lastIndexOf(":");
+        postgreUri.put("port", Integer.parseInt(host.substring(i + 1)));
+        host = host.substring(0, i);
+        temp = host.split("@");
+        postgreUri.put("host", temp[1]);
+        String[] user = temp[0].split(":");
+        postgreUri.put("username", user[0]);
+        // string parse integer.
+        postgreUri.put("password", user[1]);
+        postgreUri.put("maxPoolSize", Integer.parseInt(postgreUri.getString("maxPoolSize")));
+        postgreUri.put("queryTimeout", Integer.parseInt(postgreUri.getString("queryTimeout")));
+        return postgreUri;
+    }
+
+    /**
+     * create postgresql client.
+     *
+     * @return
+     */
     public AsyncSQLClient createPostgreSQLClient() {
-        // loading postgreSql db config.
-        JsonObject postgreSQLClientConfig = new JsonObject()
-                .put("host", configHolder.property(DataConst.DATA_DB_POSTGRE_HOST))
-                .put("port", Integer.parseInt(configHolder.property(DataConst.DATA_DB_POSTGRE_PORT)))
-                .put("maxPoolSize", Integer.parseInt(configHolder.property(DataConst.DATA_DB_POSTGRE_MAX_POOL_SIZE)))
-                .put("username", configHolder.property(DataConst.DATA_DB_POSTGRE_USERNAME))
-                .put("password", configHolder.property(DataConst.DATA_DB_POSTGRE_PASSWORD))
-                .put("database", configHolder.property(DataConst.DATA_DB_POSTGRE_DATABASE))
-                .put("charset", configHolder.property(DataConst.DATA_DB_POSTGRE_CHARSET))
-                .put("queryTimeout", Integer.parseInt(configHolder.property(DataConst.DATA_DB_POSTGRE_QUERY_TIMEOUT)));
-        return PostgreSQLClient.createShared(vertx, postgreSQLClientConfig);
+        JsonObject postgreUri = parserPostgreUri(configHolder.property(DataConst.DATA_DB_POSTGRE_URI));
+        return PostgreSQLClient.createShared(vertx, postgreUri);
     }
 
     /**
      * create mongodb client.
+     *
      * @return
      */
-    public MongoClient createMongoClient(){
+    public MongoClient createMongoClient() {
         JsonObject mongoUri = JsonResult.one()
                 .put("connection_string", configHolder.property(DataConst.DATA_DB_MONGO_URI));
         return MongoClient.createShared(vertx, mongoUri);
