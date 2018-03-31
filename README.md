@@ -71,9 +71,9 @@
 			-verticles verticle包
 			-ApplicationMain.java 服务入口
 	    
-	    -generate 代码生成辅助模块，将facade模块的代码生成功能转移到该包下，跟业务功能剥离开
-	        -generated 代码生成输出目录
-	        -java 接口置放处
+	    	-generate 代码生成辅助模块，将facade模块的代码生成功能转移到该包下，跟业务功能剥离开
+	        	-generated 代码生成输出目录
+	        	-java 接口置放处
 	        
 ### 基础结构图
 ![基础结构图](doc/draft/structure.png "png")
