@@ -41,7 +41,7 @@ public class WebVerticle extends DefaultVerticle {
         injector = injector.createChildInjector(new WebBinder(router, webAuth), serviceRxProxyBinder);
 
         // before routing request
-        beforeRoutingRequest(router, webAuth);
+        beforeRoutingRequest(router);
 
         // scanning route
         RouteScanner scanner = injector.getInstance(RouteScanner.class);
@@ -51,7 +51,7 @@ public class WebVerticle extends DefaultVerticle {
     /**
      * setting handler before routing request
      */
-    private void beforeRoutingRequest(Router router, WebAuth webAuth) {
+    private void beforeRoutingRequest(Router router) {
         // use http request logging.
         router.route().handler(LoggerHandler.create(LoggerFormat.TINY));
         // use http request body as Json,Buffer,String.

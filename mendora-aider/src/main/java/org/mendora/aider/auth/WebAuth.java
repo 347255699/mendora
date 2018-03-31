@@ -1,4 +1,4 @@
-package org.mendora.web.auth;
+package org.mendora.aider.auth;
 
 import com.google.inject.Inject;
 import io.vertx.core.json.JsonObject;
@@ -6,16 +6,14 @@ import io.vertx.ext.auth.jwt.JWTOptions;
 import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.ext.auth.User;
 import io.vertx.rxjava.ext.auth.jwt.JWTAuth;
-import io.vertx.rxjava.ext.web.RoutingContext;
 import io.vertx.rxjava.ext.web.handler.AuthHandler;
 import io.vertx.rxjava.ext.web.handler.JWTAuthHandler;
-import io.vertx.rxjava.ext.web.handler.RedirectAuthHandler;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.mendora.aider.constant.AiderConst;
 import org.mendora.guice.properties.BaseConst;
 import org.mendora.guice.properties.ConfigHolder;
 import org.mendora.util.result.JsonResult;
-import org.mendora.web.constant.WebConst;
 import rx.Single;
 
 import java.util.Set;
@@ -56,7 +54,7 @@ public class WebAuth {
         JsonObject config = new JsonObject().put("keyStore", new JsonObject()
                 .put("path", configHolder.property(BaseConst.BASE_ROOT_PATH) + "/config/keystore.jceks")
                 .put("type", "jceks")
-                .put("password", configHolder.property(WebConst.WEB_JWT_KEY_PASSWD)));
+                .put("password", configHolder.property(AiderConst.AIDER_JWT_KEY_PASSWD)));
         jwtAuth = JWTAuth.create(vertx, config);
     }
 
@@ -69,8 +67,8 @@ public class WebAuth {
     public String issueJWToken(JsonObject payload) {
         JWTOptions options = new JWTOptions()
                 .setAlgorithm(JWT_ALG_HS512)
-                .setIssuer(configHolder.property(WebConst.WEB_JWT_ISSUER))
-                .setExpiresInMinutes(Long.parseLong(configHolder.property(WebConst.WEB_JWT_EXPIRES_MINUTES)));
+                .setIssuer(configHolder.property(AiderConst.AIDER_JWT_ISSUER))
+                .setExpiresInMinutes(Long.parseLong(configHolder.property(AiderConst.AIDER_JWT_EXPIRES_MINUTES)));
         return jwtAuth.generateToken(payload, options);
     }
 

@@ -9,6 +9,8 @@ public interface AiderConst {
     // web
     String AIDER_ROUTE_INTO_PACKAGE = "aider.route.into.package";
     String AIDER_REQUEST_BODY_SIZE = "aider.request.body.size";
-    // service proxy
-    String AIDER_SERVICE_PROXY_INTO_PACKAGE = "aider.service.proxy.into.package";
+    // jwt
+    String AIDER_JWT_KEY_PASSWD = "aider.jwt.key.passwd";
+    String AIDER_JWT_ISSUER = "aider.jwt.issuer";
+    String AIDER_JWT_EXPIRES_MINUTES = "aider.jwt.expires.minutes";
 }
