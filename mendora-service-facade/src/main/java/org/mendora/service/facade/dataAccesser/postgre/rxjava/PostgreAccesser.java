@@ -14,7 +14,7 @@
  * under the License.
  */
 
-package org.mendora.service.facade.dataAccesser.rxjava;
+package org.mendora.service.facade.dataAccesser.postgre.rxjava;
 
 import com.google.inject.Inject;
 import rx.Single;
@@ -28,29 +28,29 @@ import io.vertx.core.Handler;
  * description:
  *
  * <p/>
- * NOTE: This class has been automatically generated from the {@link org.mendora.service.facade.dataAccesser.PostgreAccesser original} non RX-ified interface using Vert.x codegen.
+ * NOTE: This class has been automatically generated from the {@link org.mendora.service.facade.dataAccesser.postgre.PostgreAccesser original} non RX-ified interface using Vert.x codegen.
  */
 
-@io.vertx.lang.rxjava.RxGen(org.mendora.service.facade.dataAccesser.PostgreAccesser.class)
+@io.vertx.lang.rxjava.RxGen(org.mendora.service.facade.dataAccesser.postgre.PostgreAccesser.class)
 public class PostgreAccesser {
 
   public static final io.vertx.lang.rxjava.TypeArg<PostgreAccesser> __TYPE_ARG = new io.vertx.lang.rxjava.TypeArg<>(
-    obj -> new PostgreAccesser((org.mendora.service.facade.dataAccesser.PostgreAccesser) obj),
+    obj -> new PostgreAccesser((org.mendora.service.facade.dataAccesser.postgre.PostgreAccesser) obj),
     PostgreAccesser::getDelegate
   );
 
-  private final org.mendora.service.facade.dataAccesser.PostgreAccesser delegate;
+  private final org.mendora.service.facade.dataAccesser.postgre.PostgreAccesser delegate;
 
   @Inject
-  public PostgreAccesser(org.mendora.service.facade.dataAccesser.PostgreAccesser delegate) {
+  public PostgreAccesser(org.mendora.service.facade.dataAccesser.postgre.PostgreAccesser delegate) {
     this.delegate = delegate;
   }
 
-  public org.mendora.service.facade.dataAccesser.PostgreAccesser getDelegate() {
+  public org.mendora.service.facade.dataAccesser.postgre.PostgreAccesser getDelegate() {
     return delegate;
   }
 
-  public PostgreAccesser unRegister(Handler<AsyncResult<Void>> handler) { 
+  public PostgreAccesser unRegister(Handler<AsyncResult<Void>> handler) {
     delegate.unRegister(handler);
     return this;
   }
@@ -61,7 +61,7 @@ public class PostgreAccesser {
     }));
   }
 
-  public PostgreAccesser pause(Handler<AsyncResult<Void>> handler) { 
+  public PostgreAccesser pause(Handler<AsyncResult<Void>> handler) {
     delegate.pause(handler);
     return this;
   }
@@ -72,7 +72,7 @@ public class PostgreAccesser {
     }));
   }
 
-  public PostgreAccesser resume(Handler<AsyncResult<Void>> handler) { 
+  public PostgreAccesser resume(Handler<AsyncResult<Void>> handler) {
     delegate.resume(handler);
     return this;
   }
@@ -83,7 +83,7 @@ public class PostgreAccesser {
     }));
   }
 
-  public PostgreAccesser isRegistered(Handler<AsyncResult<JsonObject>> handler) { 
+  public PostgreAccesser isRegistered(Handler<AsyncResult<JsonObject>> handler) {
     delegate.isRegistered(handler);
     return this;
   }
@@ -94,7 +94,7 @@ public class PostgreAccesser {
     }));
   }
 
-  public PostgreAccesser query(String sql, Handler<AsyncResult<JsonObject>> handler) { 
+  public PostgreAccesser query(String sql, Handler<AsyncResult<JsonObject>> handler) {
     delegate.query(sql, handler);
     return this;
   }
@@ -105,7 +105,7 @@ public class PostgreAccesser {
     }));
   }
 
-  public PostgreAccesser queryWithParams(JsonObject doc, Handler<AsyncResult<JsonObject>> handler) { 
+  public PostgreAccesser queryWithParams(JsonObject doc, Handler<AsyncResult<JsonObject>> handler) {
     delegate.queryWithParams(doc, handler);
     return this;
   }
@@ -116,7 +116,7 @@ public class PostgreAccesser {
     }));
   }
 
-  public PostgreAccesser querySingle(String sql, Handler<AsyncResult<JsonObject>> handler) { 
+  public PostgreAccesser querySingle(String sql, Handler<AsyncResult<JsonObject>> handler) {
     delegate.querySingle(sql, handler);
     return this;
   }
@@ -127,7 +127,7 @@ public class PostgreAccesser {
     }));
   }
 
-  public PostgreAccesser querySingleWithParams(JsonObject doc, Handler<AsyncResult<JsonObject>> handler) { 
+  public PostgreAccesser querySingleWithParams(JsonObject doc, Handler<AsyncResult<JsonObject>> handler) {
     delegate.querySingleWithParams(doc, handler);
     return this;
   }
@@ -138,7 +138,7 @@ public class PostgreAccesser {
     }));
   }
 
-  public PostgreAccesser update(String sql, Handler<AsyncResult<JsonObject>> handler) { 
+  public PostgreAccesser update(String sql, Handler<AsyncResult<JsonObject>> handler) {
     delegate.update(sql, handler);
     return this;
   }
@@ -149,7 +149,7 @@ public class PostgreAccesser {
     }));
   }
 
-  public PostgreAccesser updateWithParams(JsonObject doc, Handler<AsyncResult<JsonObject>> handler) { 
+  public PostgreAccesser updateWithParams(JsonObject doc, Handler<AsyncResult<JsonObject>> handler) {
     delegate.updateWithParams(doc, handler);
     return this;
   }
@@ -160,7 +160,7 @@ public class PostgreAccesser {
     }));
   }
 
-  public PostgreAccesser execute(String sql, Handler<AsyncResult<JsonObject>> handler) { 
+  public PostgreAccesser execute(String sql, Handler<AsyncResult<JsonObject>> handler) {
     delegate.execute(sql, handler);
     return this;
   }
@@ -172,7 +172,7 @@ public class PostgreAccesser {
   }
 
 
-  public static  PostgreAccesser newInstance(org.mendora.service.facade.dataAccesser.PostgreAccesser arg) {
+  public static PostgreAccesser newInstance(org.mendora.service.facade.dataAccesser.postgre.PostgreAccesser arg) {
     return arg != null ? new PostgreAccesser(arg) : null;
   }
 }

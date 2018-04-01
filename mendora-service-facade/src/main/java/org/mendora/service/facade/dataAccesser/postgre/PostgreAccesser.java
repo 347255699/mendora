@@ -1,4 +1,4 @@
-package org.mendora.service.facade.dataAccesser;
+package org.mendora.service.facade.dataAccesser.postgre;
 
 import io.vertx.codegen.annotations.Fluent;
 import io.vertx.core.AsyncResult;
@@ -11,7 +11,7 @@ import org.mendora.service.facade.scanner.ServiceFacade;
  * date:2017/10/31
  * description:
  */
-@ServiceFacade(proxy = PostgreAccesserVertxEBProxy.class, rxProxy = org.mendora.service.facade.dataAccesser.rxjava.PostgreAccesser.class)
+@ServiceFacade(proxy = PostgreAccesserVertxEBProxy.class, rxProxy = org.mendora.service.facade.dataAccesser.postgre.rxjava.PostgreAccesser.class)
 public interface PostgreAccesser {
 
     String EB_ADDRESS = "eb.data.postgre.accesser";

@@ -14,7 +14,7 @@
 * under the License.
 */
 
-package org.mendora.service.facade.dataAccesser;
+package org.mendora.service.facade.dataAccesser.postgre;
 
 import com.google.inject.Inject;
 import io.vertx.core.eventbus.DeliveryOptions;

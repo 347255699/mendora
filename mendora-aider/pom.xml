@@ -11,7 +11,7 @@
     <artifactId>mendora-aider</artifactId>
     <properties>
         <common.version>1.0-SNAPSHOT</common.version>
-        <main.class>org.mendora.web.ApplicationMain</main.class>
+        <main.class>org.mendora.aider.ApplicationMain</main.class>
     </properties>
     <dependencies>
         <dependency>

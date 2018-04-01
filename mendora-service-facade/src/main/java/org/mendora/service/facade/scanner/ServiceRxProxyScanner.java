@@ -1,9 +1,7 @@
 package org.mendora.service.facade.scanner;
 
 import com.google.inject.Injector;
-import com.google.inject.matcher.Matchers;
-import org.mendora.service.facade.aop.Monitor;
-import org.mendora.service.facade.aop.MonitorMethodInterceptor;
+import io.vertx.core.json.JsonArray;
 import org.mendora.util.scanner.PackageScannerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +27,7 @@ public class ServiceRxProxyScanner {
     public ServiceRxProxyBinder scan(String packagePath, Injector injector) {
         List<String> names = new PackageScannerImpl<>(packagePath, this.getClass().getClassLoader())
                 .classNames(this.getClass().getName());
-        List<Object> proxyInstances = new ArrayList<>();
+        List<Class> proxys = new ArrayList<>();
         List<Class> facades = new ArrayList<>();
         List<Class> rxProxys = new ArrayList<>();
         for (String name : names) {
@@ -40,21 +38,15 @@ public class ServiceRxProxyScanner {
                     ServiceFacade serviceFacade = (ServiceFacade) facade.getAnnotation(ServiceFacade.class);
                     Class proxy = serviceFacade.proxy();
                     Class rxProxy = serviceFacade.rxProxy();
-                    proxyInstances.add(injector.getInstance(proxy));
-                    rxProxys.add(rxProxy);
                     facades.add(facade);
+                    proxys.add(proxy);
+                    rxProxys.add(rxProxy);
                 }
             } catch (ClassNotFoundException e) {
                 log.error(MODULE_NAME + e.getMessage());
             }
         }
-        injector = injector.createChildInjector(binder -> {
-            binder.bindInterceptor(Matchers.any(), Matchers.annotatedWith(Monitor.class), new MonitorMethodInterceptor());
-            if (facades != null && proxyInstances != null) {
-                for (int i = 0; i < facades.size(); i++)
-                    binder.bind(facades.get(i)).toInstance(proxyInstances.get(i));
-            }
-        });
+        injector = injector.createChildInjector(new ServiceProxyBinder(facades, proxys, injector));
         return new ServiceRxProxyBinder(rxProxys, injector);
     }
 

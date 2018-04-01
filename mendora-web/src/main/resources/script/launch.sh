@@ -2,13 +2,13 @@
 
 #java env
 #shell脚本有时候调用linux的环境变量会有问题，所以这里还是把用到的java环境再设置一下
-export JAVA_HOME=/pi/home/jdk1.8
+export JAVA_HOME=/opt/software/jdk1.8
 
 #app name 为了确保脚本通用
-APP_NAME=mendora-aaa
+APP_NAME=mendora-web
 
-SERVICE_DIR=/home/pi/$APP_NAME
-SERVICE_NAME=mendora-aaa-1.0-SNAPSHOT-prod
+SERVICE_DIR=/opt/project/$APP_NAME
+SERVICE_NAME=mendora-web-1.0-SNAPSHOT-prod
 APP_JAR=$SERVICE_NAME\.jar
 #启动app的时候，将进程的pid保存在这里，方便以后杀死进程用
 APP_PID=$SERVICE_NAME\.pid

@@ -1,4 +1,4 @@
-package org.mendora.service.facade.dataAccesser;
+package org.mendora.service.facade.dataAccesser.mongo;
 
 import io.vertx.codegen.annotations.Fluent;
 import io.vertx.core.AsyncResult;
@@ -9,7 +9,7 @@ import org.mendora.service.facade.scanner.ServiceFacade;
 /**
  * Created by kam on 2018/3/26.
  */
-@ServiceFacade(proxy = MongoAccesserVertxEBProxy.class, rxProxy = org.mendora.service.facade.dataAccesser.rxjava.MongoAccesser.class)
+@ServiceFacade(proxy = MongoAccesserVertxEBProxy.class, rxProxy = org.mendora.service.facade.dataAccesser.mongo.rxjava.MongoAccesser.class)
 public interface MongoAccesser {
     String EB_ADDRESS = "eb.data.mongo.accesser";
 

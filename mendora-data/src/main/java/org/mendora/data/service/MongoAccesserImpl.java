@@ -13,7 +13,7 @@ import io.vertx.rxjava.ext.mongo.MongoClient;
 import io.vertx.serviceproxy.ProxyHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.mendora.guice.scanner.serviceProvider.ServiceProvider;
-import org.mendora.service.facade.dataAccesser.MongoAccesser;
+import org.mendora.service.facade.dataAccesser.mongo.MongoAccesser;
 import org.mendora.util.constant.MongoReferences;
 import org.mendora.util.constant.PageReferences;
 import org.mendora.util.result.AsyncHandlerResult;

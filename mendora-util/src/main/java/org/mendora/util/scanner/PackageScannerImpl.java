@@ -1,6 +1,9 @@
 package org.mendora.util.scanner;
 
-import lombok.*;
+import io.vertx.core.json.JsonArray;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -126,7 +129,7 @@ public class PackageScannerImpl<T> implements PackageScanner<T> {
         if (isJarFile(filePath)) {
             log.info(MODULE_NAME + filePath + " is a jar.");
             // jar file
-            names = readFromJarFile(filePath, splashPath);
+            return readFromJarFile(filePath, splashPath, filter);
         } else {
             log.info(MODULE_NAME + filePath + " is a directory.");
             // directory
@@ -158,15 +161,18 @@ public class PackageScannerImpl<T> implements PackageScanner<T> {
      * @throws IOException
      */
     @SneakyThrows
-    private List<String> readFromJarFile(String jarPath, String splashedPackageName) {
+    private List<String> readFromJarFile(String jarPath, String splashedPackageName, ScannerFilter filter) {
         log.info("loading from jar:" + jarPath);
         JarInputStream jarIn = new JarInputStream(new FileInputStream(jarPath));
         JarEntry entry = jarIn.getNextJarEntry();
         List<String> classNames = new ArrayList<>();
         while (null != entry) {
             String name = entry.getName();
-            if (name.startsWith(splashedPackageName) && isClassFile(name))
-                classNames.add(name.substring(name.lastIndexOf("/") + 1));
+            if (name.startsWith(splashedPackageName) && isClassFile(name)) {
+                String fullyQualifiedName = filter.filte(splashToDot(trimExtension(name)));
+                if (fullyQualifiedName != null)
+                    classNames.add(fullyQualifiedName);
+            }
             entry = jarIn.getNextJarEntry();
         }
         return classNames;
@@ -230,6 +236,13 @@ public class PackageScannerImpl<T> implements PackageScanner<T> {
      */
     private String dotToSplash(String packagePath) {
         return packagePath.replaceAll("\\.", "/");
+    }
+
+    /**
+     * dot replace to splash, '/' -> '.'
+     */
+    private String splashToDot(String packagePath) {
+        return packagePath.replaceAll("/", "\\.");
     }
 
     private boolean isJarFile(String name) {

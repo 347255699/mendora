@@ -14,7 +14,7 @@
 * under the License.
 */
 
-package org.mendora.service.facade.dataAccesser;
+package org.mendora.service.facade.dataAccesser.mongo;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.Handler;
@@ -39,25 +39,25 @@ import io.vertx.serviceproxy.ServiceExceptionMessageCodec;
   @author Roger the Robot
 */
 @SuppressWarnings({"unchecked", "rawtypes"})
-public class PostgreAccesserVertxProxyHandler extends ProxyHandler {
+public class MongoAccesserVertxProxyHandler extends ProxyHandler {
 
   public static final long DEFAULT_CONNECTION_TIMEOUT = 5 * 60; // 5 minutes 
 
   private final Vertx vertx;
-  private final PostgreAccesser service;
+  private final MongoAccesser service;
   private final long timerID;
   private long lastAccessed;
   private final long timeoutSeconds;
 
-  public PostgreAccesserVertxProxyHandler(Vertx vertx, PostgreAccesser service) {
+  public MongoAccesserVertxProxyHandler(Vertx vertx, MongoAccesser service) {
     this(vertx, service, DEFAULT_CONNECTION_TIMEOUT);
   }
 
-  public PostgreAccesserVertxProxyHandler(Vertx vertx, PostgreAccesser service, long timeoutInSecond) {
+  public MongoAccesserVertxProxyHandler(Vertx vertx, MongoAccesser service, long timeoutInSecond) {
     this(vertx, service, true, timeoutInSecond);
   }
 
-  public PostgreAccesserVertxProxyHandler(Vertx vertx, PostgreAccesser service, boolean topLevel, long timeoutSeconds) {
+  public MongoAccesserVertxProxyHandler(Vertx vertx, MongoAccesser service, boolean topLevel, long timeoutSeconds) {
     this.vertx = vertx;
     this.service = service;
     this.timeoutSeconds = timeoutSeconds;
@@ -127,32 +127,32 @@ public class PostgreAccesserVertxProxyHandler extends ProxyHandler {
           service.isRegistered(createHandler(msg));
           break;
         }
-        case "query": {
-          service.query((String)json.getValue("sql"), createHandler(msg));
+        case "save": {
+          service.save((JsonObject)json.getValue("params"), createHandler(msg));
           break;
         }
-        case "queryWithParams": {
-          service.queryWithParams((JsonObject)json.getValue("doc"), createHandler(msg));
+        case "find": {
+          service.find((JsonObject)json.getValue("params"), createHandler(msg));
           break;
         }
-        case "querySingle": {
-          service.querySingle((String)json.getValue("sql"), createHandler(msg));
+        case "findWithPage": {
+          service.findWithPage((JsonObject)json.getValue("params"), createHandler(msg));
           break;
         }
-        case "querySingleWithParams": {
-          service.querySingleWithParams((JsonObject)json.getValue("doc"), createHandler(msg));
+        case "findOne": {
+          service.findOne((JsonObject)json.getValue("params"), createHandler(msg));
           break;
         }
-        case "update": {
-          service.update((String)json.getValue("sql"), createHandler(msg));
+        case "remove": {
+          service.remove((JsonObject)json.getValue("params"), createHandler(msg));
           break;
         }
-        case "updateWithParams": {
-          service.updateWithParams((JsonObject)json.getValue("doc"), createHandler(msg));
+        case "count": {
+          service.count((JsonObject)json.getValue("params"), createHandler(msg));
           break;
         }
         case "execute": {
-          service.execute((String)json.getValue("sql"), createHandler(msg));
+          service.execute((JsonObject)json.getValue("params"), createHandler(msg));
           break;
         }
         default: {

@@ -15,7 +15,7 @@ import io.vertx.rxjava.ext.sql.SQLConnection;
 import io.vertx.serviceproxy.ProxyHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.mendora.guice.scanner.serviceProvider.ServiceProvider;
-import org.mendora.service.facade.dataAccesser.PostgreAccesser;
+import org.mendora.service.facade.dataAccesser.postgre.PostgreAccesser;
 import org.mendora.util.constant.SqlReferences;
 import org.mendora.util.result.AsyncHandlerResult;
 

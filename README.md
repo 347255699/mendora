@@ -137,7 +137,7 @@ Service主要采用异步rpc方式，即服务接口与实现分离，无论服�
 ```java
 @ProxyGen
 @VertxGen
-@ServiceFacade(proxy = PostgreAccesserVertxEBProxy.class, rxProxy = org.mendora.service.facade.dataAccesser.rxjava.PostgreAccesser.class)
+@ServiceFacade(proxy = PostgreAccesserVertxEBProxy.class, rxProxy = org.mendora.service.facade.dataAccesser.postgre.rxjava.PostgreAccesser.class)
 public interface PostgreAccesser {
 
     String EB_ADDRESS = "eb.data.postgre.accesser";
@@ -192,7 +192,7 @@ public class DemoRoute extends AbstractRoute {
 需要注意Service Proxy组件生成的代码并不能兼容aop，因此需要做几点改动以适应aop编程。
 1. 在接口上添加`@ServiceFacade`注解。并绑定该接口相关的代理类和rx版代理类。如下所示：
 ```java
-@ServiceFacade(proxy = PostgreAccesserVertxEBProxy.class, rxProxy = org.mendora.service.facade.dataAccesser.rxjava.PostgreAccesser.class)
+@ServiceFacade(proxy = PostgreAccesserVertxEBProxy.class, rxProxy = org.mendora.service.facade.dataAccesser.postgre.rxjava.PostgreAccesser.class)
 public interface PostgreAccesser{}
 ```
 2. 在接口代理类第一个构造函数上添加`@Inject`注解。并删除构造函数上的`address`，替换成接口定义的默认EventBus地址。如下所示：
@@ -221,13 +221,13 @@ public class PostgreAccesserVertxEBProxy implements PostgreAccesser {
 ```
 3. 同样在接口rx版代理类的构造函数添加`@Inject`。如下所示：
 ```java
-@io.vertx.lang.rxjava.RxGen(org.mendora.service.facade.dataAccesser.PostgreAccesser.class)
+@io.vertx.lang.rxjava.RxGen(org.mendora.service.facade.dataAccesser.postgre.PostgreAccesser.class)
 public class PostgreAccesser {
 
-    private final org.mendora.service.facade.dataAccesser.PostgreAccesser delegate;
+    private final org.mendora.service.facade.dataAccesser.postgre.PostgreAccesser delegate;
 
     @Inject
-    public PostgreAccesser(org.mendora.service.facade.dataAccesser.PostgreAccesser delegate) {
+    public PostgreAccesser(org.mendora.service.facade.dataAccesser.postgre.PostgreAccesser delegate) {
         this.delegate = delegate;
     }
 }
@@ -237,7 +237,7 @@ public class PostgreAccesser {
 编写步骤大概是这样的：
 1. 编写注解，添加至需要执行拦截的方法上。一般是添加到接口的rx版代理类上。如下所示：
 ```java
-@io.vertx.lang.rxjava.RxGen(org.mendora.service.facade.dataAccesser.PostgreAccesser.class)
+@io.vertx.lang.rxjava.RxGen(org.mendora.service.facade.dataAccesser.postgre.PostgreAccesser.class)
 public class PostgreAccesser {
     @Monitor
     public PostgreAccesser query(String sql, Handler<AsyncResult<JsonObject>> handler) { 

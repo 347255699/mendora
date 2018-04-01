@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.mendora.guice.scanner.route.AbstractRoute;
 import org.mendora.guice.scanner.route.RequestRouting;
 import org.mendora.guice.scanner.route.Route;
-import org.mendora.service.facade.dataAccesser.rxjava.PostgreAccesser;
+import org.mendora.service.facade.dataAccesser.postgre.rxjava.PostgreAccesser;
 import org.mendora.util.constant.SqlReferences;
 import org.mendora.util.result.WebResult;
 import org.mendora.web.auth.WebAuth;

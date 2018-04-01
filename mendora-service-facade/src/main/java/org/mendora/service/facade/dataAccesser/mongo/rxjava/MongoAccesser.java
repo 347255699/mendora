@@ -14,7 +14,7 @@
  * under the License.
  */
 
-package org.mendora.service.facade.dataAccesser.rxjava;
+package org.mendora.service.facade.dataAccesser.mongo.rxjava;
 
 import com.google.inject.Inject;
 import rx.Single;
@@ -26,29 +26,29 @@ import io.vertx.core.Handler;
  * Created by kam on 2018/3/26.
  *
  * <p/>
- * NOTE: This class has been automatically generated from the {@link org.mendora.service.facade.dataAccesser.MongoAccesser original} non RX-ified interface using Vert.x codegen.
+ * NOTE: This class has been automatically generated from the {@link org.mendora.service.facade.dataAccesser.mongo.MongoAccesser original} non RX-ified interface using Vert.x codegen.
  */
 
-@io.vertx.lang.rxjava.RxGen(org.mendora.service.facade.dataAccesser.MongoAccesser.class)
+@io.vertx.lang.rxjava.RxGen(org.mendora.service.facade.dataAccesser.mongo.MongoAccesser.class)
 public class MongoAccesser {
 
   public static final io.vertx.lang.rxjava.TypeArg<MongoAccesser> __TYPE_ARG = new io.vertx.lang.rxjava.TypeArg<>(
-    obj -> new MongoAccesser((org.mendora.service.facade.dataAccesser.MongoAccesser) obj),
+    obj -> new MongoAccesser((org.mendora.service.facade.dataAccesser.mongo.MongoAccesser) obj),
     MongoAccesser::getDelegate
   );
 
-  private final org.mendora.service.facade.dataAccesser.MongoAccesser delegate;
+  private final org.mendora.service.facade.dataAccesser.mongo.MongoAccesser delegate;
 
   @Inject
-  public MongoAccesser(org.mendora.service.facade.dataAccesser.MongoAccesser delegate) {
+  public MongoAccesser(org.mendora.service.facade.dataAccesser.mongo.MongoAccesser delegate) {
     this.delegate = delegate;
   }
 
-  public org.mendora.service.facade.dataAccesser.MongoAccesser getDelegate() {
+  public org.mendora.service.facade.dataAccesser.mongo.MongoAccesser getDelegate() {
     return delegate;
   }
 
-  public MongoAccesser unRegister(Handler<AsyncResult<Void>> handler) { 
+  public MongoAccesser unRegister(Handler<AsyncResult<Void>> handler) {
     delegate.unRegister(handler);
     return this;
   }
@@ -59,7 +59,7 @@ public class MongoAccesser {
     }));
   }
 
-  public MongoAccesser pause(Handler<AsyncResult<Void>> handler) { 
+  public MongoAccesser pause(Handler<AsyncResult<Void>> handler) {
     delegate.pause(handler);
     return this;
   }
@@ -70,7 +70,7 @@ public class MongoAccesser {
     }));
   }
 
-  public MongoAccesser resume(Handler<AsyncResult<Void>> handler) { 
+  public MongoAccesser resume(Handler<AsyncResult<Void>> handler) {
     delegate.resume(handler);
     return this;
   }
@@ -81,7 +81,7 @@ public class MongoAccesser {
     }));
   }
 
-  public MongoAccesser isRegistered(Handler<AsyncResult<JsonObject>> handler) { 
+  public MongoAccesser isRegistered(Handler<AsyncResult<JsonObject>> handler) {
     delegate.isRegistered(handler);
     return this;
   }
@@ -92,7 +92,7 @@ public class MongoAccesser {
     }));
   }
 
-  public MongoAccesser save(JsonObject params, Handler<AsyncResult<JsonObject>> handler) { 
+  public MongoAccesser save(JsonObject params, Handler<AsyncResult<JsonObject>> handler) {
     delegate.save(params, handler);
     return this;
   }
@@ -103,7 +103,7 @@ public class MongoAccesser {
     }));
   }
 
-  public MongoAccesser find(JsonObject params, Handler<AsyncResult<JsonObject>> handler) { 
+  public MongoAccesser find(JsonObject params, Handler<AsyncResult<JsonObject>> handler) {
     delegate.find(params, handler);
     return this;
   }
@@ -114,7 +114,7 @@ public class MongoAccesser {
     }));
   }
 
-  public MongoAccesser findWithPage(JsonObject params, Handler<AsyncResult<JsonObject>> handler) { 
+  public MongoAccesser findWithPage(JsonObject params, Handler<AsyncResult<JsonObject>> handler) {
     delegate.findWithPage(params, handler);
     return this;
   }
@@ -125,7 +125,7 @@ public class MongoAccesser {
     }));
   }
 
-  public MongoAccesser findOne(JsonObject params, Handler<AsyncResult<JsonObject>> handler) { 
+  public MongoAccesser findOne(JsonObject params, Handler<AsyncResult<JsonObject>> handler) {
     delegate.findOne(params, handler);
     return this;
   }
@@ -136,7 +136,7 @@ public class MongoAccesser {
     }));
   }
 
-  public MongoAccesser remove(JsonObject params, Handler<AsyncResult<JsonObject>> handler) { 
+  public MongoAccesser remove(JsonObject params, Handler<AsyncResult<JsonObject>> handler) {
     delegate.remove(params, handler);
     return this;
   }
@@ -147,7 +147,7 @@ public class MongoAccesser {
     }));
   }
 
-  public MongoAccesser count(JsonObject params, Handler<AsyncResult<JsonObject>> handler) { 
+  public MongoAccesser count(JsonObject params, Handler<AsyncResult<JsonObject>> handler) {
     delegate.count(params, handler);
     return this;
   }
@@ -158,7 +158,7 @@ public class MongoAccesser {
     }));
   }
 
-  public MongoAccesser execute(JsonObject params, Handler<AsyncResult<JsonObject>> handler) { 
+  public MongoAccesser execute(JsonObject params, Handler<AsyncResult<JsonObject>> handler) {
     delegate.execute(params, handler);
     return this;
   }
@@ -170,7 +170,7 @@ public class MongoAccesser {
   }
 
 
-  public static  MongoAccesser newInstance(org.mendora.service.facade.dataAccesser.MongoAccesser arg) {
+  public static MongoAccesser newInstance(org.mendora.service.facade.dataAccesser.mongo.MongoAccesser arg) {
     return arg != null ? new MongoAccesser(arg) : null;
   }
 }
