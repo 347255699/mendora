@@ -1,9 +1,7 @@
 package org.mendora.data.launcher;
 
-import org.mendora.base.BaseLauncher;
-import org.mendora.data.client.ClientHolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.mendora.guice.GuiceLauncher;
 
 import java.net.URL;
 
@@ -12,21 +10,17 @@ import java.net.URL;
  * date:2018/3/12
  * description:
  */
+@Slf4j
 public class DataLauncher {
     private static final String MODULE_NAME = "INIT:";
-    private static Logger logger = LoggerFactory.getLogger(DataLauncher.class);
 
-    // 入口
-    public static void launch(URL rootUrl, ClassLoader cl) {
+    // entrance
+    public static void launch(URL rootUrl) {
         try {
-            BaseLauncher.launch(rootUrl, cl, vertx -> {
-                // init all client
-                ClientHolder.init(vertx);
-            });
-            logger.info(MODULE_NAME + "initialization logger and config properties");
+            GuiceLauncher.launch(rootUrl, DataLauncher.class.getClassLoader());
+            log.info(MODULE_NAME + "initialization logger and config properties");
         } catch (Exception e) {
-            logger.error(MODULE_NAME + e.getMessage());
+            log.error(MODULE_NAME + e.getMessage());
         }
     }
-
 }

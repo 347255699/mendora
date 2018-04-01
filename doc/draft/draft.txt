@@ -1,0 +1,39 @@
+
+无Vertx环境模块
+
+	- base
+		环境支持模块，提供一站式服务，properties加载、集群启动、Verticle扫描
+	- util
+		放置贯穿全系统的常量和工具类，注：只在单个模块内使用的常量或工具类不放在该模块下，建议内聚在相关模块内
+	- facade
+		承载mt4模块的服务接口和系统服务接口，一般将服务暴露至web模块，以提供对外的访问模式。
+
+具备Vertx环境模块
+	
+	- aider
+		依赖base模块启动环境，提供跟系统业务没有关联的系统服务，如：在线更改系统配置和重启模块（一个模块通常由一组配置参数和多个Verticle，所以重启仅需要更改配置参数和重新部署Verticle即可，并不一定要关闭Vertx进程）。同时该系统提供辅助测试，系统接口检查、数据导入导出等与具体业务无关的系统服务。
+		拥有独立的http server
+
+	- data
+		依赖base模块启动环境，提供跟具体业务无关的数据访问接口
+
+	- rear
+		依赖base模块启动环境，系统主要业务存放处		
+		- pay
+			pay不再独立为一个模块，pay所依赖的本地包将采取相应策略压在某一个SNAPSHOT模块中。
+		- latter
+			用户通信服务
+			- email
+				邮件
+			- station
+				站内信
+		- 其他业务
+	- web
+		- AAA
+			提供注册/登录，授权、日志记录得基础功能，同时为rear提供对外http接口
+		- 其他http接口
+
+坑：
+    注意服务的启动顺序，data和rear模块务必先启动
+    jwt keystore生成命令：keytool -genseckey -keystore keystore.jceks -storetype jceks -storepass crmudeafx -keyalg HMacSHA512 -keysize 2048 -alias HS512 -keypass crmudeafx
+    其中keystore参数和keypass参数要一致，作为秘钥

@@ -8,20 +8,23 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>mendora-data</artifactId>
     <properties>
-        <base.version>1.0-SNAPSHOT</base.version>
+        <common.version>1.0-SNAPSHOT</common.version>
         <main.class>org.mendora.data.ApplicationMain</main.class>
     </properties>
     <dependencies>
         <dependency>
             <groupId>org.mendora</groupId>
-            <artifactId>mendora-base</artifactId>
-            <version>${base.version}</version>
+            <artifactId>mendora-guice</artifactId>
+            <version>${common.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mendora</groupId>
+            <artifactId>mendora-service-facade</artifactId>
+            <version>${common.version}</version>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -32,7 +35,6 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
