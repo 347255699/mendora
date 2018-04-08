@@ -16,14 +16,10 @@ import org.mendora.util.result.JsonResult;
  * description:
  */
 public class ClientLoader {
-    private Vertx vertx;
-    private ConfigHolder configHolder;
-
     @Inject
-    public ClientLoader(Vertx vertx, ConfigHolder configHolder) {
-        this.vertx = vertx;
-        this.configHolder = configHolder;
-    }
+    private Vertx vertx;
+    @Inject
+    private ConfigHolder configHolder;
 
     /**
      * parser postgre uri -> json.

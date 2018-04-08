@@ -25,14 +25,10 @@ public class VerticleScanner {
     private static final String MODULE_NAME = "VERTICLE:";
     private static final String DEPLOY_ID = "dId";
     private static final String VERTICLE_NAME = "vName";
-    private ConfigHolder configHolder;
-    private Vertx vertx;
-
     @Inject
-    public VerticleScanner(ConfigHolder configHolder, Vertx vertx) {
-        this.configHolder = configHolder;
-        this.vertx = vertx;
-    }
+    private ConfigHolder configHolder;
+    @Inject
+    private Vertx vertx;
 
     /**
      * scanning verticles

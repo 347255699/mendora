@@ -30,7 +30,7 @@ public class RearVerticle extends DefaultVerticle {
 
         // scanning service and register.
         String serviceIntoPackage = configHolder.property(BaseConst.BASE_SERVICE_PROVIDER_INTO_PACKAGE);
-        ServiceProviderScanner scanner = injector.getInstance(ServiceProviderScanner.class);
+        ServiceProviderScanner scanner = new ServiceProviderScanner();
         scanner.scan(serviceIntoPackage, RearVerticle.class.getClassLoader(), injector);
     }
 }

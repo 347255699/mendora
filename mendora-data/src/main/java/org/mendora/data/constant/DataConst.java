@@ -7,14 +7,6 @@ package org.mendora.data.constant;
  */
 public interface DataConst {
     // postgre db config
-//    String DATA_DB_POSTGRE_HOST = "data.db.postgre.host";
-//    String DATA_DB_POSTGRE_PORT = "data.db.postgre.port";
-//    String DATA_DB_POSTGRE_USERNAME = "data.db.postgre.username";
-//    String DATA_DB_POSTGRE_PASSWORD = "data.db.postgre.password";
-//    String DATA_DB_POSTGRE_DATABASE = "data.db.postgre.database";
-//    String DATA_DB_POSTGRE_MAX_POOL_SIZE = "data.db.postgre.maxPoolSize";
-//    String DATA_DB_POSTGRE_CHARSET = "data.db.postgre.charset";
-//    String DATA_DB_POSTGRE_QUERY_TIMEOUT = "data.db.postgre.queryTimeout";
     String DATA_DB_POSTGRE_URI = "data.db.postgre.uri";
     // mongo db config
     String DATA_DB_MONGO_URI = "data.db.mongo.uri";
