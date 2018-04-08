@@ -1,7 +1,6 @@
 package org.mendora.service.facade.scanner;
 
 import com.google.inject.Injector;
-import io.vertx.core.json.JsonArray;
 import org.mendora.util.scanner.PackageScannerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

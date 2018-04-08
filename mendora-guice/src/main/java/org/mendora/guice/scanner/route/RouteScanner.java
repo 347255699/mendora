@@ -23,16 +23,12 @@ import java.util.List;
 public class RouteScanner {
     private static final String MODULE_NAME = "ROUTE-SCANNER:";
     private static final String ROUTE_METHOD_NAME = "route";
-    private ConfigHolder configHolder;
-    private Vertx vertx;
-    private Router router;
-
     @Inject
-    public RouteScanner(ConfigHolder configHolder, Vertx vertx, Router router) {
-        this.configHolder = configHolder;
-        this.vertx = vertx;
-        this.router = router;
-    }
+    private ConfigHolder configHolder;
+    @Inject
+    private Vertx vertx;
+    @Inject
+    private Router router;
 
     /**
      * invoke request routing method.
