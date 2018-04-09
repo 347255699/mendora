@@ -1,9 +1,11 @@
 package org.mendora.web.verticles;
 
 import io.vertx.core.DeploymentOptions;
+import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.handler.LoggerFormat;
 import io.vertx.rxjava.ext.web.Router;
 import io.vertx.rxjava.ext.web.handler.BodyHandler;
+import io.vertx.rxjava.ext.web.handler.CorsHandler;
 import io.vertx.rxjava.ext.web.handler.LoggerHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.mendora.guice.scanner.route.RouteScanner;
@@ -14,6 +16,9 @@ import org.mendora.service.facade.scanner.ServiceRxProxyScanner;
 import org.mendora.web.auth.WebAuth;
 import org.mendora.web.binder.WebBinder;
 import org.mendora.web.constant.WebConst;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * created by:xmf
@@ -41,7 +46,7 @@ public class WebVerticle extends DefaultVerticle {
         injector = injector.createChildInjector(serviceRxProxyBinder, new WebBinder(router, webAuth));
 
         // before routing request
-        beforeRoutingRequest(router);
+        beforeRoutingRequest(router, "*");
 
         // scanning route
         RouteScanner scanner = injector.getInstance(RouteScanner.class);
@@ -51,7 +56,13 @@ public class WebVerticle extends DefaultVerticle {
     /**
      * setting handler before routing request
      */
-    private void beforeRoutingRequest(Router router) {
+    private void beforeRoutingRequest(Router router, String accessDomain) {
+        // use cors
+        int maxAgeSeconds = Integer.parseInt(configHolder.property(WebConst.WEB_CORS_MAX_AGE_SECONDS));
+        CorsHandler corsHandler = CorsHandler.create(accessDomain).maxAgeSeconds(maxAgeSeconds);
+        List<String> methods = Arrays.asList(configHolder.property(WebConst.WEB_CORS_ALLOWED_METHODS).split(","));
+        methods.forEach(name -> corsHandler.allowedMethod(HttpMethod.valueOf(name)));
+        router.route().handler(corsHandler);
         // use http request logging.
         router.route().handler(LoggerHandler.create(LoggerFormat.TINY));
         // use http request body as Json,Buffer,String.

@@ -13,4 +13,7 @@ public interface WebConst {
     String WEB_JWT_KEY_PASSWD = "web.jwt.key.passwd";
     String WEB_JWT_ISSUER = "web.jwt.issuer";
     String WEB_JWT_EXPIRES_MINUTES = "web.jwt.expires.minutes";
+    // cors
+    String WEB_CORS_ALLOWED_METHODS = "web.cors.allowed.methods";
+    String WEB_CORS_MAX_AGE_SECONDS = "web.cors.max.age.seconds";
 }
