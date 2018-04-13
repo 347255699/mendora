@@ -18,7 +18,7 @@ public class DataLauncher {
     public static void launch(URL rootUrl) {
         try {
             GuiceLauncher.launch(rootUrl, DataLauncher.class.getClassLoader());
-            log.info(MODULE_NAME + "initialization logger and config properties");
+            log.info("{}initialization logger and config properties", MODULE_NAME);
         } catch (Exception e) {
             log.error(MODULE_NAME + e.getMessage());
         }

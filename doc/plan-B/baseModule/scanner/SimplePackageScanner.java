@@ -126,11 +126,11 @@ public class SimplePackageScanner<T> implements PackageScanner<T> {
         List<String> names = null;
         // contains the name of the class file. e.g., Demo.class will be stored as "Demo"
         if (isJarFile(filePath)) {
-            log.info(MODULE_NAME + filePath + " is a jar.");
+            log.info("{}{} is a jar.", MODULE_NAME, filePath);
             // jar file
             names = readFromJarFile(filePath, splashPath);
         } else {
-            log.info(MODULE_NAME + filePath + " is a directory.");
+            log.info("{}{} is a directory.", MODULE_NAME, filePath);
             // directory
             names = readFromDirectory(filePath);
         }
@@ -165,7 +165,7 @@ public class SimplePackageScanner<T> implements PackageScanner<T> {
      */
     @SneakyThrows
     private List<String> readFromJarFile(String jarPath, String splashedPackageName) {
-        log.info("loading from jar:" + jarPath);
+        log.info("loading from jar:{}", jarPath);
         JarInputStream jarIn = new JarInputStream(new FileInputStream(jarPath));
         JarEntry entry = jarIn.getNextJarEntry();
         List<String> classNames = new ArrayList<>();

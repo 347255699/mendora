@@ -1,17 +1,33 @@
-package org.mendora.util.result;
+package org.mendora.web.efficiency.result;
 
+import com.google.inject.Inject;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.rxjava.core.http.HttpServerResponse;
 import io.vertx.rxjava.ext.web.RoutingContext;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.mendora.service.facade.dataAccesser.mongo.rxjava.MongoAccesser;
+import org.mendora.util.constant.MongoCol;
+import org.mendora.util.constant.RetCode;
 import org.mendora.util.constant.SysConst;
+import org.mendora.util.generate.MongoAccesserUtils;
+import org.mendora.util.result.JsonResult;
+import org.mendora.web.constant.WebConst;
 
 /**
  * created by:xmf
  * date:2018/3/13
  * description:response result set.
  */
+@Slf4j
+@RequiredArgsConstructor
 public class WebResult {
+    private static final String MUDULE_NAME = "WEB_RESULT:";
+
+    @NonNull
+    private MongoAccesser mongoAccesser;
 
     /**
      * only success status code.
@@ -19,7 +35,7 @@ public class WebResult {
      * "retCode":0
      * }
      */
-    public static void succ(RoutingContext rc) {
+    public void succ(RoutingContext rc) {
         common(JsonResult.succ(), rc);
     }
 
@@ -30,7 +46,7 @@ public class WebResult {
      * "data":[payload]
      * }
      */
-    public static void succ(JsonObject payload, RoutingContext rc) {
+    public void succ(JsonObject payload, RoutingContext rc) {
         common(JsonResult.succ(payload), rc);
     }
 
@@ -44,7 +60,7 @@ public class WebResult {
      * }
      * }
      */
-    public static void succ(JsonArray rows, RoutingContext rc) {
+    public void succ(JsonArray rows, RoutingContext rc) {
         JsonObject payload = JsonResult.two()
                 .put(SysConst.SYS_ROWS, rows)
                 .put(SysConst.SYS_SIZE, rows.size());
@@ -57,7 +73,7 @@ public class WebResult {
      * "retCode":-1
      * }
      */
-    public static void fail(RoutingContext rc) {
+    public void fail(RoutingContext rc) {
         common(JsonResult.fail(), rc);
     }
 
@@ -68,7 +84,7 @@ public class WebResult {
      * "errMsg":[err.getMessage()]
      * }
      */
-    public static void fail(Throwable err, RoutingContext rc) {
+    public void fail(Throwable err, RoutingContext rc) {
         common(JsonResult.fail(err), rc);
     }
 
@@ -80,7 +96,7 @@ public class WebResult {
      * "errMsg":[errMsg]
      * }
      */
-    public static void fail(String errMsg, RoutingContext rc){
+    public void fail(String errMsg, RoutingContext rc) {
         fail(new RuntimeException(errMsg), rc);
     }
 
@@ -90,7 +106,7 @@ public class WebResult {
      * "retCode":1
      * }
      */
-    public static void halfSucc(RoutingContext rc) {
+    public void halfSucc(RoutingContext rc) {
         common(JsonResult.halfSucc(), rc);
     }
 
@@ -101,7 +117,7 @@ public class WebResult {
      * "data":[payload]
      * }
      */
-    public static void halfSucc(JsonObject payload, RoutingContext rc) {
+    public void halfSucc(JsonObject payload, RoutingContext rc) {
         common(JsonResult.halfSucc(payload), rc);
     }
 
@@ -115,7 +131,7 @@ public class WebResult {
      * }
      * }
      */
-    public static void halfSucc(JsonArray rows, RoutingContext rc) {
+    public void halfSucc(JsonArray rows, RoutingContext rc) {
         JsonObject payload = JsonResult.two()
                 .put(SysConst.SYS_ROWS, rows)
                 .put(SysConst.SYS_SIZE, rows.size());
@@ -128,7 +144,7 @@ public class WebResult {
      * @param payload
      * @param rc
      */
-    public static void consume(JsonObject payload, RoutingContext rc) {
+    public void consume(JsonObject payload, RoutingContext rc) {
         common(payload, rc);
     }
 
@@ -138,7 +154,7 @@ public class WebResult {
      * @param payload
      * @param rc
      */
-    public static void consume(JsonObject payload, int defaultRetCode, RoutingContext rc) {
+    public void consume(JsonObject payload, int defaultRetCode, RoutingContext rc) {
         if (!payload.containsKey(SysConst.SYS_RET_CODE))
             payload.put(SysConst.SYS_RET_CODE, defaultRetCode);
         common(payload, rc);
@@ -149,10 +165,11 @@ public class WebResult {
      *
      * @param result
      */
-    public static void consume(JsonObject header, String result, RoutingContext rc) {
+    public void consume(JsonObject header, String result, RoutingContext rc) {
         HttpServerResponse response = rc.response();
         header.fieldNames().forEach(k -> response.putHeader(k, header.getString(k)));
         response.end(result);
+        logging(JsonResult.one().put(SysConst.SYS_RET_CODE, RetCode.SUCCESS.val()), rc);
     }
 
     /**
@@ -161,8 +178,29 @@ public class WebResult {
      * @param payload
      * @param rc
      */
-    private static void common(JsonObject payload, RoutingContext rc) {
+    private void common(JsonObject payload, RoutingContext rc) {
         rc.response().end(payload.encode());
+        logging(payload, rc);
+    }
+
+    /**
+     * logging http api invoke status.
+     *
+     * @param payload
+     * @param rc
+     */
+    private void logging(JsonObject payload, RoutingContext rc) {
+        JsonObject logging = rc.get(WebConst.WEB_ROUTE_lOGGING_KEY);
+        if (rc.user() != null && logging != null && logging.size() > 0) {
+            int retCode = payload.getInteger(SysConst.SYS_RET_CODE);
+            logging.put(SysConst.SYS_RET_CODE, retCode);
+            if (payload.containsKey(SysConst.SYS_DATA))
+                logging.put(SysConst.SYS_DATA, payload.getValue(SysConst.SYS_DATA));
+            if (payload.containsKey(SysConst.SYS_ERR_MSG))
+                logging.put(SysConst.SYS_ERR_MSG, payload.getValue(SysConst.SYS_ERR_MSG));
+            mongoAccesser.rxSave(MongoAccesserUtils.save(MongoCol.COL_LOG, logging))
+                    .subscribe();
+        }
     }
 
 }

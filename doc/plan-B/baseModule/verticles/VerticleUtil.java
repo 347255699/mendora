@@ -35,7 +35,7 @@ public class VerticleUtil {
                     .subscribe(v -> deploy(vertx, v, storage),
                             err -> log.error(MODULE_NAME + err.getMessage()),
                             () -> {
-                                log.info(MODULE_NAME + "all the \"verticles\" deployed");
+                                log.info("{}all the \"verticles\" deployed", MODULE_NAME);
                                 ConfigHolder.setProperty(BaseConst.BASE_VERTICLE_STORAGE_KEY, storage);
                             });
             verticles.forEach(v -> log.info(v.getClass().getName()));

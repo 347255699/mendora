@@ -10,8 +10,8 @@ import org.mendora.guice.scanner.route.AbstractRoute;
 import org.mendora.guice.scanner.route.RequestRouting;
 import org.mendora.guice.scanner.route.Route;
 import org.mendora.util.result.JsonResult;
-import org.mendora.util.result.WebResult;
 import org.mendora.web.auth.WebAuth;
+import org.mendora.web.efficiency.result.WebResult;
 
 /**
  * Created by kam on 2018/3/30.
@@ -21,23 +21,25 @@ public class UserRoute extends AbstractRoute {
     public static final int NOT_PERMESSIONS = -3;
     @Inject
     private WebAuth webAuth;
+    @Inject
+    private WebResult webResult;
 
     @RequestRouting(path = "/login", method = HttpMethod.POST)
     public void login(RoutingContext rc) {
         val usr = "root";
         val passwd = "123";
         JsonObject doc = rc.getBodyAsJson();
-        doc.put("permissions", new JsonArray().add("normal"));
+        doc.put("permissions", new JsonArray().add("role:normal"));
         if (usr.equals(doc.getString("username")) && passwd.equals(doc.getString("password"))) {
-            WebResult.consume(JsonResult.succ(webAuth.issueJWToken(doc)), rc);
+            webResult.consume(JsonResult.succ(webAuth.issueJWToken(doc)), rc);
         }
     }
 
-    @RequestRouting(path = "/redirect", method = HttpMethod.GET)
+    @RequestRouting(path = "/redirect", method = HttpMethod.POST)
     public void redirect(RoutingContext rc) {
         JsonObject payload = JsonResult.two()
                 .put("suggestion", "")
                 .put("msg", "Sorry, you have not permissions to access.");
-        WebResult.consume(payload, NOT_PERMESSIONS, rc);
+        webResult.consume(payload, NOT_PERMESSIONS, rc);
     }
 }

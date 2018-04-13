@@ -17,13 +17,27 @@ public class ServiceRxProxyScanner {
     private Logger log = LoggerFactory.getLogger(ServiceRxProxyScanner.class);
     private static final String MODULE_NAME = "SERVICE_PROXY_SCANNER:";
 
+
     /**
-     * scanning all the com.udeafx.service.rear.service proxy blow target package.
+     * scanning all the service proxy blow target package more time.
+     *
+     * @param packagePaths
+     * @param injector
+     * @return
+     */
+    public Injector scan(List<String> packagePaths, Injector injector) {
+        for (String path : packagePaths)
+            injector = injector.createChildInjector(scan(path, injector));
+        return injector;
+    }
+
+    /**
+     * scanning all the service proxy blow target package.
      *
      * @param packagePath
      * @return
      */
-    public ServiceRxProxyBinder scan(String packagePath, Injector injector) {
+    private ServiceRxProxyBinder scan(String packagePath, Injector injector) {
         List<String> names = new PackageScannerImpl<>(packagePath, this.getClass().getClassLoader())
                 .classNames(this.getClass().getName());
         List<Class> proxys = new ArrayList<>();

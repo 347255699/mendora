@@ -66,12 +66,12 @@ public class RouteScanner {
      */
     private void launchHttpServer() {
         String webServerPort = configHolder.property(BaseConst.BASE_WEB_LISTENNING_PORT);
-        log.info(MODULE_NAME + "all the \"routes\" deployed");
+        log.info("{}all the \"routes\" deployed", MODULE_NAME);
         router.getRoutes().forEach(r -> log.info(r.getPath()));
         // when the 'port' field was empty than default port value 80.
         vertx.createHttpServer().requestHandler(router::accept)
                 .listen(Integer.parseInt(StringUtils.isNotEmpty(webServerPort) ? webServerPort : "80"));
-        log.info(MODULE_NAME + "web server listenning at port:" + webServerPort);
+        log.info("{}web server listenning at port:{}", MODULE_NAME, webServerPort);
     }
 
     /**

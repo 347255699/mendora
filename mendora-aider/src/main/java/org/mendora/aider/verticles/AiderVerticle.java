@@ -12,8 +12,9 @@ import org.mendora.aider.constant.AiderConst;
 import org.mendora.guice.scanner.route.RouteScanner;
 import org.mendora.guice.verticles.DefaultVerticle;
 import org.mendora.service.facade.constant.FacadeConst;
-import org.mendora.service.facade.scanner.ServiceRxProxyBinder;
 import org.mendora.service.facade.scanner.ServiceRxProxyScanner;
+
+import java.util.Arrays;
 
 /**
  * created by:xmf
@@ -31,14 +32,14 @@ public class AiderVerticle extends DefaultVerticle {
 
     @Override
     public void start() {
-        log.info(MODULE_NAME + "into AiderVerticle");
+        log.info("{}into AiderVerticle", MODULE_NAME);
         Router router = Router.router(vertx);
         WebAuth webAuth = new WebAuth(vertx, configHolder);
 
         // injecting your bean into AiderBinder class
         String proxyIntoPackage = configHolder.property(FacadeConst.FACADE_SERVICE_PROXY_INTO_PACKAGE);
-        ServiceRxProxyBinder serviceProxyBinder = new ServiceRxProxyScanner().scan(proxyIntoPackage, injector);
-        injector = injector.createChildInjector(new AiderBinder(router, webAuth), serviceProxyBinder);
+        injector = new ServiceRxProxyScanner().scan(Arrays.asList(proxyIntoPackage.split(",")), injector);
+        injector = injector.createChildInjector(new AiderBinder(router, webAuth));
 
         // before routing request
         beforeRoutingRequest(router);

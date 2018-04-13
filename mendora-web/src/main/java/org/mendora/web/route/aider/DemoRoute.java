@@ -10,8 +10,9 @@ import org.mendora.guice.scanner.route.RequestRouting;
 import org.mendora.guice.scanner.route.Route;
 import org.mendora.service.facade.dataAccesser.postgre.rxjava.PostgreAccesser;
 import org.mendora.util.constant.SqlReferences;
-import org.mendora.util.result.WebResult;
+import org.mendora.web.aop.logger.RouteLogging;
 import org.mendora.web.auth.WebAuth;
+import org.mendora.web.efficiency.result.WebResult;
 
 /**
  * created by:xmf
@@ -25,6 +26,8 @@ public class DemoRoute extends AbstractRoute {
     private PostgreAccesser postgreAccesser;
     @Inject
     private WebAuth webAuth;
+    @Inject
+    private WebResult webResult;
 
     @RequestRouting(path = "/demo", method = HttpMethod.GET)
     public void demo(RoutingContext rc) {
@@ -33,20 +36,23 @@ public class DemoRoute extends AbstractRoute {
 
     @RequestRouting(path = "/config", method = HttpMethod.GET)
     public void config(RoutingContext rc) {
-        WebResult.succ(configHolder.asJson(), rc);
+        webResult.succ(configHolder.asJson(), rc);
     }
 
+    @RouteLogging("分页查询")
     @RequestRouting(path = "/sqlStatement/query", method = HttpMethod.POST)
     public void query(RoutingContext rc) {
         JsonObject user = rc.user().principal();
         log.info(user.toString());
         postgreAccesser
                 .rxQuery(rc.getBodyAsJson().getString(SqlReferences.STATEMENT.val()))
-                .subscribe(replyJson -> WebResult.consume(replyJson, rc));
+                .subscribe(replyJson -> webResult.consume(replyJson, rc));
     }
 
-    @Override
-    public void route(String prefix) {
-        router.route(prefix + "/*").handler(webAuth.createAuthHandler("normal"));
+    @RouteLogging("formData调试")
+    @RequestRouting(path = "/formData", method = HttpMethod.POST)
+    public void formData(RoutingContext rc){
+        webResult.succ(rc);
     }
+
 }

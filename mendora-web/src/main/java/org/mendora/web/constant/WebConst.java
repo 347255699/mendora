@@ -9,6 +9,7 @@ public interface WebConst {
     // web
     String WEB_ROUTE_INTO_PACKAGE = "web.route.into.package";
     String WEB_REQUEST_BODY_SIZE = "web.request.body.size";
+    String WEB_ROUTE_lOGGING_KEY = "web.route.logger.key";
     // jwt
     String WEB_JWT_KEY_PASSWD = "web.jwt.key.passwd";
     String WEB_JWT_ISSUER = "web.jwt.issuer";

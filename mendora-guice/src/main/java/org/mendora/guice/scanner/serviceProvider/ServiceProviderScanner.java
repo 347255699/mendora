@@ -54,6 +54,6 @@ public class ServiceProviderScanner {
                 .filter(clazz -> clazz.isAnnotationPresent(ServiceProvider.class))
                 .subscribe(clazz -> registerService(clazz, injector),
                         err -> log.error(MODULE_NAME + err.getMessage()),
-                        () -> log.info(MODULE_NAME + "all the service provider scanning over."));
+                        () -> log.info("{}all the service provider scanning over.", MODULE_NAME));
     }
 }

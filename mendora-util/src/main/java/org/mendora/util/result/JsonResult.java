@@ -5,8 +5,6 @@ import io.vertx.core.json.JsonObject;
 import org.mendora.util.constant.RetCode;
 import org.mendora.util.constant.SysConst;
 
-import java.util.Map;
-
 /**
  * created by:xmf
  * date:2018/3/13
@@ -88,10 +86,9 @@ public class JsonResult {
      * @return
      */
     public static Object isSuccAndUnZip(JsonObject result) {
-        Map<String, Object> temp = result.getMap();
         int retCode = result.getInteger(SysConst.SYS_RET_CODE);
         if (retCode == RetCode.SUCCESS.val())
-            return temp.get(SysConst.SYS_DATA);
+            return result.getValue(SysConst.SYS_DATA);
         else
             return null;
     }
@@ -103,10 +100,9 @@ public class JsonResult {
      * @return
      */
     public static Object isHalfSuccAndUnZip(JsonObject result) {
-        Map<String, Object> temp = result.getMap();
         int retCode = result.getInteger(SysConst.SYS_RET_CODE);
         if (retCode == RetCode.HALF_SUCCESS.val())
-            return temp.get(SysConst.SYS_DATA);
+            return result.getValue(SysConst.SYS_DATA);
         else
             return null;
     }

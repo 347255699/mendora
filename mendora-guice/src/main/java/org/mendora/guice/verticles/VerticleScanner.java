@@ -52,7 +52,7 @@ public class VerticleScanner {
                     .subscribe(v -> deploy(v, storage),
                             err -> log.error(MODULE_NAME + err.getMessage()),
                             () -> {
-                                log.info(MODULE_NAME + "all the \"verticles\" deployed");
+                                log.info("{}all the \"verticles\" deployed", MODULE_NAME);
                                 configHolder.setProperty(BaseConst.BASE_VERTICLE_STORAGE_KEY, storage);
                             });
             names.forEach(log::info);
