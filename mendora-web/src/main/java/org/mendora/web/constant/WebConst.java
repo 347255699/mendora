@@ -16,4 +16,5 @@ public interface WebConst {
     // cors
     String WEB_CORS_ALLOWED_METHODS = "web.cors.allowed.methods";
     String WEB_CORS_MAX_AGE_SECONDS = "web.cors.max.age.seconds";
+    String WEB_CORS_ALLOWED_HEADERS = "web.cors.allowed.headers";
 }

@@ -62,6 +62,8 @@ public class WebVerticle extends DefaultVerticle {
         CorsHandler corsHandler = CorsHandler.create(accessDomain).maxAgeSeconds(maxAgeSeconds);
         List<String> methods = Arrays.asList(configHolder.property(WebConst.WEB_CORS_ALLOWED_METHODS).split(","));
         methods.forEach(name -> corsHandler.allowedMethod(HttpMethod.valueOf(name)));
+        List<String> headers = Arrays.asList(configHolder.property(WebConst.WEB_CORS_ALLOWED_HEADERS).split(","));
+        headers.forEach(corsHandler::allowedHeader);
         router.route().handler(corsHandler);
         // use http request logging.
         router.route().handler(LoggerHandler.create(LoggerFormat.TINY));
