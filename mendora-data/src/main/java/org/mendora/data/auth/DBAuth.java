@@ -1,6 +1,5 @@
 package org.mendora.data.auth;
 
-import com.google.inject.Inject;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.mongo.HashSaltStyle;
 import io.vertx.ext.auth.mongo.impl.DefaultHashStrategy;

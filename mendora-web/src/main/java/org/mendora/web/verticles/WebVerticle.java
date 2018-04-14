@@ -8,7 +8,6 @@ import io.vertx.ext.web.handler.LoggerFormat;
 import io.vertx.rxjava.ext.web.Router;
 import io.vertx.rxjava.ext.web.handler.BodyHandler;
 import io.vertx.rxjava.ext.web.handler.CorsHandler;
-import io.vertx.rxjava.ext.web.handler.FaviconHandler;
 import io.vertx.rxjava.ext.web.handler.LoggerHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.mendora.guice.scanner.route.RouteScanner;
@@ -57,7 +56,6 @@ public class WebVerticle extends DefaultVerticle {
         injector = injector.createChildInjector(new WebBinder(router, webAuth, webResult));
 
         // before routing request
-        //;
         initWebConfig(router, webAuth, mongoAccesser);
 
 

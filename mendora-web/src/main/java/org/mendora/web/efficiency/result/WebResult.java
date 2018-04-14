@@ -1,6 +1,5 @@
 package org.mendora.web.efficiency.result;
 
-import com.google.inject.Inject;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.rxjava.core.http.HttpServerResponse;

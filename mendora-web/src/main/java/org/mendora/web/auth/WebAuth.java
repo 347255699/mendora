@@ -1,15 +1,12 @@
 package org.mendora.web.auth;
 
-import com.google.inject.Inject;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.jwt.JWTOptions;
 import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.ext.auth.User;
 import io.vertx.rxjava.ext.auth.jwt.JWTAuth;
-import io.vertx.rxjava.ext.web.RoutingContext;
 import io.vertx.rxjava.ext.web.handler.AuthHandler;
 import io.vertx.rxjava.ext.web.handler.JWTAuthHandler;
-import io.vertx.rxjava.ext.web.handler.RedirectAuthHandler;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.mendora.guice.properties.BaseConst;

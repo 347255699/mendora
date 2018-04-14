@@ -1,6 +1,5 @@
 package org.mendora.aider.auth;
 
-import com.google.inject.Inject;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.jwt.JWTOptions;
 import io.vertx.rxjava.core.Vertx;

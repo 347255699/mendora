@@ -1,6 +1,5 @@
 package org.mendora.util.scanner;
 
-import io.vertx.core.json.JsonArray;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
