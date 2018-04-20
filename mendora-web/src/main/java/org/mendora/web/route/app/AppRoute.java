@@ -1,4 +1,4 @@
-package org.mendora.web.route.user;
+package org.mendora.web.route.app;
 
 import com.google.inject.Inject;
 import io.vertx.core.http.HttpMethod;
@@ -14,15 +14,21 @@ import org.mendora.web.auth.WebAuth;
 import org.mendora.web.efficiency.result.WebResult;
 
 /**
- * Created by kam on 2018/3/30.
+ * Created by kam on 2018/4/16.
  */
-@Route("/mendora/user")
-public class UserRoute extends AbstractRoute {
-    public static final int NOT_PERMESSIONS = -3;
+@Route("/mendora/app")
+public class AppRoute extends AbstractRoute {
+    private static final String SALT_KEY = "salt.key";
     @Inject
     private WebAuth webAuth;
     @Inject
     private WebResult webResult;
+
+    @RequestRouting(path = "", method = HttpMethod.GET)
+    public void root(){
+        //vertx.sharedData().rxGetClusterWideMap(SALT_KEY)
+          //      .subscribe(asyncMap -> asyncMap.put())
+    }
 
     @RequestRouting(path = "/login", method = HttpMethod.POST)
     public void login(RoutingContext rc) {
@@ -35,11 +41,4 @@ public class UserRoute extends AbstractRoute {
         }
     }
 
-    @RequestRouting(path = "/redirect", method = HttpMethod.POST)
-    public void redirect(RoutingContext rc) {
-        JsonObject payload = JsonResult.two()
-                .put("suggestion", "")
-                .put("msg", "Sorry, you have not permissions to access.");
-        webResult.consume(payload, NOT_PERMESSIONS, rc);
-    }
 }

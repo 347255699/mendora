@@ -11,7 +11,6 @@ import org.mendora.guice.scanner.route.Route;
 import org.mendora.service.facade.dataAccesser.postgre.rxjava.PostgreAccesser;
 import org.mendora.util.constant.SqlReferences;
 import org.mendora.web.aop.logger.RouteLogging;
-import org.mendora.web.auth.WebAuth;
 import org.mendora.web.efficiency.result.WebResult;
 
 /**
@@ -24,8 +23,6 @@ import org.mendora.web.efficiency.result.WebResult;
 public class DemoRoute extends AbstractRoute {
     @Inject
     private PostgreAccesser postgreAccesser;
-    @Inject
-    private WebAuth webAuth;
     @Inject
     private WebResult webResult;
 
