@@ -9,6 +9,10 @@ import lombok.val;
 import org.mendora.guice.scanner.route.AbstractRoute;
 import org.mendora.guice.scanner.route.RequestRouting;
 import org.mendora.guice.scanner.route.Route;
+import org.mendora.service.facade.dataAccesser.mongo.rxjava.MongoAccesser;
+import org.mendora.util.constant.MongoCol;
+import org.mendora.util.generate.IDUtils;
+import org.mendora.util.generate.MongoAccesserUtils;
 import org.mendora.util.result.JsonResult;
 import org.mendora.web.auth.WebAuth;
 import org.mendora.web.efficiency.result.WebResult;
@@ -23,12 +27,8 @@ public class AppRoute extends AbstractRoute {
     private WebAuth webAuth;
     @Inject
     private WebResult webResult;
-
-    @RequestRouting(path = "", method = HttpMethod.GET)
-    public void root(){
-        //vertx.sharedData().rxGetClusterWideMap(SALT_KEY)
-          //      .subscribe(asyncMap -> asyncMap.put())
-    }
+    @Inject
+    private MongoAccesser mongoAccesser;
 
     @RequestRouting(path = "/login", method = HttpMethod.POST)
     public void login(RoutingContext rc) {
@@ -39,6 +39,14 @@ public class AppRoute extends AbstractRoute {
         if (usr.equals(doc.getString("username")) && passwd.equals(doc.getString("password"))) {
             webResult.consume(JsonResult.succ(webAuth.issueJWToken(doc)), rc);
         }
+    }
+
+    @RequestRouting(path = "/register", method = HttpMethod.POST)
+    public void register(RoutingContext rc) {
+        JsonObject user = rc.getBodyAsJson()
+                .put("_id", IDUtils.uuid());
+        mongoAccesser.rxSave(MongoAccesserUtils.save(MongoCol.COL_USER, user))
+                .subscribe(id -> webResult.consume(JsonResult.succ(id), rc));
     }
 
 }

@@ -6,4 +6,5 @@ package org.mendora.util.constant;
 public interface MongoCol {
     String COL_SERVER = "server";
     String COL_LOG = "log";
+    String COL_USER = "user";
 }

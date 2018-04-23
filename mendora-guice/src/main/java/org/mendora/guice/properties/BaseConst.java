@@ -17,7 +17,7 @@ public interface BaseConst {
     String BASE_VERTICLE_STORAGE_KEY = "base.verticles.storage.key";
     String BASE_AVAILABLE_PROCESSORS = "base.available.processors";
     String BASE_SERVICE_PROVIDER_INTO_PACKAGE = "base.service.provider.into.package";
-            // hazelcast
+    // hazelcast
     String BASE_HAZELCAST_LOGGER_TYPE = "base.hazelcast.logger.type";
     String BASE_HAZELCAST_HEARBEAT_INTERVAL_SECONDS = "base.hazelcast.heartbeat.interval.seconds";
     String BASE_CLUSTER_PORT = "base.cluster.port";

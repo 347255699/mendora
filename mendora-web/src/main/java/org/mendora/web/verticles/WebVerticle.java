@@ -86,13 +86,13 @@ public class WebVerticle extends DefaultVerticle {
                             accessDomain = sb.toString();
                             accessDomain = accessDomain.substring(0, accessDomain.length() - 1);
                         }
-                        JsonObject permissions = server.getJsonObject("permissions");
-                        permissions.fieldNames().forEach(role ->
-                                permissions.getJsonArray(role).forEach(permission -> {
-                                    router.route((String) permission)
-                                            .handler(webAuth.createAuthHandler("role:" + role));
-                                })
-                        );
+                        JsonArray permissions = server.getJsonArray("permissions");
+                        permissions.forEach(obj -> {
+                            JsonObject ele = (JsonObject) obj;
+                            String role = ele.getString("role");
+                            ele.getJsonArray("paths").forEach(path ->
+                                    router.route((String) path).handler(webAuth.createAuthHandler(role)));
+                        });
                         beforeRoutingRequest(router, accessDomain);
                     } else beforeRoutingRequest(router, "*");
                 }, err -> log.info("{}loading server into failure!", MODULE_NAME));
