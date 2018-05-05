@@ -80,7 +80,7 @@ public class RouteScanner {
      * @param packagePath
      * @param injector
      */
-    public void scan(String packagePath, Injector injector, ClassLoader cl) {
+    public void scan(String packagePath, ClassLoader cl, Injector injector) {
         List<String> names = new PackageScannerImpl(packagePath, cl).classNames();
         log.info(MODULE_NAME + names.size());
         Observable.from(names)

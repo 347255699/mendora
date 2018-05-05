@@ -61,7 +61,7 @@ public class WebVerticle extends DefaultVerticle {
 
         // scanning route
         RouteScanner scanner = injector.getInstance(RouteScanner.class);
-        scanner.scan(configHolder.property(WebConst.WEB_ROUTE_INTO_PACKAGE), injector, WebVerticle.class.getClassLoader());
+        scanner.scan(configHolder.property(WebConst.WEB_ROUTE_INTO_PACKAGE), WebVerticle.class.getClassLoader(), injector);
     }
 
     /**
